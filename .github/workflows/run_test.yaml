@@ -1,0 +1,32 @@
+name: Tests
+
+
+on:
+  # currently only running manually
+  workflow_dispatch:
+  # future dev: run on main changes
+  #  push:
+  #    - main
+  #  pull:
+  #    - main
+
+jobs:
+  linux_tests:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: build
+        run: make build
+
+      - name: test
+        run: make test

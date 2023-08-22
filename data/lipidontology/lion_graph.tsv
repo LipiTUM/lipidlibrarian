@@ -1,0 +1,853 @@
+root	cellular component
+cellular component	nucleus
+nucleus	LION:0012079
+cellular component	endoplasmic reticulum (ER)
+endoplasmic reticulum (ER)	LION:0012080
+cellular component	mitochondrion
+mitochondrion	LION:0012081
+cellular component	plasma membrane
+plasma membrane	LION:0012082
+cellular component	chloroplast
+chloroplast	LION:0012083
+cellular component	lipid droplet
+lipid droplet	LION:0012084
+cellular component	golgi apparatus
+golgi apparatus	LION:0012085
+cellular component	endosome/lysosome
+endosome/lysosome	LION:0012086
+cellular component	peroxisome
+peroxisome	LION:0012087
+root	function
+function	lipid-mediated signalling
+lipid-mediated signalling	LION:0012009
+function	membrane component
+membrane component	LION:0012010
+function	lipid storage
+lipid storage	LION:0012011
+root	lipid classification
+lipid classification	fatty acids [FA]
+fatty acids [FA]	fatty acids and conjugates [FA01]
+fatty acids and conjugates [FA01]	LION:0001742
+fatty acids [FA]	eicosanoids [FA03]
+eicosanoids [FA03]	prostaglandins [FA0301]
+prostaglandins [FA0301]	LION:0014870
+eicosanoids [FA03]	leukotrienes [FA0302]
+leukotrienes [FA0302]	LION:0014871
+eicosanoids [FA03]	thromboxanes [FA0303]
+thromboxanes [FA0303]	LION:0014872
+lipid classification	glycerolipids [GL]
+glycerolipids [GL]	other glycerolipids [GL00]
+other glycerolipids [GL00]	LION:0000601
+glycerolipids [GL]	monoradylglycerols [GL01]
+monoradylglycerols [GL01]	monoacylglycerols [GL0101]
+monoacylglycerols [GL0101]	LION:0000619
+monoradylglycerols [GL01]	monoalkylglycerols [GL0102]
+monoalkylglycerols [GL0102]	LION:0000620
+monoradylglycerols [GL01]	mono-(1z-alkenyl)-glycerols [GL0103]
+mono-(1z-alkenyl)-glycerols [GL0103]	LION:0000621
+glycerolipids [GL]	diradylglycerols [GL02]
+diradylglycerols [GL02]	diacylglycerols [GL0201]
+diacylglycerols [GL0201]	LION:0000607
+diradylglycerols [GL02]	1-alkyl,2-acylglycerols [GL0202]
+1-alkyl,2-acylglycerols [GL0202]	LION:0000608
+diradylglycerols [GL02]	1-acyl,2-alkylglycerols [GL0207]
+1-acyl,2-alkylglycerols [GL0207]	LION:0000609
+diradylglycerols [GL02]	dialkylglycerols [GL0203]
+dialkylglycerols [GL0203]	LION:0000610
+diradylglycerols [GL02]	1z-alkenylacylglycerols [GL0204]
+1z-alkenylacylglycerols [GL0204]	LION:0000611
+diradylglycerols [GL02]	di-glycerol tetraethers [GL0205]
+di-glycerol tetraethers [GL0205]	LION:0000612
+diradylglycerols [GL02]	di-glycerol tetraether glycans [GL0206]
+di-glycerol tetraether glycans [GL0206]	LION:0000613
+glycerolipids [GL]	triradylglycerols [GL03]
+triradylglycerols [GL03]	triacylglycerols [GL0301]
+triacylglycerols [GL0301]	LION:0000622
+triradylglycerols [GL03]	alkyldiacylglycerols [GL0302]
+alkyldiacylglycerols [GL0302]	LION:0000623
+triradylglycerols [GL03]	dialkylmonoacylglycerols [GL0303]
+dialkylmonoacylglycerols [GL0303]	LION:0000624
+triradylglycerols [GL03]	1z-alkenyldiacylglycerols [GL0304]
+1z-alkenyldiacylglycerols [GL0304]	LION:0000625
+triradylglycerols [GL03]	estolides [GL0305]
+estolides [GL0305]	LION:0000626
+glycerolipids [GL]	glycosylmonoradylglycerols [GL04]
+glycosylmonoradylglycerols [GL04]	glycosylmonoacylglycerols [GL0401]
+glycosylmonoacylglycerols [GL0401]	LION:0000617
+glycosylmonoradylglycerols [GL04]	glycosylmonoalkylglycerols [GL0402]
+glycosylmonoalkylglycerols [GL0402]	LION:0000618
+glycerolipids [GL]	glycosyldiradylglycerols [GL05]
+glycosyldiradylglycerols [GL05]	glycosyldiacylglycerols [GL0501]
+glycosyldiacylglycerols [GL0501]	LION:0000614
+glycosyldiradylglycerols [GL05]	glycosylalkylacylglycerols [GL0502]
+glycosylalkylacylglycerols [GL0502]	LION:0000615
+glycosyldiradylglycerols [GL05]	glycosyldialkylglycerols [GL0503]
+glycosyldialkylglycerols [GL0503]	LION:0000616
+lipid classification	glycerophospholipids [GP]
+glycerophospholipids [GP]	other glycerophospholipids [GP00]
+other glycerophospholipids [GP00]	LION:0000009
+glycerophospholipids [GP]	glycerophosphocholines [GP01]
+glycerophosphocholines [GP01]	diacylglycerophosphocholines [GP0101]
+diacylglycerophosphocholines [GP0101]	LION:0000030
+glycerophosphocholines [GP01]	1-alkyl,2-acylglycerophosphocholines [GP0102]
+1-alkyl,2-acylglycerophosphocholines [GP0102]	LION:0000031
+glycerophosphocholines [GP01]	1-(1z-alkenyl),2-acylglycerophosphocholines [GP0103]
+1-(1z-alkenyl),2-acylglycerophosphocholines [GP0103]	LION:0000032
+glycerophosphocholines [GP01]	dialkylglycerophosphocholines [GP0104]
+dialkylglycerophosphocholines [GP0104]	LION:0000033
+glycerophosphocholines [GP01]	monoacylglycerophosphocholines [GP0105]
+monoacylglycerophosphocholines [GP0105]	LION:0000034
+glycerophosphocholines [GP01]	monoalkylglycerophosphocholines [GP0106]
+monoalkylglycerophosphocholines [GP0106]	LION:0000035
+glycerophosphocholines [GP01]	1z-alkenylglycerophosphocholines [GP0107]
+1z-alkenylglycerophosphocholines [GP0107]	LION:0000036
+glycerophosphocholines [GP01]	1-acyl,2-alkylglycerophosphocholines [GP0108]
+1-acyl,2-alkylglycerophosphocholines [GP0108]	LION:0000037
+glycerophospholipids [GP]	glycerophosphoethanolamines [GP02]
+glycerophosphoethanolamines [GP02]	diacylglycerophosphoethanolamines [GP0201]
+diacylglycerophosphoethanolamines [GP0201]	LION:0000038
+glycerophosphoethanolamines [GP02]	1-alkyl,2-acylglycerophosphoethanolamines [GP0202]
+1-alkyl,2-acylglycerophosphoethanolamines [GP0202]	LION:0000039
+glycerophosphoethanolamines [GP02]	1-(1z-alkenyl),2-acylglycerophosphoethanolamines [GP0203]
+1-(1z-alkenyl),2-acylglycerophosphoethanolamines [GP0203]	LION:0000040
+glycerophosphoethanolamines [GP02]	dialkylglycerophosphoethanolamines [GP0204]
+dialkylglycerophosphoethanolamines [GP0204]	LION:0000041
+glycerophosphoethanolamines [GP02]	diacylglycerophospho-N-acylethanolamines
+diacylglycerophospho-N-acylethanolamines	LION:0012447
+glycerophosphoethanolamines [GP02]	monoacylglycerophosphoethanolamines [GP0205]
+monoacylglycerophosphoethanolamines [GP0205]	LION:0000042
+glycerophosphoethanolamines [GP02]	monoalkylglycerophosphoethanolamines [GP0206]
+monoalkylglycerophosphoethanolamines [GP0206]	LION:0000043
+glycerophosphoethanolamines [GP02]	1z-alkenylglycerophosphoethanolamines [GP0207]
+1z-alkenylglycerophosphoethanolamines [GP0207]	LION:0000044
+glycerophosphoethanolamines [GP02]	1-acyl,2-alkylglycerophosphoethanolamines [GP0208]
+1-acyl,2-alkylglycerophosphoethanolamines [GP0208]	LION:0000045
+glycerophospholipids [GP]	glycerophosphoinositols [GP06]
+glycerophosphoinositols [GP06]	monoacylglycerophosphoinositols [GP0605]
+monoacylglycerophosphoinositols [GP0605]	LION:0000046
+glycerophosphoinositols [GP06]	diacylglycerophosphoinositols [GP0601]
+diacylglycerophosphoinositols [GP0601]	LION:0000047
+glycerophosphoinositols [GP06]	1-alkyl,2-acylglycerophosphoinositols [GP0602]
+1-alkyl,2-acylglycerophosphoinositols [GP0602]	LION:0000048
+glycerophosphoinositols [GP06]	1-(1z-alkenyl),2-acylglycerophosphoinositols [GP0603]
+1-(1z-alkenyl),2-acylglycerophosphoinositols [GP0603]	LION:0000049
+glycerophosphoinositols [GP06]	dialkylglycerophosphoinositols [GP0604]
+dialkylglycerophosphoinositols [GP0604]	LION:0000050
+glycerophosphoinositols [GP06]	monoalkylglycerophosphoinositols [GP0606]
+monoalkylglycerophosphoinositols [GP0606]	LION:0000051
+glycerophosphoinositols [GP06]	1z-alkenylglycerophosphoinositols [GP0607]
+1z-alkenylglycerophosphoinositols [GP0607]	LION:0000052
+glycerophospholipids [GP]	glycerophosphoserines [GP03]
+glycerophosphoserines [GP03]	diacylglycerophosphoserines [GP0301]
+diacylglycerophosphoserines [GP0301]	LION:0000053
+glycerophosphoserines [GP03]	1-alkyl,2-acylglycerophosphoserines [GP0302]
+1-alkyl,2-acylglycerophosphoserines [GP0302]	LION:0000054
+glycerophosphoserines [GP03]	1-(1z-alkenyl),2-acylglycerophosphoserines [GP0303]
+1-(1z-alkenyl),2-acylglycerophosphoserines [GP0303]	LION:0000055
+glycerophosphoserines [GP03]	monoacylglycerophosphoserines [GP0305]
+monoacylglycerophosphoserines [GP0305]	LION:0000056
+glycerophosphoserines [GP03]	monoalkylglycerophosphoserines [GP0306]
+monoalkylglycerophosphoserines [GP0306]	LION:0000057
+glycerophosphoserines [GP03]	1z-alkenylglycerophosphoserines [GP0307]
+1z-alkenylglycerophosphoserines [GP0307]	LION:0000058
+glycerophospholipids [GP]	glycerophosphoglycerols [GP04]
+glycerophosphoglycerols [GP04]	diacylglycerophosphoglycerols [GP0401]
+diacylglycerophosphoglycerols [GP0401]	LION:0000059
+glycerophosphoglycerols [GP04]	1-alkyl,2-acylglycerophosphoglycerols [GP0402]
+1-alkyl,2-acylglycerophosphoglycerols [GP0402]	LION:0000060
+glycerophosphoglycerols [GP04]	1-(1z-alkenyl),2-acylglycerophosphoglycerols [GP0403]
+1-(1z-alkenyl),2-acylglycerophosphoglycerols [GP0403]	LION:0000061
+glycerophosphoglycerols [GP04]	dialkylglycerophosphoglycerols [GP0404]
+dialkylglycerophosphoglycerols [GP0404]	LION:0000062
+glycerophosphoglycerols [GP04]	monoacylglycerophosphoglycerols [GP0405]
+monoacylglycerophosphoglycerols [GP0405]	LION:0000063
+glycerophosphoglycerols [GP04]	monoalkylglycerophosphoglycerols [GP0406]
+monoalkylglycerophosphoglycerols [GP0406]	LION:0000064
+glycerophosphoglycerols [GP04]	1z-alkenylglycerophosphoglycerols [GP0407]
+1z-alkenylglycerophosphoglycerols [GP0407]	LION:0000065
+glycerophosphoglycerols [GP04]	diacylglycerophosphomonoradylglycerols [GP0409]
+diacylglycerophosphomonoradylglycerols [GP0409]	LION:0000066
+glycerophosphoglycerols [GP04]	diacylglycerophosphoacylglycerols
+diacylglycerophosphoacylglycerols	LION:0012449
+glycerophosphoglycerols [GP04]	monoacylglycerophosphomonoradylglycerols [GP0410]
+monoacylglycerophosphomonoradylglycerols [GP0410]	LION:0000067
+glycerophosphoglycerols [GP04]	1-acyl,2-alkylglycerophosphoglycerols [GP0411]
+1-acyl,2-alkylglycerophosphoglycerols [GP0411]	LION:0000068
+glycerophospholipids [GP]	glycerophosphoglycerophosphates [GP05]
+glycerophosphoglycerophosphates [GP05]	LION:0000015
+glycerophospholipids [GP]	glycerophosphoinositol monophosphates [GP07]
+glycerophosphoinositol monophosphates [GP07]	LION:0000016
+glycerophospholipids [GP]	glycerophosphoinositol bisphosphates [GP08]
+glycerophosphoinositol bisphosphates [GP08]	LION:0000017
+glycerophospholipids [GP]	glycerophosphoinositol trisphosphates [GP09]
+glycerophosphoinositol trisphosphates [GP09]	LION:0000018
+glycerophospholipids [GP]	glycerophosphates [GP10]
+glycerophosphates [GP10]	diacylglycerophosphates [GP1001]
+diacylglycerophosphates [GP1001]	LION:0000069
+glycerophosphates [GP10]	1-alkyl,2-acylglycerophosphates [GP1002]
+1-alkyl,2-acylglycerophosphates [GP1002]	LION:0000070
+glycerophosphates [GP10]	1-(1z-alkenyl),2-acylglycerophosphates [GP1003]
+1-(1z-alkenyl),2-acylglycerophosphates [GP1003]	LION:0000071
+glycerophosphates [GP10]	monoacylglycerophosphates [GP1005]
+monoacylglycerophosphates [GP1005]	LION:0000072
+glycerophosphates [GP10]	monoalkylglycerophosphates [GP1006]
+monoalkylglycerophosphates [GP1006]	LION:0000073
+glycerophosphates [GP10]	1z-alkenylglycerophosphates [GP1007]
+1z-alkenylglycerophosphates [GP1007]	LION:0000074
+glycerophospholipids [GP]	glyceropyrophosphates [GP11]
+glyceropyrophosphates [GP11]	LION:0000020
+glycerophospholipids [GP]	glycerophosphoglycerophosphoglycerols [GP12]
+glycerophosphoglycerophosphoglycerols [GP12]	diacylglycerophosphoglycerophosphodiradylglycerols [GP1201]
+diacylglycerophosphoglycerophosphodiradylglycerols [GP1201]	LION:0000728
+glycerophosphoglycerophosphoglycerols [GP12]	diacylglycerophosphoglycerophosphomonoradylglycerols [GP1202]
+diacylglycerophosphoglycerophosphomonoradylglycerols [GP1202]	LION:0000940
+glycerophosphoglycerophosphoglycerols [GP12]	1-alkyl,2-acylglycerophosphoglycerophosphodiradylglycerols [GP1203]
+1-alkyl,2-acylglycerophosphoglycerophosphodiradylglycerols [GP1203]	LION:0000941
+glycerophosphoglycerophosphoglycerols [GP12]	1-alkyl,2-acylglycerophosphoglycerophosphomonoradylglycerols [GP1204]
+1-alkyl,2-acylglycerophosphoglycerophosphomonoradylglycerols [GP1204]	LION:0000942
+glycerophosphoglycerophosphoglycerols [GP12]	1-(1z-alkenyl),2-acylglycerophosphoglycerophosphodiradylglycerols [GP1205]
+1-(1z-alkenyl),2-acylglycerophosphoglycerophosphodiradylglycerols [GP1205]	LION:0000943
+glycerophosphoglycerophosphoglycerols [GP12]	1-(1z-alkenyl),2-acylglycerophosphoglycerophosphomonoradylglycerols [GP1206]
+1-(1z-alkenyl),2-acylglycerophosphoglycerophosphomonoradylglycerols [GP1206]	LION:0000944
+glycerophosphoglycerophosphoglycerols [GP12]	dialkylglycerophosphoglycerophosphodiradylglycerols [GP1212]
+dialkylglycerophosphoglycerophosphodiradylglycerols [GP1212]	LION:0000945
+glycerophosphoglycerophosphoglycerols [GP12]	dialkylglycerophosphoglycerophosphomonoradylglycerols [GP1213]
+dialkylglycerophosphoglycerophosphomonoradylglycerols [GP1213]	LION:0000946
+glycerophosphoglycerophosphoglycerols [GP12]	monoacylglycerophosphoglycerophosphomonoradylglycerols [GP1207]
+monoacylglycerophosphoglycerophosphomonoradylglycerols [GP1207]	LION:0000947
+glycerophosphoglycerophosphoglycerols [GP12]	monoalkylglycerophosphoglycerophosphodiradylglycerols [GP1208]
+monoalkylglycerophosphoglycerophosphodiradylglycerols [GP1208]	LION:0000948
+glycerophosphoglycerophosphoglycerols [GP12]	monoalkylglycerophosphoglycerophosphomonoradylglycerols [GP1209]
+monoalkylglycerophosphoglycerophosphomonoradylglycerols [GP1209]	LION:0000949
+glycerophosphoglycerophosphoglycerols [GP12]	1z-alkenylglycerophosphoglycerophosphodiradylglycerols [GP1210]
+1z-alkenylglycerophosphoglycerophosphodiradylglycerols [GP1210]	LION:0000950
+glycerophosphoglycerophosphoglycerols [GP12]	1z-alkenylglycerophosphoglycerophosphomonoradylglycerols [GP1211]
+1z-alkenylglycerophosphoglycerophosphomonoradylglycerols [GP1211]	LION:0000951
+glycerophospholipids [GP]	cdp-glycerols [GP13]
+cdp-glycerols [GP13]	LION:0000022
+glycerophospholipids [GP]	glycosylglycerophospholipids [GP14]
+glycosylglycerophospholipids [GP14]	LION:0000023
+glycerophospholipids [GP]	glycerophosphoinositolglycans [GP15]
+glycerophosphoinositolglycans [GP15]	LION:0000024
+glycerophospholipids [GP]	glycerophosphonocholines [GP16]
+glycerophosphonocholines [GP16]	LION:0000025
+glycerophospholipids [GP]	glycerophosphonoethanolamines [GP17]
+glycerophosphonoethanolamines [GP17]	LION:0000026
+glycerophospholipids [GP]	di-glycerol tetraether phospholipids (caldarchaeols) [GP18]
+di-glycerol tetraether phospholipids (caldarchaeols) [GP18]	LION:0000027
+glycerophospholipids [GP]	glycerol-nonitol tetraether phospholipids [GP19]
+glycerol-nonitol tetraether phospholipids [GP19]	LION:0000028
+glycerophospholipids [GP]	oxidized glycerophospholipids [GP20]
+oxidized glycerophospholipids [GP20]	LION:0000029
+glycerophospholipids [GP]	lysoglycerophospholipids
+lysoglycerophospholipids	monoacylglycerophosphocholines [GP0105]
+monoacylglycerophosphocholines [GP0105]	LION:0000034
+lysoglycerophospholipids	monoacylglycerophosphoethanolamines [GP0205]
+monoacylglycerophosphoethanolamines [GP0205]	LION:0000042
+lysoglycerophospholipids	monoacylglycerophosphoinositols [GP0605]
+monoacylglycerophosphoinositols [GP0605]	LION:0000046
+lysoglycerophospholipids	monoacylglycerophosphoserines [GP0305]
+monoacylglycerophosphoserines [GP0305]	LION:0000056
+lysoglycerophospholipids	monoacylglycerophosphoglycerols [GP0405]
+monoacylglycerophosphoglycerols [GP0405]	LION:0000063
+lysoglycerophospholipids	monoacylglycerophosphates [GP1005]
+monoacylglycerophosphates [GP1005]	LION:0000072
+lipid classification	sphingolipids [SP]
+sphingolipids [SP]	other sphingolipids [SP00]
+other sphingolipids [SP00]	LION:0000075
+sphingolipids [SP]	sphingoid bases [SP01]
+sphingoid bases [SP01]	LION:0000076
+sphingolipids [SP]	ceramides [SP02]
+ceramides [SP02]	N-acylsphingosines (ceramides) [SP0201]
+N-acylsphingosines (ceramides) [SP0201]	LION:0012441
+ceramides [SP02]	N-acylsphinganines (dihydroceramides) [SP0202]
+N-acylsphinganines (dihydroceramides) [SP0202]	LION:0012443
+ceramides [SP02]	N-acyl-4-hydroxysphinganines (phytoceramides) [SP0203]
+N-acyl-4-hydroxysphinganines (phytoceramides) [SP0203]	LION:0012444
+ceramides [SP02]	Acylceramides [SP0204]
+Acylceramides [SP0204]	LION:0012445
+ceramides [SP02]	Ceramide 1-phosphates [SP0205]
+Ceramide 1-phosphates [SP0205]	LION:0012446
+sphingolipids [SP]	phosphosphingolipids [SP03]
+phosphosphingolipids [SP03]	ceramide phosphocholines (sphingomyelins) [SP0301]
+ceramide phosphocholines (sphingomyelins) [SP0301]	LION:0000084
+phosphosphingolipids [SP03]	ceramide phosphoethanolamines [SP0302]
+ceramide phosphoethanolamines [SP0302]	LION:0000085
+phosphosphingolipids [SP03]	ceramide phosphoinositols [SP0303]
+ceramide phosphoinositols [SP0303]	LION:0000086
+sphingolipids [SP]	phosphonosphingolipids [SP04]
+phosphonosphingolipids [SP04]	LION:0000079
+sphingolipids [SP]	neutral glycosphingolipids [SP05]
+neutral glycosphingolipids [SP05]	other neutral glycosphingolipids [SP0500]
+other neutral glycosphingolipids [SP0500]	LION:0000452
+neutral glycosphingolipids [SP05]	simple glc series [SP0501]
+simple glc series [SP0501]	hexosylceramides
+hexosylceramides	LION:0012017
+simple glc series [SP0501]	dihexosylceramides
+dihexosylceramides	LION:0012018
+neutral glycosphingolipids [SP05]	galnacbeta1-3galalpha1-4galbeta1-4glc- (globo series) [SP0502]
+galnacbeta1-3galalpha1-4galbeta1-4glc- (globo series) [SP0502]	LION:0000454
+neutral glycosphingolipids [SP05]	galnacbeta1-4galbeta1-4glc- (ganglio series) [SP0503]
+galnacbeta1-4galbeta1-4glc- (ganglio series) [SP0503]	LION:0000455
+neutral glycosphingolipids [SP05]	galbeta1-3glcnacbeta1-3galbeta1-4glc- (lacto series) [SP0504]
+galbeta1-3glcnacbeta1-3galbeta1-4glc- (lacto series) [SP0504]	LION:0000456
+neutral glycosphingolipids [SP05]	galbeta1-4glcnacbeta1-3galbeta1-4glc- (neolacto series) [SP0505]
+galbeta1-4glcnacbeta1-3galbeta1-4glc- (neolacto series) [SP0505]	LION:0000457
+neutral glycosphingolipids [SP05]	galnacbeta1-3galalpha1-3galbeta1-4glc- (isoglobo series) [SP0506]
+galnacbeta1-3galalpha1-3galbeta1-4glc- (isoglobo series) [SP0506]	LION:0000458
+neutral glycosphingolipids [SP05]	glcnacbeta1-2manalpha1-3manbeta1-4glc- (mollu series) [SP0507]
+glcnacbeta1-2manalpha1-3manbeta1-4glc- (mollu series) [SP0507]	LION:0000459
+neutral glycosphingolipids [SP05]	galnacbeta1-4glcnacbeta1-3manbeta1-4glc- (arthro series) [SP0508]
+galnacbeta1-4glcnacbeta1-3manbeta1-4glc- (arthro series) [SP0508]	LION:0000460
+neutral glycosphingolipids [SP05]	gal- (gala series) [SP0509]
+gal- (gala series) [SP0509]	LION:0000461
+sphingolipids [SP]	acidic glycosphingolipids [SP06]
+acidic glycosphingolipids [SP06]	gangliosides [SP0601]
+gangliosides [SP0601]	LION:0000087
+acidic glycosphingolipids [SP06]	sulfoglycosphingolipids (sulfatides) [SP0602]
+sulfoglycosphingolipids (sulfatides) [SP0602]	LION:0000088
+acidic glycosphingolipids [SP06]	glucuronosphingolipids [SP0603]
+glucuronosphingolipids [SP0603]	LION:0000089
+acidic glycosphingolipids [SP06]	phosphoglycosphingolipids [SP0604]
+phosphoglycosphingolipids [SP0604]	LION:0000090
+sphingolipids [SP]	basic glycosphingolipids [SP07]
+basic glycosphingolipids [SP07]	LION:0000082
+sphingolipids [SP]	amphoteric glycosphingolipids [SP08]
+amphoteric glycosphingolipids [SP08]	LION:0000083
+lipid classification	sterol lipids [ST]
+sterol lipids [ST]	other sterol lipids [ST00]
+other sterol lipids [ST00]	LION:0000556
+sterol lipids [ST]	sterols [ST01]
+sterols [ST01]	cholesterol and derivatives [ST0101]
+cholesterol and derivatives [ST0101]	cholesterol
+cholesterol	LION:0000541
+cholesterol and derivatives [ST0101]	cholestenone
+cholestenone	LION:0000553
+cholesterol and derivatives [ST0101]	oxysterol
+oxysterol	LION:0000600
+sterols [ST01]	steryl esters [ST0102]
+steryl esters [ST0102]	LION:0000563
+sterols [ST01]	ergosterols and c24-methyl derivatives [ST0103]
+ergosterols and c24-methyl derivatives [ST0103]	LION:0000564
+sterols [ST01]	stigmasterols and c24-ethyl derivatives [ST0104]
+stigmasterols and c24-ethyl derivatives [ST0104]	LION:0000565
+sterols [ST01]	c24-propyl sterols and derivatives [ST0105]
+c24-propyl sterols and derivatives [ST0105]	LION:0000566
+sterols [ST01]	gorgosterols and derivatives [ST0106]
+gorgosterols and derivatives [ST0106]	LION:0000567
+sterols [ST01]	furostanols and derivatives [ST0107]
+furostanols and derivatives [ST0107]	LION:0000568
+sterols [ST01]	spirostanols and derivatives [ST0108]
+spirostanols and derivatives [ST0108]	LION:0000569
+sterols [ST01]	furospirostanols and derivatives [ST0109]
+furospirostanols and derivatives [ST0109]	LION:0000570
+sterols [ST01]	cycloartanols and derivatives [ST0110]
+cycloartanols and derivatives [ST0110]	LION:0000571
+sterols [ST01]	calysterols and cyclopropyl sidechain derivatives [ST0111]
+calysterols and cyclopropyl sidechain derivatives [ST0111]	LION:0000572
+sterols [ST01]	cardanolides and derivatives [ST0112]
+cardanolides and derivatives [ST0112]	LION:0000573
+sterols [ST01]	bufanolides and derivatives [ST0113]
+bufanolides and derivatives [ST0113]	LION:0000574
+sterols [ST01]	brassinolides and derivatives [ST0114]
+brassinolides and derivatives [ST0114]	LION:0000575
+sterols [ST01]	solanidines and alkaloid derivatives [ST0115]
+solanidines and alkaloid derivatives [ST0115]	LION:0000576
+sterols [ST01]	withanolides and derivatives [ST0116]
+withanolides and derivatives [ST0116]	LION:0000577
+sterol lipids [ST]	steroids [ST02]
+steroids [ST02]	LION:0000558
+sterol lipids [ST]	secosteroids [ST03]
+secosteroids [ST03]	LION:0000559
+sterol lipids [ST]	bile acids and derivatives [ST04]
+bile acids and derivatives [ST04]	LION:0000560
+sterol lipids [ST]	steroid conjugates [ST05]
+steroid conjugates [ST05]	LION:0000561
+lipid classification	prenol lipids [PR]
+prenol lipids [PR]	isoprenoids [PR01]
+isoprenoids [PR01]	C5 isoprenoids (hemiterpenes) [PR0101]
+C5 isoprenoids (hemiterpenes) [PR0101]	LION:0012013
+isoprenoids [PR01]	C10 isoprenoids (monoterpenes) [PR0102]
+C10 isoprenoids (monoterpenes) [PR0102]	LION:0012014
+isoprenoids [PR01]	C15 isoprenoids (sesquiterpenes) [PR0103]
+C15 isoprenoids (sesquiterpenes) [PR0103]	LION:0012015
+isoprenoids [PR01]	C20 isoprenoids (diterpenes) [PR0104]
+C20 isoprenoids (diterpenes) [PR0104]	LION:0012016
+isoprenoids [PR01]	C25 isoprenoids (sesterterpenes) [PR0105]
+C25 isoprenoids (sesterterpenes) [PR0105]	LION:0012019
+isoprenoids [PR01]	C30 isoprenoids (triterpenes) [PR0106]
+C30 isoprenoids (triterpenes) [PR0106]	LION:0012020
+isoprenoids [PR01]	C40 isoprenoids (tetraterpenes) [PR0107]
+C40 isoprenoids (tetraterpenes) [PR0107]	LION:0012021
+isoprenoids [PR01]	polyterpenes [PR0108]
+polyterpenes [PR0108]	LION:0012022
+isoprenoids [PR01]	retinoids [PR0109]
+retinoids [PR0109]	all-trans-retinol
+all-trans-retinol	LION:0012044
+retinoids [PR0109]	9-cis-retinol
+9-cis-retinol	LION:0012045
+retinoids [PR0109]	13-cis-retinol
+13-cis-retinol	LION:0012046
+retinoids [PR0109]	all-trans-retinal
+all-trans-retinal	LION:0012047
+retinoids [PR0109]	9-cis-retinal
+9-cis-retinal	LION:0012048
+retinoids [PR0109]	13-cis-retinal
+13-cis-retinal	LION:0012049
+retinoids [PR0109]	all-trans-retinoic acid
+all-trans-retinoic acid	LION:0012050
+retinoids [PR0109]	9-cis-retinoic acid
+9-cis-retinoic acid	LION:0012054
+retinoids [PR0109]	13-cis-retinoic acid
+13-cis-retinoic acid	LION:0012055
+retinoids [PR0109]	all-trans-retinyl esters
+all-trans-retinyl esters	LION:0012056
+prenol lipids [PR]	quinones and hydroquinones [PR02]
+quinones and hydroquinones [PR02]	ubiquinones [PR0201]
+ubiquinones [PR0201]	LION:0012025
+quinones and hydroquinones [PR02]	vitamin E [PR0202]
+vitamin E [PR0202]	LION:0012026
+quinones and hydroquinones [PR02]	vitamin K [PR0203]
+vitamin K [PR0203]	LION:0012027
+prenol lipids [PR]	polyprenols [PR03]
+polyprenols [PR03]	bactoprenols [PR0301]
+bactoprenols [PR0301]	LION:0012029
+polyprenols [PR03]	bactoprenol monophosphates [PR0302]
+bactoprenol monophosphates [PR0302]	LION:0012030
+polyprenols [PR03]	bactoprenol diphosphates [PR0303]
+bactoprenol diphosphates [PR0303]	LION:0012035
+polyprenols [PR03]	phytoprenols [PR0304]
+phytoprenols [PR0304]	LION:0012036
+polyprenols [PR03]	phytoprenol monophosphates [PR0305]
+phytoprenol monophosphates [PR0305]	LION:0012037
+polyprenols [PR03]	phytoprenol diphosphates [PR0306]
+phytoprenol diphosphates [PR0306]	LION:0012038
+polyprenols [PR03]	dolichols [PR0307]
+dolichols [PR0307]	LION:0012039
+polyprenols [PR03]	dolichol monophosphates [PR0308]
+dolichol monophosphates [PR0308]	LION:0012040
+polyprenols [PR03]	dolichol diphosphates [PR0309]
+dolichol diphosphates [PR0309]	LION:0012041
+prenol lipids [PR]	hopanoids [PR04]
+hopanoids [PR04]	LION:0012042
+prenol lipids [PR]	other prenol lipids [PR00]
+other prenol lipids [PR00]	LION:0012043
+lipid classification	saccharolipids [SL]
+saccharolipids [SL]	LION:0000007
+lipid classification	polyketides [PK]
+polyketides [PK]	LION:0000008
+root	physical or chemical properties
+physical or chemical properties	charge headgroup
+charge headgroup	headgroup with negative charge
+headgroup with negative charge	LION:0000093
+charge headgroup	headgroup with neutral charge
+headgroup with neutral charge	LION:0000094
+charge headgroup	headgroup with positive charge / zwitter-ion
+headgroup with positive charge / zwitter-ion	LION:0000095
+physical or chemical properties	contains fatty acid
+contains fatty acid	C12:0
+C12:0	LION:0000254
+contains fatty acid	C13:0
+C13:0	LION:0022223
+contains fatty acid	C14:0
+C14:0	LION:0000259
+contains fatty acid	C14:1
+C14:1	LION:0000462
+contains fatty acid	C15:0
+C15:0	LION:0022229
+contains fatty acid	C15:1
+C15:1	LION:0022230
+contains fatty acid	C16:0
+C16:0	LION:0002882
+contains fatty acid	C16:1
+C16:1	LION:0002900
+contains fatty acid	C17:0
+C17:0	LION:0022231
+contains fatty acid	C17:1
+C17:1	LION:0022234
+contains fatty acid	C17:2
+C17:2	LION:0022236
+contains fatty acid	C18:0
+C18:0	LION:0002921
+contains fatty acid	C18:1
+C18:1	LION:0002922
+contains fatty acid	C18:2
+C18:2	LION:0002923
+contains fatty acid	C18:3
+C18:3	LION:0002924
+contains fatty acid	C19:0
+C19:0	LION:0022241
+contains fatty acid	C19:1
+C19:1	LION:0022242
+contains fatty acid	C19:2
+C19:2	LION:0022245
+contains fatty acid	C19:3
+C19:3	LION:0022247
+contains fatty acid	C20:0
+C20:0	LION:0002925
+contains fatty acid	C20:1
+C20:1	LION:0002926
+contains fatty acid	C20:2
+C20:2	LION:0002927
+contains fatty acid	C20:3
+C20:3	LION:0002928
+contains fatty acid	C20:4
+C20:4	LION:0002929
+contains fatty acid	C20:5
+C20:5	LION:0002930
+contains fatty acid	C21:0
+C21:0	LION:0022261
+contains fatty acid	C21:1
+C21:1	LION:0022262
+contains fatty acid	C21:2
+C21:2	LION:0022263
+contains fatty acid	C21:3
+C21:3	LION:0022264
+contains fatty acid	C21:4
+C21:4	LION:0022265
+contains fatty acid	C22:0
+C22:0	LION:0002931
+contains fatty acid	C22:1
+C22:1	LION:0002932
+contains fatty acid	C22:2
+C22:2	LION:0002933
+contains fatty acid	C22:3
+C22:3	LION:0002934
+contains fatty acid	C22:4
+C22:4	LION:0002935
+contains fatty acid	C22:5
+C22:5	LION:0002936
+contains fatty acid	C22:6
+C22:6	LION:0002937
+contains fatty acid	C23:0
+C23:0	LION:0022266
+contains fatty acid	C23:1
+C23:1	LION:0022267
+contains fatty acid	C23:2
+C23:2	LION:0022268
+contains fatty acid	C23:3
+C23:3	LION:0022269
+contains fatty acid	C23:4
+C23:4	LION:0022270
+contains fatty acid	C23:5
+C23:5	LION:0022271
+contains fatty acid	C24:0
+C24:0	LION:0002938
+contains fatty acid	C24:1
+C24:1	LION:0002939
+contains fatty acid	C24:2
+C24:2	LION:0002940
+contains fatty acid	C24:3
+C24:3	LION:0002941
+contains fatty acid	C24:4
+C24:4	LION:0002942
+contains fatty acid	C24:5
+C24:5	LION:0002943
+contains fatty acid	C24:6
+C24:6	LION:0002944
+contains fatty acid	C25:0
+C25:0	LION:0022272
+contains fatty acid	C25:1
+C25:1	LION:0022273
+contains fatty acid	C25:2
+C25:2	LION:0022274
+contains fatty acid	C25:3
+C25:3	LION:0022275
+contains fatty acid	C25:4
+C25:4	LION:0022276
+contains fatty acid	C25:5
+C25:5	LION:0022277
+contains fatty acid	C25:6
+C25:6	LION:0022278
+contains fatty acid	C25:7
+C25:7	LION:0022279
+contains fatty acid	C26:0
+C26:0	LION:0002979
+contains fatty acid	C26:1
+C26:1	LION:0002981
+contains fatty acid	C26:2
+C26:2	LION:0002982
+contains fatty acid	C26:3
+C26:3	LION:0002983
+contains fatty acid	C26:4
+C26:4	LION:0002984
+contains fatty acid	C26:5
+C26:5	LION:0002985
+contains fatty acid	C26:6
+C26:6	LION:0002986
+contains fatty acid	C26:7
+C26:7	LION:0002987
+contains fatty acid	d18:1 (sphingosine)
+d18:1 (sphingosine)	LION:0080947
+contains fatty acid	d18:0 (dihydrosphingosine)
+d18:0 (dihydrosphingosine)	LION:0080948
+contains fatty acid	d14:0
+d14:0	LION:0012031
+contains fatty acid	d14:1
+d14:1	LION:0012032
+contains fatty acid	d14:2
+d14:2	LION:0012033
+contains fatty acid	t14:0
+t14:0	LION:0012034
+contains fatty acid	t14:1
+t14:1	LION:0012051
+contains fatty acid	t14:2
+t14:2	LION:0012052
+contains fatty acid	m14:0
+m14:0	LION:0012053
+contains fatty acid	m14:1
+m14:1	LION:0012070
+contains fatty acid	m14:2
+m14:2	LION:0012071
+contains fatty acid	d15:0
+d15:0	LION:0012072
+contains fatty acid	d15:1
+d15:1	LION:0012073
+contains fatty acid	d15:2
+d15:2	LION:0012089
+contains fatty acid	t15:0
+t15:0	LION:0012090
+contains fatty acid	t15:1
+t15:1	LION:0012104
+contains fatty acid	t15:2
+t15:2	LION:0012120
+contains fatty acid	m15:0
+m15:0	LION:0012121
+contains fatty acid	m15:1
+m15:1	LION:0012122
+contains fatty acid	m15:2
+m15:2	LION:0012123
+contains fatty acid	d16:0
+d16:0	LION:0012124
+contains fatty acid	d16:1
+d16:1	LION:0012125
+contains fatty acid	d16:2
+d16:2	LION:0012149
+contains fatty acid	t16:0
+t16:0	LION:0012150
+contains fatty acid	t16:1
+t16:1	LION:0012151
+contains fatty acid	t16:2
+t16:2	LION:0012152
+contains fatty acid	m16:0
+m16:0	LION:0012153
+contains fatty acid	m16:1
+m16:1	LION:0012154
+contains fatty acid	m16:2
+m16:2	LION:0012180
+contains fatty acid	d17:0
+d17:0	LION:0012182
+contains fatty acid	d17:1
+d17:1	LION:0012183
+contains fatty acid	d17:2
+d17:2	LION:0012184
+contains fatty acid	t17:0
+t17:0	LION:0012185
+contains fatty acid	t17:1
+t17:1	LION:0012186
+contains fatty acid	t17:2
+t17:2	LION:0012212
+contains fatty acid	m17:0
+m17:0	LION:0012213
+contains fatty acid	m17:1
+m17:1	LION:0012214
+contains fatty acid	m17:2
+m17:2	LION:0012215
+contains fatty acid	d18:2
+d18:2	LION:0012216
+contains fatty acid	t18:0
+t18:0	LION:0012217
+contains fatty acid	t18:1
+t18:1	LION:0012218
+contains fatty acid	t18:2
+t18:2	LION:0012243
+contains fatty acid	m18:0
+m18:0	LION:0012244
+contains fatty acid	m18:1
+m18:1	LION:0012245
+contains fatty acid	m18:2
+m18:2	LION:0012246
+contains fatty acid	d19:0
+d19:0	LION:0012247
+contains fatty acid	d19:1
+d19:1	LION:0012268
+contains fatty acid	d19:2
+d19:2	LION:0012269
+contains fatty acid	t19:0
+t19:0	LION:0012270
+contains fatty acid	t19:1
+t19:1	LION:0012300
+contains fatty acid	t19:2
+t19:2	LION:0012301
+contains fatty acid	m19:0
+m19:0	LION:0012302
+contains fatty acid	m19:1
+m19:1	LION:0012303
+contains fatty acid	m19:2
+m19:2	LION:0012304
+contains fatty acid	d20:0
+d20:0	LION:0012305
+contains fatty acid	d20:1
+d20:1	LION:0012306
+contains fatty acid	d20:2
+d20:2	LION:0012307
+contains fatty acid	t20:0
+t20:0	LION:0012308
+contains fatty acid	t20:1
+t20:1	LION:0012337
+contains fatty acid	t20:2
+t20:2	LION:0012339
+contains fatty acid	m20:0
+m20:0	LION:0012341
+contains fatty acid	m20:1
+m20:1	LION:0012342
+contains fatty acid	m20:2
+m20:2	LION:0012344
+contains fatty acid	d21:0
+d21:0	LION:0012345
+contains fatty acid	d21:1
+d21:1	LION:0012346
+contains fatty acid	d21:2
+d21:2	LION:0012347
+contains fatty acid	t21:0
+t21:0	LION:0012348
+contains fatty acid	t21:1
+t21:1	LION:0012384
+contains fatty acid	t21:2
+t21:2	LION:0012387
+contains fatty acid	m21:0
+m21:0	LION:0012389
+contains fatty acid	m21:1
+m21:1	LION:0012390
+contains fatty acid	m21:2
+m21:2	LION:0012391
+contains fatty acid	d22:0
+d22:0	LION:0012393
+contains fatty acid	d22:1
+d22:1	LION:0012394
+contains fatty acid	d22:2
+d22:2	LION:0012395
+contains fatty acid	t22:0
+t22:0	LION:0012396
+contains fatty acid	t22:1
+t22:1	LION:0012397
+contains fatty acid	t22:2
+t22:2	LION:0012398
+contains fatty acid	m22:0
+m22:0	LION:0012437
+contains fatty acid	m22:1
+m22:1	LION:0012438
+contains fatty acid	m22:2
+m22:2	LION:0012440
+physical or chemical properties	type by bond
+type by bond	contains ether-bond
+contains ether-bond	LION:0000467
+type by bond	contains vinyl ether bond (plasmalogen)
+contains vinyl ether bond (plasmalogen)	LION:0001734
+physical or chemical properties	intrinsic curvature
+intrinsic curvature	negative intrinsic curvature
+negative intrinsic curvature	LION:0000464
+intrinsic curvature	neutral intrinsic curvature
+neutral intrinsic curvature	LION:0000465
+intrinsic curvature	positive intrinsic curvature
+positive intrinsic curvature	LION:0000466
+physical or chemical properties	chain-melting transition temperature
+chain-melting transition temperature	average transition temperature
+average transition temperature	LION:0001737
+chain-melting transition temperature	above average transition temperature
+above average transition temperature	high transition temperature
+high transition temperature	LION:0001738
+above average transition temperature	very high transition temperature
+very high transition temperature	LION:0001739
+chain-melting transition temperature	below average transition temperature
+below average transition temperature	very low transition temperature
+very low transition temperature	LION:0001735
+below average transition temperature	low transition temperature
+low transition temperature	LION:0001736
+physical or chemical properties	fatty acid unsaturation
+fatty acid unsaturation	fatty acid with less than 2 double bonds
+fatty acid with less than 2 double bonds	saturated fatty acid
+saturated fatty acid	LION:0002968
+fatty acid with less than 2 double bonds	monounsaturated fatty acid
+monounsaturated fatty acid	LION:0002969
+fatty acid unsaturation	polyunsaturated fatty acid
+polyunsaturated fatty acid	fatty acid with 2 double bonds
+fatty acid with 2 double bonds	LION:0002970
+polyunsaturated fatty acid	fatty acid with more than 3 double bonds
+fatty acid with more than 3 double bonds	fatty acid with 3-5 double bonds
+fatty acid with 3-5 double bonds	fatty acid with 3 double bonds
+fatty acid with 3 double bonds	LION:0002971
+fatty acid with 3-5 double bonds	fatty acid with 4 double bonds
+fatty acid with 4 double bonds	LION:0002972
+fatty acid with 3-5 double bonds	fatty acid with 5 double bonds
+fatty acid with 5 double bonds	LION:0002973
+polyunsaturated fatty acid	fatty acid with more than 5 double bonds
+fatty acid with more than 5 double bonds	fatty acid with 6 double bonds
+fatty acid with 6 double bonds	LION:0002974
+fatty acid with more than 5 double bonds	fatty acid with 7 double bonds
+fatty acid with 7 double bonds	LION:0002975
+physical or chemical properties	fatty acid chain length
+fatty acid chain length	fatty acid with 18 carbons or less
+fatty acid with 18 carbons or less	fatty acid with less than 13 carbons
+fatty acid with less than 13 carbons	fatty acid with 12 carbons
+fatty acid with 12 carbons	LION:0002980
+fatty acid with 18 carbons or less	fatty acid with 13-15 carbons
+fatty acid with 13-15 carbons	fatty acid with 13 carbons
+fatty acid with 13 carbons	LION:0002952
+fatty acid with 13-15 carbons	fatty acid with 14 carbons
+fatty acid with 14 carbons	LION:0002953
+fatty acid with 13-15 carbons	fatty acid with 15 carbons
+fatty acid with 15 carbons	LION:0002954
+fatty acid with 18 carbons or less	fatty acid with 16-18 carbons
+fatty acid with 16-18 carbons	fatty acid with 16 carbons
+fatty acid with 16 carbons	LION:0002955
+fatty acid with 16-18 carbons	fatty acid with 17 carbons
+fatty acid with 17 carbons	LION:0002956
+fatty acid with 16-18 carbons	fatty acid with 18 carbons
+fatty acid with 18 carbons	LION:0002957
+fatty acid chain length	fatty acid with more than 18 carbons
+fatty acid with more than 18 carbons	fatty acid with 19-21 carbons
+fatty acid with 19-21 carbons	fatty acids with 19 carbons
+fatty acids with 19 carbons	LION:0002958
+fatty acid with 19-21 carbons	fatty acid with 20 carbons
+fatty acid with 20 carbons	LION:0002959
+fatty acid with 19-21 carbons	fatty acid with 21 carbons
+fatty acid with 21 carbons	LION:0002960
+fatty acid with more than 18 carbons	fatty acid with 22-24 carbons
+fatty acid with 22-24 carbons	fatty acid with 22 carbons
+fatty acid with 22 carbons	LION:0002961
+fatty acid with 22-24 carbons	fatty acid with 23 carbons
+fatty acid with 23 carbons	LION:0002962
+fatty acid with 22-24 carbons	fatty acid with 24 carbons
+fatty acid with 24 carbons	LION:0002963
+fatty acid with more than 18 carbons	fatty acid with more than 24 carbons
+fatty acid with more than 24 carbons	fatty acid with 25 carbons
+fatty acid with 25 carbons	LION:0002964
+fatty acid with more than 24 carbons	fatty acid with 26 carbons
+fatty acid with 26 carbons	LION:0002965
+physical or chemical properties	lateral diffusion
+lateral diffusion	average lateral diffusion
+average lateral diffusion	LION:0080978
+lateral diffusion	below average lateral diffusion
+below average lateral diffusion	very low lateral diffusion
+very low lateral diffusion	LION:0080976
+below average lateral diffusion	low lateral diffusion
+low lateral diffusion	LION:0080977
+lateral diffusion	above average lateral diffusion
+above average lateral diffusion	high lateral diffusion
+high lateral diffusion	LION:0080979
+above average lateral diffusion	very high lateral diffusion
+very high lateral diffusion	LION:0080980
+physical or chemical properties	bilayer thickness
+bilayer thickness	average bilayer thickness
+average bilayer thickness	LION:0080970
+bilayer thickness	below average bilayer thickness
+below average bilayer thickness	very low bilayer thickness
+very low bilayer thickness	LION:0080968
+below average bilayer thickness	low bilayer thickness
+low bilayer thickness	LION:0080969
+bilayer thickness	above average bilayer thickness
+above average bilayer thickness	high bilayer thickness
+high bilayer thickness	LION:0080971
+above average bilayer thickness	very high bilayer thickness
+very high bilayer thickness	LION:0080972

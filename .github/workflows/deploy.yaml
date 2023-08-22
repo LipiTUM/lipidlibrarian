@@ -1,0 +1,40 @@
+name: Deployment
+
+on:
+  release:
+    types: [created, edited]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: fetch files
+        run: |
+          pip install gdown
+          gdown --folder --id 1197XJyIlAZDe5inXf3M6U6mlBAHKpAXK
+          # TODO: move all stored files
+          mv LipidLibrarian/lipitum.db data/
+          mv LipidLibrarian/alex123_db.h5 data/alex123/
+          rm -r LipidLibrarian
+
+      - name: build
+        run: |
+          python -m build --sdist --wheel --outdir dist/
+
+      - name: publish
+        if: startsWith(github.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}

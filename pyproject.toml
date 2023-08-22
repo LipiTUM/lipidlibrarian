@@ -1,0 +1,76 @@
+[project]
+name = "lipid_librarian"
+version = "0.1.2"
+description = "A Lipidomics Database Explorer Package"
+readme = "README.md"
+authors = [
+    {name = "LipiTUM", email = "someone@lipitum.de"},
+]
+requires-python = ">=3.8, <3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Database :: Front-Ends",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["lipids", "bioinformatics", "development"]
+dependencies = [
+    "requests",
+    "importlib-metadata",
+    "numpy",
+    "pandas",
+    "tables",
+    "jsons",
+    "json2html",
+    "SQLAlchemy",
+    "PyMySQL",
+    "networkx",
+    "ratelimit",
+    "func-timeout",
+    "liputils",
+    "sparql-dataframe", # returns SPARQL queries as pandas dataframes
+    "pygoslin @ git+https://github.com/lifs-tools/pygoslin@master#egg=pygoslin", # converts lipid names/identifiers between databases
+    "linex2",
+    "scikit-learn", # linex2 needs this, but only installs sklearn
+    "lipidlynxx @ file:///tmp/lipidlynxx", # converts lipid names/identifiers between databases
+]
+
+[project.urls]
+"Bug Reports" = "https://gitlab.lrz.de/lipitum/lipid_librarian/issues"
+"Source" = "https://gitlab.lrz.de/lipitum/lipid_librarian/"
+
+[project.optional-dependencies]
+dev = ["pytest", "flake8", "rpy2"]
+test = [
+    "pytest"
+]
+lint = [
+    "flake8"
+]
+
+[tool.flake8]
+max-line-length = 80
+
+
+[tool.pytest.ini_options]
+testpaths = [
+    "test"
+]
+addopts = [
+    "--import-mode=importlib",
+]
+
+[build-system]
+requires = [
+    "setuptools"
+]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+lipid-librarian = "lipid_librarian.cli:main"
+
