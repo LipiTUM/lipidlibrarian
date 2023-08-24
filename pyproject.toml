@@ -67,7 +67,7 @@ addopts = [
 
 [build-system]
 requires = [
-    "setuptools"
+    "setuptools", "wheel"
 ]
 build-backend = "setuptools.build_meta"
 
