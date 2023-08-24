@@ -1,12 +1,14 @@
 [project]
 name = "lipid_librarian"
-version = "0.1.2"
+version = "0.1.2b"
 description = "A Lipidomics Database Explorer Package"
 readme = "README.md"
 authors = [
-    {name = "LipiTUM", email = "someone@lipitum.de"},
+    {name = "Felix Niedermeier"},
+    {name = "Konstantinos Mechteridis"},
+    {name = "Konstantin Pelz"}
 ]
-requires-python = ">=3.8, <3.11"
+requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
@@ -34,15 +36,13 @@ dependencies = [
     "func-timeout",
     "liputils",
     "sparql-dataframe", # returns SPARQL queries as pandas dataframes
-    "pygoslin @ git+https://github.com/lifs-tools/pygoslin@master#egg=pygoslin", # converts lipid names/identifiers between databases
+	"pygoslin",
     "linex2",
-    "scikit-learn", # linex2 needs this, but only installs sklearn
-    "lipidlynxx @ file:///tmp/lipidlynxx", # converts lipid names/identifiers between databases
 ]
 
 [project.urls]
-"Bug Reports" = "https://gitlab.lrz.de/lipitum/lipid_librarian/issues"
-"Source" = "https://gitlab.lrz.de/lipitum/lipid_librarian/"
+"Bug Reports" = "https://github.com/lipitum/lipid_librarian/issues"
+"Source" = "https://github.com/lipitum/lipid_librarian/"
 
 [project.optional-dependencies]
 dev = ["pytest", "flake8", "rpy2"]
