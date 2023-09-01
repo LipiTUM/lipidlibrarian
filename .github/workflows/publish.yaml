@@ -1,4 +1,4 @@
-name: Deployment
+name: Publishing
 
 on:
   release:
@@ -18,20 +18,33 @@ jobs:
       - name: install python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
+          python-version: "3.10"
 
       - name: fetch files
         run: |
           pip install gdown
           gdown --folder --id 1197XJyIlAZDe5inXf3M6U6mlBAHKpAXK
-          # TODO: move all stored files
           mv LipidLibrarian/lipitum.db data/
           mv LipidLibrarian/alex123_db.h5 data/alex123/
           rm -r LipidLibrarian
 
+      - name: relocate files
+        run: |
+          mkdir src/lipid_librarian/data
+          mkdir src/lipid_librarian/data/alex123
+          mkdir src/lipid_librarian/data/linex
+          mkdir src/lipid_librarian/data/lipid_ontology
+          cp data/adducts.csv src/lipid_librarian/data/
+          cp data/alex123/alex123_db.h5 src/lipid_librarian/data/alex123/
+          cp data/linex/linex_data.pbz2 src/lipid_librarian/data/linex/
+          cp data/lipidontology/lion_graph.tsv src/lipid_librarian/data/lipid_ontology/
+          cp data/lipidontology/lion_association.tsv src/lipid_librarian/data/lipid_ontology/
+
       - name: build
         run: |
-          python -m build --sdist --wheel --outdir dist/
+          pip install wheel
+          python setup.py sdist
+          python setup.py bdist_wheel
 
       - name: publish
         if: startsWith(github.ref, 'refs/tags')

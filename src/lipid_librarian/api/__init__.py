@@ -1,3 +1,5 @@
+import logging
+
 from .Alex123API import Alex123API
 from .LinexAPI import LinexAPI
 from .LipidAPI import LipidAPI
@@ -46,11 +48,12 @@ def init_APIs(which_APIs: set[str] = supported_APIs, sql_args: dict = None) -> d
     else:
         lipid_maps_API = LipidAPI()
 
-    if 'lipidontology' in which_APIs:
-        if not isinstance(lipid_ontology_API, LipidOntologyAPI):
-            lipid_ontology_API = LipidOntologyAPI()
-    else:
-        lipid_ontology_API = LipidAPI()
+    # if 'lipidontology' in which_APIs:
+    #     if not isinstance(lipid_ontology_API, LipidOntologyAPI):
+    #         lipid_ontology_API = LipidOntologyAPI()
+    # else:
+    logging.warn("Lipid Ontology is disabled for this version, please check for updates.")
+    lipid_ontology_API = LipidAPI()
 
     if 'swisslipids' in which_APIs:
         if not isinstance(swiss_lipids_API, SwissLipidsAPI):
