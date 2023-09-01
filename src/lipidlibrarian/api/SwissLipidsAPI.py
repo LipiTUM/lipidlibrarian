@@ -302,19 +302,6 @@ class SwissLipidsAPI(LipidAPI):
                     source
                 ))
 
-        if (structures := entry.get('structures')) is not None:
-            structures: dict
-            for structure in structures:
-                try:
-                    if structure[0] != 'structure' and 'none' not in structure[1]:
-                        lipid.nomenclature.add_structure_identifier(StructureIdentifier.from_data(
-                            structure[1],
-                            structure[0],
-                            source
-                        ))
-                except KeyError as _:
-                    pass
-
         if (chemical_data := entry.get('chemical_data')) is not None:
             chemical_data: dict
             if (sum_formula := chemical_data.get('formula')) is not None:
@@ -337,6 +324,8 @@ class SwissLipidsAPI(LipidAPI):
                     ))
             if (inchikey := structures.get('inchikey')) is not None:
                 if inchikey != '' and inchikey != 'InChIKey=none':
+                    if inchikey.startswith('InChIKey='):
+                        inchikey = inchikey[9:]
                     lipid.nomenclature.add_structure_identifier(StructureIdentifier.from_data(
                         inchikey,
                         'inchikey',

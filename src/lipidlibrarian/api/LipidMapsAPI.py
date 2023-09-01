@@ -331,10 +331,10 @@ class LipidMapsAPI(LipidAPI):
                     'inchi',
                     source
                 ))
-            if (inchi_key := lipid_data.get('inchi_key')) is not None:
+            if (inchikey := lipid_data.get('inchi_key')) is not None:
                 lipid.nomenclature.add_structure_identifier(StructureIdentifier.from_data(
-                    inchi_key,
-                    'inchi_key',
+                    inchikey,
+                    'inchikey',
                     source
                 ))
 
@@ -393,6 +393,10 @@ class LipidMapsAPI(LipidAPI):
         results: list[Lipid] = []
         for entry in data.iterrows():
             lipid = Lipid()
+
+            if entry[1].get('Name') == 'UNDEFINED':
+                continue
+
             lipid.nomenclature.name = entry[1].get('Name')
             source = Source(
                 lipid.nomenclature.get_name(nomenclature_flavor='lipidmaps'),

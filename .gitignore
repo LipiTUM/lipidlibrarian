@@ -467,16 +467,12 @@ $RECYCLE.BIN/
 
 
 
-
 ### Patch gitignore.io
 .vscode/
 .idea/
 
 ### Project Specific Files
-src/lipid_librarian/data
-data/alex123/*.h5
-data/lipitum.db
-
-### submodules
-external/lipidlynxx
-external/lipidontology
+src/lipidlibrarian/data
+data/alex123/alex123_db.h5
+data/lion/lion_ontology_graph.obo
+data/lion/lion_association_table.tsv

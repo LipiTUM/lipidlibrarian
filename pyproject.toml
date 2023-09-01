@@ -1,10 +1,10 @@
 [project]
-name = "lipid_librarian"
-version = "0.1.2b"
+name = "lipidlibrarian"
+version = "0.2.0b1"
 description = "A Lipidomics Database Explorer Package"
 readme = "README.md"
 authors = [
-    {name = "Felix Niedermeier"},
+    {name = "Felix Niedermaier", email = "felix.niedermaier@tum.de"},
     {name = "Konstantinos Mechteridis"},
     {name = "Konstantin Pelz"}
 ]
@@ -41,8 +41,8 @@ dependencies = [
 ]
 
 [project.urls]
-"Bug Reports" = "https://github.com/lipitum/lipid_librarian/issues"
-"Source" = "https://github.com/lipitum/lipid_librarian/"
+"Bug Reports" = "https://github.com/lipitum/lipidlibrarian/issues"
+"Source" = "https://github.com/lipitum/lipidlibrarian/"
 
 [project.optional-dependencies]
 dev = ["pytest", "flake8", "rpy2"]
@@ -56,7 +56,6 @@ lint = [
 [tool.flake8]
 max-line-length = 80
 
-
 [tool.pytest.ini_options]
 testpaths = [
     "test"
@@ -67,10 +66,9 @@ addopts = [
 
 [build-system]
 requires = [
-    "setuptools", "wheel"
+    "setuptools"
 ]
 build-backend = "setuptools.build_meta"
 
 [project.scripts]
-lipid-librarian = "lipid_librarian.cli:main"
-
+lipidlibrarian = "lipidlibrarian.cli:main"

@@ -16,5 +16,5 @@ RUN ln -sf /app/venv /opt/venv
 
 RUN make install
 
-RUN chmod +x docker-entrypoint.sh
-ENTRYPOINT ["/app/docker-entrypoint.sh"]
+RUN chmod +x container-entrypoint.sh
+ENTRYPOINT ["/app/container-entrypoint.sh"]
