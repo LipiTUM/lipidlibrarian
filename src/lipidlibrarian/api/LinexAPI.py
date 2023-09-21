@@ -61,8 +61,8 @@ class LinexAPI(LipidAPI):
         self.reference_lipids: dict[str, Any] = {}
         self.combined_reactions: list[Any] = []
 
-        # search installation path of lipid_librarian and add /data/linex/linex_data.pbz2
-        linex_data_path = str(files('lipid_librarian')) + '/data/linex/linex_data.pbz2'
+        # search installation path of lipidlibrarian and add /data/linex/linex_data.pbz2
+        linex_data_path = str(files('lipidlibrarian')) + '/data/linex/linex_data.pbz2'
 
         linex_data: tuple[str, dict[str, Any], list[Any]] = ("", {}, [])
         try:

@@ -21,7 +21,7 @@ TIMEOUT_SECONDS = 30
 def parse_adducts():
     logging.info("Lipid: Parsing adducts...")
     adducts = []
-    adduct_df = pd.read_csv(str(files('lipid_librarian.data').joinpath('adducts.csv')))
+    adduct_df = pd.read_csv(str(files('lipidlibrarian.data').joinpath('adducts.csv')))
     adduct_array = np.array(
         list(zip(
             adduct_df.adduct_name,
@@ -108,11 +108,7 @@ def lynx_init() -> Any | None:
         except ModuleNotFoundError as _:
             converter = None
             lipid_name_conversion_methods.remove('lipidlynxx')
-            logging.error(
-                "LipidLynxX: Initializing LipidLynxX failed. Disabling LipidLynxX support. "
-                "You can manually install LipidLynxX or install lipid librarian manually "
-                "from the github repository https://github.com/LipiTUM/lipidlibrarian."
-            )
+            logging.error("LipidLynxX: Initializing LipidLynxX failed. Disabling LipidLynxX support.")
     else:
         return None
     os.chdir(current_working_directory)
@@ -130,7 +126,7 @@ def lynx_convert(lipid_name: str, level: str = 'MAX') -> str | None:
 
     if lynx_converter is None:
         return None
-
+    
     if lipid_name is None:
         return None
 

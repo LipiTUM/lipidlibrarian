@@ -112,8 +112,8 @@ class LipidQuery:
         for lipid in self.lipids:
             logging.info("Querying LINEX...")
             self.add_lipids(self.APIs['linex'].query(lipid, cutoff=self.cutoff))
-            logging.info("Querying LipidOntology...")
-            self.add_lipids(self.APIs['lipidontology'].query(lipid, cutoff=self.cutoff))
+            logging.info("Querying LION...")
+            self.add_lipids(self.APIs['lion'].query(lipid, cutoff=self.cutoff))
             lipid._query = self.input_string
 
         logging.info(f"Querying {self.input_string} done.")

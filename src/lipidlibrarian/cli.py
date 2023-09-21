@@ -99,7 +99,7 @@ def main(parser=ap.ArgumentParser()):
     args = parser.parse_args()
 
     if args.version:
-        print(version('lipid_librarian'))
+        print(version('lipidlibrarian'))
         exit(0)
 
     if args.verbose:

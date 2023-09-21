@@ -623,7 +623,7 @@ class Alex123API(LipidAPI):
         if sql_args:
             self.database_connector = Alex123DBConnectorSQL(sql_args)
         else:
-            hdf_path = str(files('lipid_librarian')) + '/data/alex123/alex123_db.h5'
+            hdf_path = str(files('lipidlibrarian')) + '/data/alex123/alex123_db.h5'
             self.database_connector = Alex123DBConnectorHDF(hdf_path)
 
         logging.info(f"Alex123API: Initializing ALEX123 API done.")

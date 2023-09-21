@@ -6,7 +6,7 @@ import jsons
 
 from .Mass import Mass
 from .DatabaseIdentifier import DatabaseIdentifier
-from .OntologyTerm import OntologyTerm
+from .Ontology import Ontology
 from .Adduct import Adduct
 from .Nomenclature import Nomenclature
 from .Reaction import Reaction
@@ -21,7 +21,7 @@ class Lipid():
         self.nomenclature: Nomenclature = Nomenclature()
         self.database_identifiers: list[DatabaseIdentifier] = []
         self.masses: list[Mass] = []
-        self.ontology_terms: list[OntologyTerm] = []
+        self.ontology: Ontology = Ontology()
         self.reactions: list[Reaction] = []
         self.adducts: list[Adduct] = []
 
@@ -32,13 +32,12 @@ class Lipid():
             sources.update(database_identifier.sources)
         for mass in self.masses:
             sources.update(mass.sources)
-        for ontology_term in self.ontology_terms:
-            sources.update(ontology_term.sources)
         for reaction in self.reactions:
             sources.update(reaction.sources)
         for adduct in self.adducts:
             sources.update(adduct.sources)
         sources.update(self.nomenclature.sources)
+        sources.update(self.ontology.sources)
         return sources
 
     def get_database_identifiers(self, database: str) -> list[DatabaseIdentifier]:
@@ -95,16 +94,6 @@ class Lipid():
         for mass in masses:
             self.add_mass(mass)
 
-    def add_ontology_term(self, ontology_term: OntologyTerm) -> None:
-        for existing_ontology_term in self.ontology_terms:
-            if existing_ontology_term.merge(ontology_term):
-                return
-        self.ontology_terms.append(ontology_term)
-
-    def add_ontology_terms(self, ontology_terms: Iterable[OntologyTerm]) -> None:
-        for ontology_term in ontology_terms:
-            self.add_ontology_term(ontology_term)
-
     def merge(self, other) -> bool:
         if not isinstance(other, self.__class__):
             raise ValueError((
@@ -117,10 +106,11 @@ class Lipid():
         
         logging.info(f"Lipid: Merging Lipids {self.nomenclature.get_name()} and {other.nomenclature.get_name()}.")
 
+        self.ontology.merge(other.ontology)
+
         self.add_log_messages(other._log_messages)
         self.add_database_identifiers(other.database_identifiers)
         self.add_masses(other.masses)
-        self.add_ontology_terms(other.ontology_terms)
         self.add_reactions(other.reactions)
         self.add_adducts(other.adducts)
 

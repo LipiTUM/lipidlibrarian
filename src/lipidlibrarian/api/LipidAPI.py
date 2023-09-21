@@ -26,7 +26,7 @@ class LipidAPI():
         self.session: requests.Session = requests.Session()
         self.session.headers.update({
             'User-Agent': (f"Lipid Librarian Python Package @ LipiTUM / "
-                           f"Version {version('lipid_librarian')} <lipidlibrarian@lipitum.de>"),
+                           f"Version {version('lipidlibrarian')} <lipidlibrarian@lipitum.de>"),
             'From': 'lipidlibrarian@lipitum.de'
         })
 
@@ -157,6 +157,17 @@ class LipidAPI():
             The unmodified Response object with status code and result text.
         """
         try:
-            return self.session.get(url, timeout=timeout)
+            response = self.session.get(url, timeout=timeout)
+            if response is None:
+                # If there is no connection to the internet lots of APIs have issues (relatable).
+                # Return a dummy response with 'server error' as status code to handle them here.
+                response = requests.Response()
+                response.status_code = 503
+            return response
         except (TimeoutError, requests.RequestException, KeyError, IndexError, TypeError) as _:
-            pass
+            # If there is no connection to the internet lots of APIs have issues (relatable).
+            # Return a dummy response with 'server error' as status code to handle them here.
+            response = requests.Response()
+            response.status_code = 503
+            return response
+        
