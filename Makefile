@@ -14,11 +14,12 @@ $(VENV):
 external/lipidlynxx/README.md:
 	git submodule update --init --recursive
 
-/tmp/lipidlynxx: external/lipidlynxx/README.md
-	cp -r external/lipidlynxx /tmp/
+build/lipidlynxx: external/lipidlynxx/README.md
+	mkdir -p build
+	cp -r external/lipidlynxx build/
 
-/tmp/lipidlynxx/pyproject.toml: /tmp/lipidlynxx
-	./scripts/lipidlynxx_setuptools.sh /tmp/lipidlynxx
+build/lipidlynxx/pyproject.toml: build/lipidlynxx
+	./scripts/lipidlynxx_setuptools.sh build/lipidlynxx
 
 data/alex123/alex123_db.h5: $(VENV)
 	mkdir -p data/alex123
@@ -44,14 +45,16 @@ src/lipidlibrarian/data: data/alex123/alex123_db.h5 data/lion/lion_ontology_grap
 	cp data/lion/lion_association_table.tsv src/lipidlibrarian/data/lion/
 
 .PHONY: build
-build: $(VENV) pyproject.toml src/lipidlibrarian/data /tmp/lipidlynxx/pyproject.toml
-	$(BIN)/pip build .
-	$(BIN)/pip sdist .
-	$(BIN)/pip bdist_wheel .
+build: $(VENV) pyproject.toml src/lipidlibrarian/data
+	$(BIN)/python3 -m build
 
 .PHONY: install
-install: $(VENV) src/lipidlibrarian/data /tmp/lipidlynxx/pyproject.toml
+install: $(VENV) src/lipidlibrarian/data
 	$(BIN)/pip install .
+
+.PHONY: install_optional
+install_optional: $(VENV) build/lipidlynxx/pyproject.toml
+	$(BIN)/pip install build/lipidlynxx
 
 .PHONY: lint
 lint: $(VENV)

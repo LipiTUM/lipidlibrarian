@@ -2,25 +2,27 @@
 
 ## Build and Installation Instructions
 
-To build the project you need to have sqlite3 installed and available in your Path.
+### Python Virtual Environment
 
-### Virtual Environment
+    make install install_optional
 
-    make install
+### Docker Container (Docker < 25.0.0)
 
-### Docker Container
+    docker build -t lipidlibrarian -f Containerfile .
 
-    docker build -t lipidlibrarian .
+### Docker Container (Docker >= 25.0.0)
 
-### Global Python Environment
+    docker buildx -t lipidlibrarian -f Containerfile .
 
-TODO
+### OCI Container for Docker/Podman/Kubernetes
+
+    buildah build -t lipidlibrarian -f Containerfile .
 
 ## Run Lipid Librarian
 
 ### CLI
 
-In case you installed Lipid Librarian into a virtual environment, make sure you activate it before with `source venv/bin/activate`.
+In case you installed Lipid Librarian into a 'venv' virtual environment, make sure you activate it before with `source venv/bin/activate`.
 
     lipidlibrarian "PC(18:1_20:0)" "410.243;0.01" "PC(56:8)"
     lipidlibrarian path/to/file
@@ -29,6 +31,10 @@ In case you installed Lipid Librarian into a virtual environment, make sure you 
 ### Docker
 
     docker run lipidlibrarian "PC(18:1_20:0)" "410.243;0.01" "PC(56:8)"
+
+### Podman
+
+    podman run lipidlibrarian "PC(18:1_20:0)" "410.243;0.01" "PC(56:8)"
 
 ### Import Python Package
 
