@@ -1,6 +1,3 @@
 [submodule "external/lipidlynxx"]
 	path = external/lipidlynxx
 	url = https://github.com/SysMedOs/LipidLynxX.git
-[submodule "external/lion"]
-	path = external/lion
-	url = https://github.com/martijnmolenaar/LION-web.git

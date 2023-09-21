@@ -1,8 +1,6 @@
 FROM python:3.10
 WORKDIR /app
 
-RUN apt-get update && apt-get install sqlite3
-
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -14,7 +12,6 @@ RUN make clean
 ENV PATH="/opt/venv/bin:$PATH"
 RUN ln -sf /app/venv /opt/venv
 
-RUN make install
+RUN make install install_optional
 
-RUN chmod +x container-entrypoint.sh
-ENTRYPOINT ["/app/container-entrypoint.sh"]
+ENTRYPOINT ["lipidlibrarian"]
