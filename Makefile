@@ -1,4 +1,5 @@
-PY = python3  # system python interpreter. used only to create virtual environment
+# system python interpreter. used only to create virtual environment
+PY = python3
 VENV = venv
 BIN=$(VENV)/bin
 
@@ -7,7 +8,7 @@ all: install test
 
 $(VENV):
 	$(PY) -m venv $(VENV)
-	$(BIN)/pip install --upgrade wheel gdown pytest flake8 pip
+	$(BIN)/pip install --upgrade wheel gdown build pytest flake8 pip
 	touch $(VENV)
 
 external/lipidlynxx/README.md:
@@ -45,9 +46,7 @@ src/lipidlibrarian/data: data/alex123/alex123_db.h5 data/lion/lion_ontology_grap
 
 .PHONY: build
 build: $(VENV) pyproject.toml src/lipidlibrarian/data
-	$(BIN)/pip build .
-	$(BIN)/pip sdist .
-	$(BIN)/pip bdist_wheel .
+	$(BIN)/python3 -m build
 
 .PHONY: install
 install: $(VENV) src/lipidlibrarian/data
