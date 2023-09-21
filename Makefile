@@ -8,7 +8,7 @@ all: install test
 
 $(VENV):
 	$(PY) -m venv $(VENV)
-	$(BIN)/pip install --upgrade wheel gdown pytest flake8 pip
+	$(BIN)/pip install --upgrade wheel gdown build pytest flake8 pip
 	touch $(VENV)
 
 external/lipidlynxx/README.md:
