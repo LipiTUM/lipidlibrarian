@@ -6,6 +6,11 @@ BIN=$(VENV)/bin
 .PHONY: all
 all: install test
 
+$(VENV):
+	$(PY) -m venv $(VENV)
+	$(BIN)/pip install --upgrade wheel gdown pytest flake8 pip
+	touch $(VENV)
+
 external/lipidlynxx/README.md:
 	git submodule update --init --recursive
 
@@ -15,13 +20,19 @@ external/lipidlynxx/README.md:
 /tmp/lipidlynxx/pyproject.toml: /tmp/lipidlynxx
 	./scripts/lipidlynxx_setuptools.sh /tmp/lipidlynxx
 
-data/alex123/alex123_db.h5: download_blobs
+data/alex123/alex123_db.h5: $(VENV)
+	mkdir -p data/alex123
+	$(BIN)/gdown 1PCyaofEvpOkysWM_zMUPjU-xIJSPzQVH -O data/alex123/alex123_db.h5
 
-data/lion/lion_ontology_graph.obo: download_blobs
+data/lion/lion_ontology_graph.obo: $(VENV)
+	mkdir -p data/lion
+	$(BIN)/gdown 1W5x38nUKKAv12N7f8RTqZ09hpSaLz8Cv -O data/lion/lion_ontology_graph.obo
 
-data/lion/lion_association_table.tsv: download_blobs
+data/lion/lion_association_table.tsv: $(VENV)
+	mkdir -p data/lion
+	$(BIN)/gdown 1bhdBM3LgBH9W74zn9seJeup-H9FFG7RN -O data/lion/lion_association_table.tsv
 
-src/lipidlibrarian/data: data/lion/lion_ontology_graph.obo data/lion/lion_association_table.tsv
+src/lipidlibrarian/data: data/alex123/alex123_db.h5 data/lion/lion_ontology_graph.obo data/lion/lion_association_table.tsv
 	mkdir -p src/lipidlibrarian/data
 	mkdir -p src/lipidlibrarian/data/alex123
 	mkdir -p src/lipidlibrarian/data/linex
@@ -31,19 +42,6 @@ src/lipidlibrarian/data: data/lion/lion_ontology_graph.obo data/lion/lion_associ
 	cp data/linex/linex_data.pbz2 src/lipidlibrarian/data/linex/
 	cp data/lion/lion_ontology_graph.obo src/lipidlibrarian/data/lion/
 	cp data/lion/lion_association_table.tsv src/lipidlibrarian/data/lion/
-
-$(VENV):
-	$(PY) -m venv $(VENV)
-	$(BIN)/pip install --upgrade wheel gdown pytest flake8 pip
-	touch $(VENV)
-
-.PHONY: download_blobs
-download_blobs: $(VENV)
-	$(BIN)/gdown --folder --id 1dkqG3LWmF2btXd_JnGS1ymTDdddjvkF1
-	mv lipidlibrarian_data/alex123_db.h5 data/alex123/
-	mv lipidlibrarian_data/lion_ontology_graph.obo data/lion/
-	mv lipidlibrarian_data/lion_association_table.tsv data/lion/
-	rm -r lipidlibrarian_data
 
 .PHONY: build
 build: $(VENV) pyproject.toml src/lipidlibrarian/data /tmp/lipidlynxx/pyproject.toml
