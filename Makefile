@@ -15,11 +15,11 @@ external/lipidlynxx/README.md:
 /tmp/lipidlynxx/pyproject.toml: /tmp/lipidlynxx
 	./scripts/lipidlynxx_setuptools.sh /tmp/lipidlynxx
 
-data/alex123/alex123_db.h5: gdown
+data/alex123/alex123_db.h5: download_blobs
 
-data/lion/lion_ontology_graph.obo: gdown
+data/lion/lion_ontology_graph.obo: download_blobs
 
-data/lion/lion_association_table.tsv: gdown
+data/lion/lion_association_table.tsv: download_blobs
 
 src/lipidlibrarian/data: data/lion/lion_ontology_graph.obo data/lion/lion_association_table.tsv
 	mkdir -p src/lipidlibrarian/data
@@ -48,7 +48,7 @@ download_blobs: $(VENV)
 .PHONY: build
 build: $(VENV) pyproject.toml src/lipidlibrarian/data /tmp/lipidlynxx/pyproject.toml
 	$(BIN)/pip build .
-	$(BIN)/pip sdist
+	$(BIN)/pip sdist .
 	$(BIN)/pip bdist_wheel .
 
 .PHONY: install

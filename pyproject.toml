@@ -32,11 +32,12 @@ dependencies = [
     "SQLAlchemy",
     "PyMySQL",
     "networkx",
+    "obonet",
     "ratelimit",
     "func-timeout",
     "liputils",
     "sparql-dataframe", # returns SPARQL queries as pandas dataframes
-	"pygoslin",
+    "pygoslin",
     "linex2",
 ]
 
@@ -72,3 +73,4 @@ build-backend = "setuptools.build_meta"
 
 [project.scripts]
 lipidlibrarian = "lipidlibrarian.cli:main"
+
