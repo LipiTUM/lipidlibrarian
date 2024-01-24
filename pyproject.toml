@@ -1,6 +1,6 @@
 [project]
 name = "lipidlibrarian"
-version = "0.2.0"
+version = "0.2.1"
 description = "A Lipidomics Database Explorer Package"
 readme = "README.md"
 authors = [
