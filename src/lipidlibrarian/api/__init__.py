@@ -3,6 +3,7 @@ from .LinexAPI import LinexAPI
 from .LipidAPI import LipidAPI
 from .LipidMapsAPI import LipidMapsAPI
 from .LionAPI import LionAPI
+from .LipidLibrarianAPI import LipidLibrarianAPI
 from .SwissLipidsAPI import SwissLipidsAPI
 
 
@@ -16,9 +17,10 @@ alex123_API = LipidAPI()
 linex_API = LipidAPI()
 lipid_maps_API = LipidAPI()
 lion_API = LipidAPI()
+lipidlibrarian_API = LipidAPI()
 swiss_lipids_API = LipidAPI()
 
-supported_APIs = frozenset(['alex123', 'linex', 'lipidmaps', 'lion', 'swisslipids'])
+supported_APIs = frozenset(['alex123', 'linex', 'lipidmaps', 'lion', 'lipidlibrarian', 'swisslipids'])
 
 
 def init_APIs(which_APIs: set[str] = supported_APIs, sql_args: dict = None) -> dict[str, LipidAPI]:
@@ -26,6 +28,7 @@ def init_APIs(which_APIs: set[str] = supported_APIs, sql_args: dict = None) -> d
     global linex_API
     global lipid_maps_API
     global lion_API
+    global lipidlibrarian_API
     global swiss_lipids_API
 
     if 'alex123' in which_APIs:
@@ -52,6 +55,12 @@ def init_APIs(which_APIs: set[str] = supported_APIs, sql_args: dict = None) -> d
     else:
         lion_API = LipidAPI()
 
+    if 'lipidlibrarian' in which_APIs:
+        if not isinstance(lipidlibrarian_API, LipidLibrarianAPI):
+            lipidlibrarian_API = LipidLibrarianAPI()
+    else:
+        lipidlibrarian_API = LipidAPI()
+
     if 'swisslipids' in which_APIs:
         if not isinstance(swiss_lipids_API, SwissLipidsAPI):
             swiss_lipids_API = SwissLipidsAPI()
@@ -63,5 +72,6 @@ def init_APIs(which_APIs: set[str] = supported_APIs, sql_args: dict = None) -> d
         'linex': linex_API,
         'lipidmaps': lipid_maps_API,
         'lion': lion_API,
+        'lipidlibrarian': lipidlibrarian_API,
         'swisslipids': swiss_lipids_API
     }
