@@ -36,6 +36,7 @@ def validate_double_bonds(double_bonds: list[int] | list[str]) -> list[tuple[int
         elif last_direction == 'Z' and double_bond[0] <= last_position + 2:
             raise ValueError("A 'Z' double bond directly after another is not possible in fatty acid chains.")
         last_position = double_bond[0]
+        last_direction = double_bond[1]
 
     return validated_double_bonds
 
@@ -52,6 +53,7 @@ def generate_fatty_acid(length: int, double_bonds: list[int] | list[str]):
         fatty_acid = fatty_acid + ('C' * (position - index - 1)) + "\\C=C" + ("/" if direction == 'Z' else "\\")
         index = position + 1
     fatty_acid = fatty_acid + ('C' * (length - index))
+    fatty_acid = fatty_acid.replace('//', '/')
 
     return Chem.MolFromSmiles(fatty_acid)
 
