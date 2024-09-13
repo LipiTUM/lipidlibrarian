@@ -23,15 +23,15 @@ build/lipidlynxx/pyproject.toml: build/lipidlynxx
 
 data/alex123/alex123_db.h5: $(VENV)
 	mkdir -p data/alex123
-	$(BIN)/gdown 1PCyaofEvpOkysWM_zMUPjU-xIJSPzQVH -O data/alex123/alex123_db.h5
+	$(BIN)/gdown 1PCyaofEvpOkysWM_zMUPjU-xIJSPzQVH --continue -O data/alex123/alex123_db.h5
 
 data/lion/lion_ontology_graph.obo: $(VENV)
 	mkdir -p data/lion
-	$(BIN)/gdown 1W5x38nUKKAv12N7f8RTqZ09hpSaLz8Cv -O data/lion/lion_ontology_graph.obo
+	$(BIN)/gdown 1W5x38nUKKAv12N7f8RTqZ09hpSaLz8Cv --continue -O data/lion/lion_ontology_graph.obo
 
 data/lion/lion_association_table.tsv: $(VENV)
 	mkdir -p data/lion
-	$(BIN)/gdown 1bhdBM3LgBH9W74zn9seJeup-H9FFG7RN -O data/lion/lion_association_table.tsv
+	$(BIN)/gdown 1bhdBM3LgBH9W74zn9seJeup-H9FFG7RN --continue -O data/lion/lion_association_table.tsv
 
 src/lipidlibrarian/data: data/alex123/alex123_db.h5 data/lion/lion_ontology_graph.obo data/lion/lion_association_table.tsv
 	mkdir -p src/lipidlibrarian/data
