@@ -110,24 +110,17 @@ class Nomenclature():
     def name(self) -> str | None:
         return self.get_name()
 
-    def get_name(self, level: Level = None, nomenclature_flavor: str = 'swisslipids') -> str | None:
-        if nomenclature_flavor not in ['alex123', 'lipidmaps', 'swisslipids']:
+    def get_name(self, level: Level = None, nomenclature_flavor: str = 'standard') -> str | None:
+        if nomenclature_flavor not in ['alex123', 'lipidmaps', 'swisslipids', 'standard']:
             raise ValueError((f"Unsupported nomenclature_flavor {nomenclature_flavor}. "
                               "Must be either 'alex123', 'lipidmaps', or 'swisslipids'."))
 
         result = None
+
         if level is None:
-            if self.level == Level.isomeric_lipid_species:
-                result = self._isomeric_lipid_species_name
-            elif self.level == Level.structural_lipid_species:
-                result = self._structural_lipid_species_name
-            elif self.level == Level.molecular_lipid_species:
-                result = self._molecular_lipid_species_name
-            elif self.level == Level.sum_lipid_species:
-                result = self._sum_lipid_species_name
-            elif self.level == Level.level_unknown:
-                result = self._query_name
-        elif level == Level.isomeric_lipid_species and self.level >= Level.isomeric_lipid_species:
+            level = self.level
+
+        if level == Level.isomeric_lipid_species and self.level >= Level.isomeric_lipid_species:
             result = self._isomeric_lipid_species_name
         elif level == Level.structural_lipid_species and self.level >= Level.structural_lipid_species:
             result = self._structural_lipid_species_name
@@ -144,6 +137,13 @@ class Nomenclature():
         if nomenclature_flavor == 'lipidmaps':
             if (lynx_result := lynx_convert(result)) is not None:
                 result = lynx_result
+
+            # LPA, LPC, LPE, LPG, LPS are represented as PA, PC, PE, PG, PS in LIPID MAPS
+            if self.lipid_class_abbreviation in ['LPA', 'LPC', 'LPE', 'LPG', 'LPS']:
+                if level >= Level.structural_lipid_species:
+                    result = result[1:]
+                elif level == Level.molecular_lipid_species:
+                    result = self.lipid_class_abbreviation[1:] + '(' + self.residues[0] + '/0:0)'
 
         if nomenclature_flavor == 'alex123':
             result = result.replace('_', '-')
