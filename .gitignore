@@ -476,3 +476,5 @@ src/lipidlibrarian/data
 data/alex123/alex123_db.h5
 data/lion/lion_ontology_graph.obo
 data/lion/lion_association_table.tsv
+data/swisslipids/goslin_converted_names.tsv
+data/lipidmaps/goslin_converted_names.tsv

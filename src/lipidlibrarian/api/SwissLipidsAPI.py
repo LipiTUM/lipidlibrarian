@@ -1,9 +1,12 @@
 import copy
 import json
 import logging
+import pandas as pd
 import random
 import re
+
 from contextlib import suppress
+from importlib.resources import files
 
 from .LipidAPI import LipidAPI
 from ..lipid.Adduct import Adduct
@@ -30,30 +33,58 @@ class SwissLipidsAPI(LipidAPI):
     def __init__(self):
         logging.info(f"SwissLipidsAPI: Initializing SwissLipids API...")
         super().__init__()
+
+        self.goslin_converted_names: pd.DataFrame | None = None
+
+        goslin_converted_names_path = str(files('lipidlibrarian')) + '/data/swisslipids/goslin_converted_names.tsv'
+
+        try:
+            self.goslin_converted_names = pd.read_csv(
+                goslin_converted_names_path,
+                sep='\t',
+                header=None,
+                names=['id', 'name', 'level', 'goslin_name']
+            )
+            logging.info(f"SwissLipidsAPI: Goslin parsed SwissLipids lipid name database contains {len(self.goslin_converted_names)} associations.")
+            
+        except FileNotFoundError as _:
+            self.goslin_converted_names = None
+            logging.info(f"SwissLipidsAPI: Goslin parsed SwissLipids lipid name database not found. Disabling...")
+
         logging.info(f"SwissLipidsAPI: Initializing SwissLipids API done.")
+
 
     def query_lipid(self, lipid: Lipid) -> list[Lipid]:
         results = []
         for swisslipids_identifier in lipid.get_database_identifiers('swisslipids'):
+            logging.debug(f"SwissLipidsAPI: query_lipid: Found ID {swisslipids_identifier} for lipid {lipid.nomenclature.get_name()} in previous queries...")
             results.extend(self.query_id(swisslipids_identifier.identifier))
         for lipidmaps_identifier in lipid.get_database_identifiers('lipidmaps'):
+            logging.debug(f"SwissLipidsAPI: query_lipid: Found ID {lipidmaps_identifier} for lipid {lipid.nomenclature.get_name()} in previous queries...")
             results.extend(self.query_id(lipidmaps_identifier.identifier))
+
+        if self.goslin_converted_names is not None:
+            swisslipids_identifiers = self.goslin_converted_names[self.goslin_converted_names['goslin_name'] == lipid.nomenclature.get_name()]['id'].values
+            for swisslipids_identifier in swisslipids_identifiers:
+                logging.debug(f"SwissLipidsAPI: query_lipid: Found ID {swisslipids_identifier} for lipid {lipid.nomenclature.get_name()} in the Goslin parsed SwissLipids lipid name database...")
+                results.extend(self.query_id(swisslipids_identifier))
+
         results.extend(
             self.query_name(
                 lipid.nomenclature.get_name(nomenclature_flavor='swisslipids'),
                 lipid.nomenclature.level
             )
         )
-        logging.debug(f"SwissLipidsAPI: Found {len(results)} lipid(s).")
+        logging.debug(f"SwissLipidsAPI: query_lipid: Found {len(results)} lipid(s).")
         return results
 
     def query_mz(self, mz: float, tolerance: float, adducts: list[Adduct], cutoff: int = 0) -> list[Lipid]:
-        logging.debug(f"SwissLipidsAPI: Querying mz '{mz}' with tolerance '{tolerance}'.")
+        logging.debug(f"SwissLipidsAPI: query_mz: Querying mz '{mz}' with tolerance '{tolerance}'.")
         if mz <= 0:
-            logging.error("SwissLipidsAPI: MZ value is smaller or equal to 0 which is not possible")
+            logging.error("SwissLipidsAPI: query_mz: MZ value is smaller or equal to 0 which is not possible")
             return []
         if tolerance < 0:
-            logging.error("SwissLipidsAPI: Tolerance is smaller than 0 which is not possible")
+            logging.error("SwissLipidsAPI: query_mz: Tolerance is smaller than 0 which is not possible")
             return []
         
         adduct_names = set()
@@ -75,11 +106,11 @@ class SwissLipidsAPI(LipidAPI):
         )
         results.extend(entries)
 
-        logging.debug(f"SwissLipidsAPI: Found {len(results)} lipid(s).")
+        logging.debug(f"SwissLipidsAPI: query_mz: Found {len(results)} lipid(s).")
         return results
 
     def query_id(self, identifier: str) -> list[Lipid]:
-        logging.debug(f"SwissLipidsAPI: Querying ID '{identifier}'.")
+        logging.debug(f"SwissLipidsAPI: query_id: Querying ID '{identifier}'.")
         results = []
 
         # If search id is not valid, do not query but return an empty list
@@ -96,11 +127,11 @@ class SwissLipidsAPI(LipidAPI):
             for entry in entries:
                 results.append(entry)
 
-        logging.debug(f"SwissLipidsAPI: Found {len(results)} lipid(s).")
+        logging.debug(f"SwissLipidsAPI: query_id: Found {len(results)} lipid(s).")
         return results
 
     def query_name(self, name: str, level: Level = None) -> list[Lipid]:
-        logging.debug(f"SwissLipidsAPI: Querying lipid name '{name}'.")
+        logging.debug(f"SwissLipidsAPI: query_name: Querying lipid name '{name}'.")
         results = []
         # If name or level is not valid, do not query but return an empty list
         if name is None or name == "" or not isinstance(name, str) or level not in self.lipid_to_swisslipids_level_map:
@@ -113,6 +144,8 @@ class SwissLipidsAPI(LipidAPI):
             entries = self.get_entry(self._search_by_name(name, swiss_lipids_level, children=False))
             for entry in entries:
                 results.append(entry)
+
+        logging.debug(f"SwissLipidsAPI: query_name: Found {len(results)} lipid(s).")
         return results
 
     def get_entry(self, identifiers: set[str]) -> list[Lipid]:
@@ -130,7 +163,7 @@ class SwissLipidsAPI(LipidAPI):
             if identifier == "-":
                 continue
             # use swisslipids entity_id to get even more information for the specific entity
-            response = self.execute_http_query(f"https://www.swisslipids.org/api/entity/{identifier}")
+            response = self.execute_http_query(f"https://www.swisslipids.org/api/index.php/entity/{identifier}")
             if response.status_code != 200:
                 continue
 
@@ -156,7 +189,7 @@ class SwissLipidsAPI(LipidAPI):
 
         :returns: swisslipids entity_ids
         """
-        response = self.execute_http_query(f"https://www.swisslipids.org/api/search?term={name}")
+        response = self.execute_http_query(f"https://www.swisslipids.org/api/index.php/search?term={name}")
         if response.status_code != 200:
             return set()
 
@@ -190,7 +223,7 @@ class SwissLipidsAPI(LipidAPI):
 
         :returns: swisslipids entity_ids
         """
-        response = self.execute_http_query(f"https://www.swisslipids.org/api/search?term={identifier}")
+        response = self.execute_http_query(f"https://www.swisslipids.org/api/index.php/search?term={identifier}")
         if response.status_code != 200:
             return set()
 
@@ -232,7 +265,7 @@ class SwissLipidsAPI(LipidAPI):
         identifiers: set[str] = set()
 
         for adduct in adducts:
-            q_http = "https://www.swisslipids.org/api/"
+            q_http = "https://www.swisslipids.org/api/index.php/"
             api_term = f"advancedSearch?mz={mz}&adduct={adduct}&massErrorRate={tolerance}"
 
             response = self.execute_http_query(q_http + api_term)
