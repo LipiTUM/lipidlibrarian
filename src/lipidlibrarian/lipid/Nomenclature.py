@@ -138,8 +138,8 @@ class Nomenclature():
             if (lynx_result := lynx_convert(result)) is not None:
                 result = lynx_result
 
-            # LPA, LPC, LPE, LPG, LPS are represented as PA, PC, PE, PG, PS in LIPID MAPS
-            if self.lipid_class_abbreviation in ['LPA', 'LPC', 'LPE', 'LPG', 'LPS']:
+            # LPA, LPC, LPE, LPI, LPG, LPS are represented as PA, PC, PE, PI, PG, PS in LIPID MAPS
+            if self.lipid_class_abbreviation in ['LPA', 'LPC', 'LPE', 'LPI', 'LPG', 'LPS']:
                 if level >= Level.structural_lipid_species:
                     result = result[1:]
                 elif level == Level.molecular_lipid_species:
