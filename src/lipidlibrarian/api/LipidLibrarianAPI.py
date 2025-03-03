@@ -10,7 +10,7 @@ from ..lipid.Source import Source
 from ..lipid.StructureIdentifier import StructureIdentifier
 
 
-phosphocholines = {
+glycerophospholipid_headgroups = {
     "PA": ("InChI=1S/C3H7O6P/c4-1-3(5)2-9-10(6,7)8/h3H,1-2H2,(H2,6,7,8)/q-2/t3-/m1/s1,", 3, 4),
     "PE": ("InChI=1S/C5H12NO6P/c6-1-2-11-13(9,10)12-4-5(8)3-7/h5H,1-4,6H2,(H,9,10)/q-2/t5-/m1/s1", 6, 7),
     "PC": ("InChI=1S/C8H19NO6P/c1-9(2,3)4-5-14-16(12,13)15-7-8(11)6-10/h8H,4-7H2,1-3H3,(H,12,13)/q-1/p-1/t8-/m1/s1", 9, 10),
@@ -66,12 +66,12 @@ def generate_fatty_acid(length: int, double_bonds: list[int] | list[str]):
     return Chem.MolFromSmiles(fatty_acid)
 
 
-def create_phospchocholine(lipid_class: str, fatty_acid_sn1_length: int, fatty_acid_sn1_double_bonds: list[int] | list[str], fatty_acid_sn2_length: int, fatty_acid_sn2_double_bonds: list[int] | list[str]) -> Chem.Mol:
-    head_group = Chem.MolFromInchi(phosphocholines[lipid_class][0])
-    head_group_bond_atom1 = head_group.GetAtomWithIdx(phosphocholines[lipid_class][1])
+def create_glycerophospholipid(lipid_class: str, fatty_acid_sn1_length: int, fatty_acid_sn1_double_bonds: list[int] | list[str], fatty_acid_sn2_length: int, fatty_acid_sn2_double_bonds: list[int] | list[str]) -> Chem.Mol:
+    head_group = Chem.MolFromInchi(glycerophospholipid_headgroups[lipid_class][0])
+    head_group_bond_atom1 = head_group.GetAtomWithIdx(glycerophospholipid_headgroups[lipid_class][1])
     head_group_bond_atom1.SetFormalCharge(0)
     head_group_bond_atom1.UpdatePropertyCache()
-    head_group_bond_atom2 = head_group.GetAtomWithIdx(phosphocholines[lipid_class][2])
+    head_group_bond_atom2 = head_group.GetAtomWithIdx(glycerophospholipid_headgroups[lipid_class][2])
     head_group_bond_atom2.SetFormalCharge(0)
     head_group_bond_atom2.UpdatePropertyCache()
 
@@ -86,12 +86,12 @@ def create_phospchocholine(lipid_class: str, fatty_acid_sn1_length: int, fatty_a
 
     m1_2 = Chem.CombineMols(head_group, fatty_acid_sn1)
     m1_2 = Chem.EditableMol(m1_2)
-    m1_2.AddBond(phosphocholines[lipid_class][1], max(range(head_group.GetNumAtoms())) + 2, order=Chem.rdchem.BondType.SINGLE)
+    m1_2.AddBond(glycerophospholipid_headgroups[lipid_class][1], max(range(head_group.GetNumAtoms())) + 2, order=Chem.rdchem.BondType.SINGLE)
     m1_2 = m1_2.GetMol()
 
     m1_2_3 = Chem.CombineMols(m1_2, fatty_acid_sn2)
     m1_2_3 = Chem.EditableMol(m1_2_3)
-    m1_2_3.AddBond(phosphocholines[lipid_class][2], max(range(m1_2.GetNumAtoms())) + 2, order=Chem.rdchem.BondType.SINGLE)
+    m1_2_3.AddBond(glycerophospholipid_headgroups[lipid_class][2], max(range(m1_2.GetNumAtoms())) + 2, order=Chem.rdchem.BondType.SINGLE)
     m1_2_3 = m1_2_3.GetMol()
 
     return m1_2_3
@@ -100,45 +100,48 @@ def create_phospchocholine(lipid_class: str, fatty_acid_sn1_length: int, fatty_a
 class LipidLibrarianAPI(LipidAPI):
 
     def query_lipid(self, lipid: Lipid) -> list[Lipid]:
-        if lipid.nomenclature.lipid_class_abbreviation in phosphocholines.keys() and lipid.nomenclature.level == Level.isomeric_lipid_species:
-            fatty_acid_sn1_length = int(lipid.nomenclature.residues[0].split(':')[0])
-            fatty_acid_sn2_length = int(lipid.nomenclature.residues[1].split(':')[0])
+        if lipid.nomenclature.lipid_class_abbreviation in glycerophospholipid_headgroups.keys() and lipid.nomenclature.level == Level.isomeric_lipid_species:
+            try:
+                fatty_acid_sn1_length = int(lipid.nomenclature.residues[0].split(':')[0])
+                fatty_acid_sn2_length = int(lipid.nomenclature.residues[1].split(':')[0])
 
-            double_bonds = [x for x in re.split('\(|\)|:|,|/', lipid.nomenclature.name) if 'E' in x or 'Z' in x]
+                double_bonds = [x for x in re.split('\(|\)|:|,|/', lipid.nomenclature.name) if 'E' in x or 'Z' in x]
 
-            fatty_acid_sn1_double_bond_amount = int(lipid.nomenclature.residues[0].split(':')[1])
+                fatty_acid_sn1_double_bond_amount = int(lipid.nomenclature.residues[0].split(':')[1])
 
-            fatty_acid_sn1_double_bonds = double_bonds[:fatty_acid_sn1_double_bond_amount] if fatty_acid_sn1_length > 0 else []
-            fatty_acid_sn2_double_bonds = double_bonds[fatty_acid_sn1_double_bond_amount:] if fatty_acid_sn2_length > 0 else []
+                fatty_acid_sn1_double_bonds = double_bonds[:fatty_acid_sn1_double_bond_amount] if fatty_acid_sn1_length > 0 else []
+                fatty_acid_sn2_double_bonds = double_bonds[fatty_acid_sn1_double_bond_amount:] if fatty_acid_sn2_length > 0 else []
 
-            logging.info(f"LipidLibrarianAPI: Creating phosphocholine of input {lipid.nomenclature.name} with:\n\tclass: {lipid.nomenclature.lipid_class_abbreviation}\n\tresidues: {lipid.nomenclature.residues[0]}\n\tsn1 length: {fatty_acid_sn1_length}\n\tsn1 dbs: {fatty_acid_sn1_double_bonds}\n\tsn2 length: {fatty_acid_sn2_length}\n\tsn2 dbs: {fatty_acid_sn2_double_bonds}")
+                logging.info(f"LipidLibrarianAPI: Creating glycerophospholipid of input {lipid.nomenclature.name} with:\n\tclass: {lipid.nomenclature.lipid_class_abbreviation}\n\tresidues: {lipid.nomenclature.residues[0]}\n\tsn1 length: {fatty_acid_sn1_length}\n\tsn1 dbs: {fatty_acid_sn1_double_bonds}\n\tsn2 length: {fatty_acid_sn2_length}\n\tsn2 dbs: {fatty_acid_sn2_double_bonds}")
 
-            lipid_mol = create_phospchocholine(
-                lipid.nomenclature.lipid_class_abbreviation,
-                fatty_acid_sn1_length,
-                fatty_acid_sn1_double_bonds,
-                fatty_acid_sn2_length,
-                fatty_acid_sn2_double_bonds
-            )
+                lipid_mol = create_glycerophospholipid(
+                    lipid.nomenclature.lipid_class_abbreviation,
+                    fatty_acid_sn1_length,
+                    fatty_acid_sn1_double_bonds,
+                    fatty_acid_sn2_length,
+                    fatty_acid_sn2_double_bonds
+                )
 
-            source = Source(lipid.nomenclature.name, Level.isomeric_lipid_species, 'lipidlibrarian')
+                source = Source(lipid.nomenclature.name, Level.isomeric_lipid_species, 'lipidlibrarian')
 
-            lipid.nomenclature.add_structure_identifier(StructureIdentifier.from_data(
-                Chem.MolToSmiles(lipid_mol),
-                'smiles',
-                source
-            ))
+                lipid.nomenclature.add_structure_identifier(StructureIdentifier.from_data(
+                    Chem.MolToSmiles(lipid_mol),
+                    'smiles',
+                    source
+                ))
 
-            lipid.nomenclature.add_structure_identifier(StructureIdentifier.from_data(
-                Chem.inchi.MolToInchi(lipid_mol),
-                'inchi',
-                source
-            ))
+                lipid.nomenclature.add_structure_identifier(StructureIdentifier.from_data(
+                    Chem.inchi.MolToInchi(lipid_mol),
+                    'inchi',
+                    source
+                ))
 
-            lipid.nomenclature.add_structure_identifier(StructureIdentifier.from_data(
-                Chem.inchi.MolToInchiKey(lipid_mol),
-                'inchikey',
-                source
-            ))
+                lipid.nomenclature.add_structure_identifier(StructureIdentifier.from_data(
+                    Chem.inchi.MolToInchiKey(lipid_mol),
+                    'inchikey',
+                    source
+                ))
+            except ValueError as _:
+                logging.warning(f"LipidLibrarianAPI: Failed to create a glycerophospholipid of input {lipid.nomenclature.name}")
 
         return [lipid]
