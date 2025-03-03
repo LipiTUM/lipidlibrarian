@@ -291,7 +291,7 @@ class SwissLipidsAPI(LipidAPI):
                 if entry["classification_level"] in hierarchy:
                     identifiers.add(entry["entity_id"])
 
-        if cutoff > 0:
+        if cutoff > 0 and len(identifiers) > cutoff:
             identifiers = set(random.sample(identifiers, min(cutoff, len(identifiers))))
 
         return identifiers
