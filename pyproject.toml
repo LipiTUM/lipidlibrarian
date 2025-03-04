@@ -1,6 +1,6 @@
 [project]
 name = "lipidlibrarian"
-version = "0.2.1"
+dynamic = ["version"]
 description = "A Lipidomics Database Explorer Package"
 readme = "README.md"
 authors = [
@@ -67,11 +67,15 @@ addopts = [
 ]
 
 [build-system]
-requires = [
-    "setuptools"
-]
+requires = [ "setuptools>=41", "wheel", "setuptools-git-versioning>=2.0,<3", ]
 build-backend = "setuptools.build_meta"
 
 [project.scripts]
 lipidlibrarian = "lipidlibrarian.cli:main"
 
+[tool.setuptools-git-versioning]
+enabled = true
+version_file = "VERSION"
+count_commits_from_version_file = true
+dev_template = "{tag}.dev{ccount}"
+dirty_template = "{tag}.dev{ccount}+git.{sha}"
