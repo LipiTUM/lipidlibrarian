@@ -2,11 +2,15 @@ import logging
 import os
 from importlib.resources import files
 from typing import Any
-
 import numpy as np
 import pandas as pd
 from func_timeout import FunctionTimedOut
 from func_timeout import func_timeout
+from pygoslin.parser.Parser import LipidParser
+from pygoslin.domain.LipidExceptions import LipidException
+from pygoslin.domain.LipidExceptions import LipidParsingException
+from pygoslin.domain.LipidLevel import LipidLevel
+
 
 from .Adduct import Adduct
 
@@ -152,15 +156,7 @@ def lynx_convert(lipid_name: str, level: str = 'MAX') -> str | None:
 
 def goslin_init() -> Any | None:
     logging.info("Goslin: Initializing Goslin...")
-    if 'goslin' in lipid_name_conversion_methods:
-        try:
-            from pygoslin.parser.Parser import LipidParser
-            converter = LipidParser()
-        except ModuleNotFoundError as _:
-            converter = None
-            lipid_name_conversion_methods.remove('goslin')
-    else:
-        return None
+    converter = LipidParser()
     logging.info("Goslin: Initializing Goslin done.")
     return converter
 
@@ -168,21 +164,11 @@ def goslin_init() -> Any | None:
 def goslin_convert(lipid_name: str, level: Any = None) -> str | None:
     global goslin_converter
 
-    if 'goslin' not in lipid_name_conversion_methods:
-        return None
-
-    if 'goslin' in lipid_name_conversion_methods and goslin_converter is None:
-        goslin_converter = goslin_init()
-
-    if goslin_converter is None:
-        return None
-
-    from pygoslin.domain.LipidExceptions import LipidException
-    from pygoslin.domain.LipidExceptions import LipidParsingException
-    from pygoslin.domain.LipidLevel import LipidLevel
-
     if lipid_name is None:
         return None
+
+    if goslin_converter is None:
+        goslin_converter = goslin_init()
 
     try:
         result = func_timeout(TIMEOUT_SECONDS, goslin_converter.parse, args=(lipid_name,))
@@ -206,3 +192,8 @@ def goslin_convert(lipid_name: str, level: Any = None) -> str | None:
     else:
         logging.info(f"Goslin: Converted '{lipid_name}' to '{result}'")
     return result
+
+
+def goslin_get_fatty_acids(lipid_name: str) -> list[str]:
+    global goslin_converter
+    pass

@@ -115,8 +115,8 @@ class LipidQuery:
         self.merge_lipids()
 
         for lipid in self.lipids:
-            logging.info("Querying LipidLibrarian...")
-            self.add_lipids(self.APIs['lipidlibrarian'].query(lipid, cutoff=self.cutoff))
+            #logging.info("Querying LipidLibrarian...")
+            #self.add_lipids(self.APIs['lipidlibrarian'].query(lipid, cutoff=self.cutoff))
             logging.info("Querying LINEX...")
             self.add_lipids(self.APIs['linex'].query(lipid, cutoff=self.cutoff))
             logging.info("Querying LION...")

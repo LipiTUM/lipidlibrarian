@@ -66,8 +66,9 @@ class LinexAPI(LipidAPI):
 
         linex_data: tuple[str, dict[str, Any], list[Any]] = ("", {}, [])
         try:
+            logging.info(f"LinexAPI: Loading cached LINEX reaction data...")
             linex_data = pickle.load(bz2.BZ2File(linex_data_path, "rb"))
-            logging.info(f"LinexAPI: Cached LINEX reaction data found.")
+            logging.info(f"LinexAPI: Loading cached LINEX reaction data done.")
         except FileNotFoundError as _:
             pass
 

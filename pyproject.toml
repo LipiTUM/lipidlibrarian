@@ -36,7 +36,6 @@ dependencies = [
     "ratelimit",
     "rdkit",
     "func-timeout",
-    "liputils",
     "sparql-dataframe", # returns SPARQL queries as pandas dataframes
     "pygoslin",
     "linex2",

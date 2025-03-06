@@ -31,7 +31,7 @@ data/lion/lion_ontology_graph.obo: $(VENV)
 
 data/lion/lion_association_table.tsv: $(VENV)
 	mkdir -p data/lion
-	$(BIN)/gdown 1bhdBM3LgBH9W74zn9seJeup-H9FFG7RN --continue -O data/lion/lion_association_table.tsv
+	$(BIN)/gdown 1gijlISyrUB7IQAgvwmghlNuIA4a9_7pg --continue -O data/lion/lion_association_table.tsv
 
 data/swisslipids/goslin_converted_names.tsv: $(VENV)
 	mkdir -p data/swisslipids

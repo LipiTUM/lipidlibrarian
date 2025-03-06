@@ -1,9 +1,9 @@
 from typing import Iterable
 
-from liputils import Lipid as LiputilsLipid
 from pygoslin.domain.LipidLevel import LipidLevel
 
 from . import goslin_convert
+from . import goslin_get_fatty_acids
 from . import lynx_convert
 from . import lipid_name_conversion_methods
 from .Level import Level
@@ -13,15 +13,10 @@ from .Synonym import Synonym
 
 
 def _convert_level(s: str, level: Level) -> str | None:
-    if 'goslin' in lipid_name_conversion_methods:
-        return _goslin_convert_level(s, level)
-    elif 'lipidlynxx' in lipid_name_conversion_methods:
-        return _lynx_convert_level(s, level)
-    else:
-        raise ModuleNotFoundError((
-            f"Neither goslin nor lipidlynxx are available. Lipid Level Conversion and thus the operation of "
-            f"LipidLibrarian is not possible under these circumstances."
-        ))
+    converted_lipid = _goslin_convert_level(s, level)
+    if converted_lipid is None:
+        converted_lipid = _lynx_convert_level(s, level)
+    return converted_lipid
 
 
 def _lynx_convert_level(s: str, level: Level) -> str | None:
@@ -90,21 +85,14 @@ class Nomenclature():
         if self.get_name() is None:
             return None
 
-        if 'goslin' in lipid_name_conversion_methods:
-            return _goslin_convert_level(self.get_name(), level=Level.lipid_class)
-        else:
-            return LiputilsLipid(self.get_name()).refmet_class()
+        return _goslin_convert_level(self.get_name(), level=Level.lipid_class)
 
     @property
-    def residues(self) -> list[str]:
+    def fatty_acids(self) -> list[str]:
         if self.get_name() is None:
             return []
 
-        try:
-            return LiputilsLipid(self.get_name()).refmet_residues()[0]
-        except IndexError as _:
-            pass
-        return []
+        return goslin_get_fatty_acids(self.get_name())
 
     @property
     def name(self) -> str | None:
@@ -143,7 +131,7 @@ class Nomenclature():
                 if level >= Level.structural_lipid_species:
                     result = result[1:]
                 elif level == Level.molecular_lipid_species:
-                    result = self.lipid_class_abbreviation[1:] + '(' + self.residues[0] + '/0:0)'
+                    result = self.lipid_class_abbreviation[1:] + '(' + self.fatty_acids[0] + '/0:0)'
 
         if nomenclature_flavor == 'alex123':
             result = result.replace('_', '-')
