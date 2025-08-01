@@ -13,7 +13,7 @@ def is_sql_db_empty(engine) -> bool:
 
 def sync_hdf5_to_sql(sql_url: str):
     """Populates SQL DB with tables from HDF5 if DB is empty."""
-    hdf_path = str(files('lipidlibrarian')) + '/data/alex123/alex123_db.h5'
+    hdf5_path = str(files('lipidlibrarian')) + '/data/alex123/alex123_db.h5'
     engine = sqlalchemy.create_engine(sql_url)
 
     if not is_sql_db_empty(engine):
