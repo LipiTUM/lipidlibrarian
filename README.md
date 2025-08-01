@@ -42,7 +42,7 @@ In case you installed Lipid Librarian into a 'venv' virtual environment, make su
 from lipidlibrarian.LipidQuery import *
 
 query1 = LipidQuery("PC(18:1_20:0)").query()
-query2 = LipidQuery("410.243;0.01").query()
+query2 = LipidQuery("816.18249;0.0005").query()
 query3 = LipidQuery("PC(56:8)").query()
 
 for lipid in query1:
