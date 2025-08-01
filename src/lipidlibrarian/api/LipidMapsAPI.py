@@ -1,11 +1,12 @@
 import copy
 import json
 import logging
-from io import StringIO
-from typing import Any
-
 import pandas as pd
+
+from importlib.resources import files
+from io import StringIO
 from requests import Response
+from typing import Any
 
 from .LipidAPI import LipidAPI
 from ..lipid import get_adduct
@@ -22,23 +23,50 @@ from ..lipid.Source import Source
 class LipidMapsAPI(LipidAPI):
 
     def __init__(self):
-        logging.info(f"LipidMapsAPI: Initializing LipidMaps API...")
+        logging.info(f"LipidMapsAPI: Initializing LIPID MAPS API...")
         super().__init__()
-        logging.info(f"LipidMapsAPI: Initializing LipidMaps API done.")
+
+        self.goslin_converted_names: pd.DataFrame | None = None
+
+        goslin_converted_names_path = str(files('lipidlibrarian')) + '/data/lipidmaps/goslin_converted_names.tsv'
+
+        try:
+            self.goslin_converted_names = pd.read_csv(
+                goslin_converted_names_path,
+                sep='\t',
+                header=None,
+                names=['id', 'name', 'goslin_name']
+            )
+            logging.info(f"LipidMapsAPI: Goslin parsed LIPID MAPS lipid name database contains {len(self.goslin_converted_names)} associations.")
+            
+        except FileNotFoundError as _:
+            self.goslin_converted_names = None
+            logging.info(f"LipidMapsAPI: Goslin parsed LIPID MAPS lipid name database not found. Disabling...")
+
+        logging.info(f"LipidMapsAPI: Initializing LIPID MAPS API done.")
+
 
     def query_lipid(self, lipid: Lipid) -> list[Lipid]:
         results = []
         for lipidmaps_identifier in lipid.get_database_identifiers('lipidmaps'):
+            logging.debug(f"LipidMapsAPI: query_lipid: Found ID {lipidmaps_identifier} for lipid {lipid.nomenclature.get_name()} in previous queries...")
             results.extend(self.query_id(lipidmaps_identifier.identifier))
+
+        if self.goslin_converted_names is not None and lipid.nomenclature.level == Level.isomeric_lipid_species:
+            lipidmaps_identifiers = self.goslin_converted_names[self.goslin_converted_names['goslin_name'] == lipid.nomenclature.get_name(level=Level.isomeric_lipid_species)]['id'].values
+            for lipidmaps_identifier in lipidmaps_identifiers:
+                logging.debug(f"LipidMapsAPI: query_lipid: Found ID {lipidmaps_identifier} for lipid {lipid.nomenclature.get_name()} in the Goslin parsed LIPID MAPS lipid name database...")
+                results.extend(self.query_id(lipidmaps_identifier))
+
         results.extend(self.query_name(
             lipid.nomenclature.get_name(nomenclature_flavor='lipidmaps'),
             lipid.nomenclature.level
         ))
-        logging.debug(f"LipidMapsAPI: Found {len(results)} lipid(s).")
+        logging.debug(f"LipidMapsAPI: query_lipid: Found {len(results)} lipid(s).")
         return results
 
     def query_mz(self, mz: float, tolerance: float, adducts: list[Adduct], cutoff: int = 0) -> list[Lipid]:
-        logging.debug(f"LipidMapsAPI: Querying mz '{mz}' with tolerance '{tolerance}'.")
+        logging.debug(f"LipidMapsAPI: query_mz: Querying mz '{mz}' with tolerance '{tolerance}'.")
         if mz <= 0:
             return []
         if tolerance < 0:
@@ -46,11 +74,11 @@ class LipidMapsAPI(LipidAPI):
 
         results = self._query_moverz_rest_api(mz, tolerance, adducts, cutoff)
 
-        logging.debug(f"LipidMapsAPI: Found {len(results)} lipid(s).")
+        logging.debug(f"LipidMapsAPI: query_mz: Found {len(results)} lipid(s).")
         return results
 
     def query_id(self, identifier: str) -> list[Lipid]:
-        logging.debug(f"LipidMapsAPI: Querying ID '{identifier}'.")
+        logging.debug(f"LipidMapsAPI: query_id: Querying ID '{identifier}'.")
         if identifier is None or identifier == '' or not isinstance(identifier, str):
             return []
 
@@ -58,11 +86,11 @@ class LipidMapsAPI(LipidAPI):
         results.extend(self._query_compound_rest_api(identifier, 'lm_id'))
         results.extend(self._query_lmsd_record_api(identifier))
 
-        logging.debug(f"LipidMapsAPI: Found {len(results)} lipid(s).")
+        logging.debug(f"LipidMapsAPI: query_id: Found {len(results)} lipid(s).")
         return results
 
     def query_name(self, name: str, level: Level = None) -> list[Lipid]:
-        logging.debug(f"LipidMapsAPI: Querying lipid name '{name}'.")
+        logging.debug(f"LipidMapsAPI: query_name: Querying lipid name '{name}'.")
         if name is None or name == '' or not isinstance(name, str):
             return []
 
@@ -72,6 +100,7 @@ class LipidMapsAPI(LipidAPI):
         if level == Level.level_unknown or level == Level.isomeric_lipid_species:
             results.extend(self._query_lmsd_search_api([('Name', name)]))
 
+        logging.debug(f"LipidMapsAPI: query_name: Found {len(results)} lipid(s).")
         return results
 
     def _query_lmsd_search_api(self, input_items: list[tuple[str, str]]) -> list[Lipid]:

@@ -1,5 +1,5 @@
 # system python interpreter. used only to create virtual environment
-PY = python3
+PY = python3.11
 VENV = venv
 BIN=$(VENV)/bin
 
@@ -23,26 +23,38 @@ build/lipidlynxx/pyproject.toml: build/lipidlynxx
 
 data/alex123/alex123_db.h5: $(VENV)
 	mkdir -p data/alex123
-	$(BIN)/gdown 1PCyaofEvpOkysWM_zMUPjU-xIJSPzQVH -O data/alex123/alex123_db.h5
+	$(BIN)/gdown 1PCyaofEvpOkysWM_zMUPjU-xIJSPzQVH --continue -O data/alex123/alex123_db.h5
 
 data/lion/lion_ontology_graph.obo: $(VENV)
 	mkdir -p data/lion
-	$(BIN)/gdown 1W5x38nUKKAv12N7f8RTqZ09hpSaLz8Cv -O data/lion/lion_ontology_graph.obo
+	$(BIN)/gdown 1W5x38nUKKAv12N7f8RTqZ09hpSaLz8Cv --continue -O data/lion/lion_ontology_graph.obo
 
 data/lion/lion_association_table.tsv: $(VENV)
 	mkdir -p data/lion
-	$(BIN)/gdown 1bhdBM3LgBH9W74zn9seJeup-H9FFG7RN -O data/lion/lion_association_table.tsv
+	$(BIN)/gdown 1gijlISyrUB7IQAgvwmghlNuIA4a9_7pg --continue -O data/lion/lion_association_table.tsv
 
-src/lipidlibrarian/data: data/alex123/alex123_db.h5 data/lion/lion_ontology_graph.obo data/lion/lion_association_table.tsv
+data/swisslipids/goslin_converted_names.tsv: $(VENV)
+	mkdir -p data/swisslipids
+	$(BIN)/gdown 10-WSL3KRR03uFOiqNQVpEJQw651i6oZS --continue -O data/swisslipids/goslin_converted_names.tsv
+
+data/lipidmaps/goslin_converted_names.tsv: $(VENV)
+	mkdir -p data/lipidmaps
+	$(BIN)/gdown 1SF-1pIrhdaVZVxPsJep84SHv4aBTZUTD --continue -O data/lipidmaps/goslin_converted_names.tsv
+
+src/lipidlibrarian/data: data/alex123/alex123_db.h5 data/lion/lion_ontology_graph.obo data/lion/lion_association_table.tsv data/swisslipids/goslin_converted_names.tsv data/lipidmaps/goslin_converted_names.tsv
 	mkdir -p src/lipidlibrarian/data
 	mkdir -p src/lipidlibrarian/data/alex123
 	mkdir -p src/lipidlibrarian/data/linex
 	mkdir -p src/lipidlibrarian/data/lion
+	mkdir -p src/lipidlibrarian/data/swisslipids
+	mkdir -p src/lipidlibrarian/data/lipidmaps
 	cp data/adducts.csv src/lipidlibrarian/data/
 	cp data/alex123/alex123_db.h5 src/lipidlibrarian/data/alex123/
 	cp data/linex/linex_data.pbz2 src/lipidlibrarian/data/linex/
 	cp data/lion/lion_ontology_graph.obo src/lipidlibrarian/data/lion/
 	cp data/lion/lion_association_table.tsv src/lipidlibrarian/data/lion/
+	cp data/swisslipids/goslin_converted_names.tsv src/lipidlibrarian/data/swisslipids/
+	cp data/lipidmaps/goslin_converted_names.tsv src/lipidlibrarian/data/lipidmaps/
 
 .PHONY: build
 build: $(VENV) pyproject.toml src/lipidlibrarian/data

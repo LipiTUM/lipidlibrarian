@@ -1,7 +1,7 @@
 [project]
 name = "lipidlynxx"
 version = "0.0.1"
-requires-python = ">3, <=3.11"
+requires-python = ">3, <3.12"
 license = {text = "GPLv3"}
 description = ""
 readme = "README.md"

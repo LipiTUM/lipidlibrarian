@@ -1,6 +1,8 @@
 import copy
 import logging
 
+from lipidlibrarian.lipid.Synonym import Synonym
+
 from .api.LipidAPI import LipidAPI
 from .lipid.Adduct import Adduct
 from .lipid.Lipid import DatabaseIdentifier
@@ -81,6 +83,9 @@ class LipidQuery:
     def query(self) -> list[Lipid]:
         if self.query_parameters is None:
             return []
+        
+        if isinstance(self.query_parameters, Lipid) and self.query_parameters.nomenclature.name != "":
+            self.add_lipid(self.query_parameters)
 
         logging.info("Initializing APIs...")
         self.APIs = init_APIs(self.selected_APIs, self.sql_args)
@@ -110,8 +115,8 @@ class LipidQuery:
         self.merge_lipids()
 
         for lipid in self.lipids:
-            logging.info("Querying LipidLibrarian...")
-            self.add_lipids(self.APIs['lipidlibrarian'].query(lipid, cutoff=self.cutoff))
+            #logging.info("Querying LipidLibrarian...")
+            #self.add_lipids(self.APIs['lipidlibrarian'].query(lipid, cutoff=self.cutoff))
             logging.info("Querying LINEX...")
             self.add_lipids(self.APIs['linex'].query(lipid, cutoff=self.cutoff))
             logging.info("Querying LION...")
@@ -177,6 +182,18 @@ class LipidQuery:
     def _detect_name_query(query_input: str) -> Lipid | None:
         query_parameter = Lipid()
         query_parameter.nomenclature.name = query_input
+
+        query_parameter.nomenclature.add_synonym(
+            Synonym.from_data(
+                query_input,
+                "query_input",
+                Source(
+                    query_input,
+                    query_parameter.nomenclature.level,
+                    'query_input'
+                )
+            )
+        )
 
         if query_parameter.nomenclature.level == Level.level_unknown:
             return None

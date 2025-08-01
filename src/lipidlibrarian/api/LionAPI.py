@@ -32,8 +32,8 @@ class LionAPI(LipidAPI):
             self.lion_association = pd.read_csv(
                 lion_association_path,
                 sep='\t',
-                header=None,
-                names=['lipid', 'term']
+                header=0,
+                names=['NAME', 'ID']
             )
             logging.info(f"LionAPI: Ontology Association contains {len(self.lion_association)} associations.")
             logging.info(f"LionAPI: Initializing LION API done.")
@@ -55,12 +55,13 @@ class LionAPI(LipidAPI):
                 nomenclature_flavor='lipidmaps')
         ) is not None:
             ontology_terms = self.get_lion_terms(structural_lipid_species_name)
-            lipid.ontology.ontology_terms.update(ontology_terms)
-            lipid.ontology.add_source(Source(
-                structural_lipid_species_name,
-                Level.structural_lipid_species,
-                'lion'
-            ))
+            if len(ontology_terms) > 0:
+                lipid.ontology.ontology_terms.update(ontology_terms)
+                lipid.ontology.add_source(Source(
+                    structural_lipid_species_name,
+                    Level.structural_lipid_species,
+                    'lion'
+                ))
 
         # Check for sum_lipid_species
         if (sum_lipid_species_name := lipid.nomenclature.get_name(
@@ -68,34 +69,37 @@ class LionAPI(LipidAPI):
                 nomenclature_flavor='lipidmaps')
         ) is not None:
             ontology_terms = self.get_lion_terms(sum_lipid_species_name)
-            lipid.ontology.ontology_terms.update(ontology_terms)
-            lipid.ontology.add_source(Source(
-                sum_lipid_species_name,
-                Level.sum_lipid_species,
-                'lion'
-            ))
+            if len(ontology_terms) > 0:
+                lipid.ontology.ontology_terms.update(ontology_terms)
+                lipid.ontology.add_source(Source(
+                    sum_lipid_species_name,
+                    Level.sum_lipid_species,
+                    'lion'
+                ))
 
         # Check for lipidmaps identifiers
         for lipidmaps_identifier in lipid.get_database_identifiers('lipidmaps'):
             lipidmaps_identifier: DatabaseIdentifier
             ontology_terms = self.get_lion_terms(lipidmaps_identifier.identifier)
-            lipid.ontology.ontology_terms.update(ontology_terms)
-            lipid.ontology.add_source(Source(
-                list(lipidmaps_identifier.sources)[0].lipid_name,
-                list(lipidmaps_identifier.sources)[0].lipid_level,
-                'lion'
-            ))
+            if len(ontology_terms) > 0:
+                lipid.ontology.ontology_terms.update(ontology_terms)
+                lipid.ontology.add_source(Source(
+                    list(lipidmaps_identifier.sources)[0].lipid_name,
+                    list(lipidmaps_identifier.sources)[0].lipid_level,
+                    'lion'
+                ))
 
         # Check for swisslipids identifiers
         for swisslipids_identifier in lipid.get_database_identifiers('swisslipids'):
             swisslipids_identifier: DatabaseIdentifier
             ontology_terms = self.get_lion_terms(swisslipids_identifier.identifier)
-            lipid.ontology.ontology_terms.update(ontology_terms)
-            lipid.ontology.add_source(Source(
-                list(swisslipids_identifier.sources)[0].lipid_name,
-                list(swisslipids_identifier.sources)[0].lipid_level,
-                'lion'
-            ))
+            if len(ontology_terms) > 0:
+                lipid.ontology.ontology_terms.update(ontology_terms)
+                lipid.ontology.add_source(Source(
+                    list(swisslipids_identifier.sources)[0].lipid_name,
+                    list(swisslipids_identifier.sources)[0].lipid_level,
+                    'lion'
+                ))
 
         return [lipid]
 
@@ -113,8 +117,8 @@ class LionAPI(LipidAPI):
         list[str]
             All the lipid ontology terms the ``lipid_name`` is associated with.
         """
-        terms = self.lion_association[self.lion_association['lipid'] == lipid_name]
-        return terms['term'].to_list()
+        terms = self.lion_association[self.lion_association['NAME'] == lipid_name]
+        return terms['ID'].to_list()
 
     def get_lion_ancestor_nodes(self, ontology_terms: set[str]) -> set[str]:
         """
@@ -138,7 +142,7 @@ class LionAPI(LipidAPI):
         for term in ontology_terms:
             nodes.update(networkx.descendants(self.lion_graph, term) | {'root'})
         return set(self.lion_graph.subgraph(nodes).nodes)
-    
+
     def get_lion_subgraph_edgelist(self, ontology_terms: set[str]) -> list[tuple[str, str]]:
         """
         Return the subgraph of the lipid ontology graph containing all paths leading
@@ -176,4 +180,4 @@ class LionAPI(LipidAPI):
         if self.lion_graph is None:
             return []
 
-        return {name: data for name, data in self.lion_graph.subgraph(self.get_lion_ancestor_nodes(ontology_terms)).nodes.data()}
+        return {name: data['name'] for name, data in self.lion_graph.subgraph(self.get_lion_ancestor_nodes(ontology_terms)).nodes.data()}
