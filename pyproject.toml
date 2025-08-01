@@ -3,6 +3,7 @@ name = "lipidlibrarian"
 dynamic = ["version"]
 description = "A Lipidomics Database Explorer Package"
 readme = "README.md"
+license = "AGPL-3.0-or-later"
 authors = [
     {name = "Felix Niedermaier", email = "felix.niedermaier@tum.de"},
     {name = "Konstantinos Mechteridis"},
@@ -11,14 +12,12 @@ authors = [
 requires-python = "~=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
     "Intended Audience :: Science/Research",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Operating System :: POSIX :: Linux",
     "Topic :: Database :: Front-Ends",
     "Topic :: Scientific/Engineering :: Bio-Informatics",
-    "Programming Language :: Python :: 3",
 ]
 keywords = ["lipids", "bioinformatics", "development"]
 dependencies = [
@@ -65,16 +64,12 @@ addopts = [
     "--import-mode=importlib",
 ]
 
-[build-system]
-requires = [ "setuptools>=41", "wheel", "setuptools-git-versioning>=2.0,<3", ]
-build-backend = "setuptools.build_meta"
-
 [project.scripts]
 lipidlibrarian = "lipidlibrarian.cli:main"
+sync_alex123_sql_database = "lipidlibrarian.sync_alex123_sql_database:main"
 
-[tool.setuptools-git-versioning]
-enabled = true
-version_file = "VERSION"
-count_commits_from_version_file = true
-dev_template = "{tag}.dev{ccount}"
-dirty_template = "{tag}.dev{ccount}+git.{sha}"
+[build-system]
+requires = [ "setuptools >= 77.0.3", "setuptools-scm>=8" ]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
