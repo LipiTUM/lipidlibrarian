@@ -484,6 +484,9 @@ class Alex123DBConnectorHDF(Alex123DBConnector):
             logging.error(f"Alex123API: Could not find the ALEX123 HDF5 Database. The error '{e}' occurred.")
             logging.info("Alex123API: ALEX123 API disabled.")
 
+    def get_all_tables(self) -> dict[str, pd.DataFrame]:
+        return self.alex123db
+
     def get_database_table(self, table_name: str) -> pd.DataFrame:
         return self.alex123db[table_name]
 
