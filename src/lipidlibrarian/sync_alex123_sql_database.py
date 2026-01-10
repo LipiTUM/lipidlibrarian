@@ -15,18 +15,28 @@ def sync_hdf5_to_sql(sql_url: str):
     """Populates SQL DB with tables from HDF5 if DB is empty."""
     hdf5_path = str(files('lipidlibrarian')) + '/data/alex123/alex123_db.h5'
     engine = sqlalchemy.create_engine(sql_url)
+    chunksize = 10000
 
     if not is_sql_db_empty(engine):
         print("SQL database is not empty. Aborting.")
         return
 
-    print(f"Reading HDF5 from {hdf5_path}...")
     hdf5_adapter = Alex123DBConnectorHDF(hdf5_path)
-    tables = hdf5_adapter.get_all_tables()
 
-    for table_name, df in tables.items():
+    for table_name in hdf5_adapter.get_table_names():
         print(f"Writing table '{table_name}'...")
-        df.to_sql(table_name, con=engine, index=False, if_exists="fail")
+        first = True
+
+        for chunk in hdf5_adapter.iterate_over_table(table_name, chunksize):
+            chunk.to_sql(
+                table_name,
+                con=engine,
+                index=False,
+                if_exists="replace" if first else "append",
+                method="multi",
+                chunksize=chunksize,
+            )
+            first = False
 
     print("Successfully populated SQL database.")
 

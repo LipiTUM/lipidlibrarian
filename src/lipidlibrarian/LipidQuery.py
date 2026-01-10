@@ -132,7 +132,7 @@ class LipidQuery:
             return None
 
         query_parameter = Lipid()
-        source = Source('', Level.level_unknown, 'query_parameter')
+        source = Source('', Level.level_unknown, 'lipidlibrarian')
         if query_input[0:2] == "LM" and 11 < len(query_input) < 15:
             query_parameter.add_database_identifier(DatabaseIdentifier.from_data(
                 'lipidmaps',
@@ -190,7 +190,7 @@ class LipidQuery:
                 Source(
                     query_input,
                     query_parameter.nomenclature.level,
-                    'query_input'
+                    'lipidlibrarian'
                 )
             )
         )
