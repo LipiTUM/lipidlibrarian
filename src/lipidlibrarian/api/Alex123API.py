@@ -5,7 +5,7 @@ from importlib.resources import files
 
 import pandas as pd
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 
 from .LipidAPI import LipidAPI
 from ..lipid import get_adduct
@@ -17,6 +17,34 @@ from ..lipid.Lipid import Mass
 from ..lipid.Nomenclature import Level
 from ..lipid.Nomenclature import Synonym
 from ..lipid.Source import Source
+
+
+def is_sql_reachable(sql_args: dict) -> bool:
+    """
+    Returns True if SQL database is reachable, False otherwise.
+    Never raises.
+    """
+    if not sql_args:
+        return False
+
+    required = ("user", "password", "host", "port", "database")
+    if not all(sql_args.get(k) for k in required):
+        return False
+
+    try:
+        url = (
+            f"mysql+pymysql://"
+            f"{sql_args['user']}:{sql_args['password']}@"
+            f"{sql_args['host']}:{sql_args['port']}/"
+            f"{sql_args['database']}"
+        )
+        engine = create_engine(url, echo=False)
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        return True
+    except SQLAlchemyError as e:
+        logging.info(f"SQL reachability check failed: {e}")
+        return False
 
 
 class Alex123DBConnector():

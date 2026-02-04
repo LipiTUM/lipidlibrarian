@@ -45,7 +45,10 @@ dependencies = [
 "Source" = "https://github.com/lipitum/lipidlibrarian/"
 
 [project.optional-dependencies]
-dev = ["pytest", "flake8", "rpy2"]
+dev = [
+    "pytest",
+    "flake8"
+]
 test = [
     "pytest"
 ]
