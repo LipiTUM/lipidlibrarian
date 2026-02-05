@@ -134,7 +134,36 @@ class Nomenclature():
                     result = self.lipid_class_abbreviation[1:] + '(' + self.fatty_acids[0] + '/0:0)'
 
         if nomenclature_flavor == 'alex123':
-            result = result.replace('_', '-')
+            if ' O-' in result:
+                result = result.split(' O-')
+                result[1] = result[1].replace('_', '-')
+                result = str.join(' O-', result)
+            elif ' P-' in result:
+                result = result.split(' P-')
+                result[1] = result[1].replace('_', '-')
+                result = str.join(' P-', result)
+            else:
+                result = result.replace('_', '-')
+
+            result = result.replace(';O5', ';5')
+            result = result.replace(';O4', ';4')
+            result = result.replace(';O3', ';3')
+            result = result.replace(';O2', ';2')
+            result = result.replace(';O1', ';1')
+            result = result.replace(';O', ';1')
+
+            if result == 'ST 27:1;O':
+                result = 'Cholesterol'
+            elif result.startswith('ST '):
+                result = result.replace('ST ', 'SE ')
+            elif result.startswith('MG '):
+                result = result.replace('MG ', 'MAG ')
+            elif result.startswith('DG '):
+                result = result.replace('DG ', 'DAG ')
+            elif result.startswith('TG '):
+                result = result.replace('TG ', 'TAG ')
+            elif result.startswith('FA '):
+                result = result.replace('FA ', 'NEFA ')
 
         return result
 

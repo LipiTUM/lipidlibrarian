@@ -2,7 +2,6 @@ import os
 import json
 from urllib.parse import urlparse, parse_qs
 from requests.models import Response
-import mimetypes
 
 
 def _params_to_filename(params_dict):

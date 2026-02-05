@@ -48,7 +48,7 @@ LIPID_NAME_TEST_MATRIX = {
             },
         },
         Level.isomeric_lipid_species: {
-            "name": "PE 18:0/18:1(9Z,11Z)",
+            "name": "PE 18:0/18:1(9Z)",
             "expects": {
                 "has_fragments": True,
             },
@@ -75,6 +75,42 @@ LIPID_NAME_TEST_MATRIX = {
         },
         Level.isomeric_lipid_species: {
             "name": "PS 18:0/18:1(9Z)",
+            "expects": {
+                "has_fragments": True,
+            },
+        },
+    },
+    "ST 27:1;O": {
+        Level.isomeric_lipid_species: {
+            "name": "ST 27:1;O",
+            "expects": {
+                "has_fragments": True,
+            },
+        },
+    },
+    "ST 27:1": {
+        Level.structural_lipid_species: {
+            "name": "ST 27:1/18:1",
+            "expects": {
+                "has_fragments": True,
+            },
+        },
+    },
+    "Cer": {
+        Level.sum_lipid_species: {
+            "name": "Cer 36:1;O2",
+            "expects": {
+                "has_fragments": True,
+            },
+        },
+        Level.structural_lipid_species: {
+            "name": "Cer 18:1;O2/20:0",
+            "expects": {
+                "has_fragments": True,
+            },
+        },
+        Level.isomeric_lipid_species: {
+            "name": "Cer 18:1;O2/20:1(11Z)",
             "expects": {
                 "has_fragments": True,
             },

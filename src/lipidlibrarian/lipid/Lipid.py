@@ -94,6 +94,15 @@ class Lipid():
         for mass in masses:
             self.add_mass(mass)
 
+    def can_absorb(self, other) -> bool:
+        if self.nomenclature.level < other.nomenclature.level:
+            return False
+
+        if self.nomenclature.get_name(level=other.nomenclature.level) != other.nomenclature.get_name():
+            return False
+
+        return True
+
     def merge(self, other) -> bool:
         if not isinstance(other, self.__class__):
             raise ValueError((
@@ -103,8 +112,30 @@ class Lipid():
 
         if not self.nomenclature.merge(other.nomenclature):
             return False
-        
+
         logging.info(f"Lipid: Merging Lipids {self.nomenclature.get_name()} and {other.nomenclature.get_name()}.")
+
+        self.ontology.merge(other.ontology)
+
+        self.add_log_messages(other._log_messages)
+        self.add_database_identifiers(other.database_identifiers)
+        self.add_masses(other.masses)
+        self.add_reactions(other.reactions)
+        self.add_adducts(other.adducts)
+
+        return True
+
+    def hierarchical_merge(self, other) -> bool:
+        if not isinstance(other, self.__class__):
+            raise ValueError((
+                f"Source and target cannot be merged, since they do not inherit from the same instance: "
+                f"{type(self)} and {type(other)}."
+            ))
+
+        if not self.can_absorb(other):
+            return False
+
+        logging.info(f"Lipid: Hierachical Merging Lipids {self.nomenclature.get_name()} and {other.nomenclature.get_name()}.")
 
         self.ontology.merge(other.ontology)
 

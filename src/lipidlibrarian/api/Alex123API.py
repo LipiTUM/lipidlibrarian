@@ -766,8 +766,15 @@ class Alex123API(LipidAPI):
     def query_name(self, name: str, level: Level = Level.level_unknown, cutoff: int = 0) -> list[Lipid]:
         lipids = []
 
+        alex123_name_conversion_lipid = Lipid()
+        alex123_name_conversion_lipid.nomenclature.name = name
+
+        if level > alex123_name_conversion_lipid.nomenclature.level:
+            return lipids
+
         if level == Level.sum_lipid_species:
-            results = self.database_connector.get_sum_lipid_species_by_name({name})
+            alex123_name = alex123_name_conversion_lipid.nomenclature.get_name(level=Level.sum_lipid_species, nomenclature_flavor='alex123')
+            results = self.database_connector.get_sum_lipid_species_by_name({alex123_name})
 
             for _, result in results.iterrows():
                 lipid = Lipid()
@@ -798,11 +805,8 @@ class Alex123API(LipidAPI):
                 lipids.append(lipid)
 
         elif level >= Level.molecular_lipid_species:
-            lipid = Lipid()
-            lipid.nomenclature.name = name
-            mls_name = lipid.nomenclature.get_name(level=Level.molecular_lipid_species, nomenclature_flavor='alex123')
-
-            results = self.database_connector.get_molecular_lipid_species_by_name({mls_name})
+            alex123_name = alex123_name_conversion_lipid.nomenclature.get_name(level=Level.molecular_lipid_species, nomenclature_flavor='alex123')
+            results = self.database_connector.get_molecular_lipid_species_by_name({alex123_name})
 
             for _, result in results.iterrows():
                 lipid = Lipid()

@@ -2,12 +2,30 @@ import pytest
 from unittest.mock import patch
 from lipidlibrarian.api.SwissLipidsAPI import SwissLipidsAPI
 from lipidlibrarian.api.LipidAPI import LipidAPI
-from lipidlibrarian.lipid import get_adducts
 from lipidlibrarian.lipid.Nomenclature import Level
-from .mock_http_helper import load_or_record_response
+from test.mock_http_helper import load_or_record_response
+
+from .lipid_name_test_matrix import LIPID_NAME_TEST_MATRIX
 
 
 test_development = True  # This flag enables request downloads. Toggle this to False in CI.
+
+
+@pytest.fixture(scope="session")
+def swisslipids_api(pytestconfig):
+    return SwissLipidsAPI()
+
+
+def lipid_name_test_cases():
+    for lipid_class, levels in LIPID_NAME_TEST_MATRIX.items():
+        for level, spec in levels.items():
+            yield pytest.param(
+                lipid_class,
+                level,
+                spec["name"],
+                spec["expects"],
+                id=f"{lipid_class}-{level.name}",
+            )
 
 
 @pytest.fixture(params=["SLM:000487065"])
@@ -32,13 +50,22 @@ def test_query_id(sample_ids):
         assert result
 
 
-def test_query_name(sample_names):
-    api = SwissLipidsAPI()
-    real_method = LipidAPI.execute_http_query.__get__(api, LipidAPI)
+@pytest.mark.parametrize("lipid_class,lipid_level,lipid_name,expects", list(lipid_name_test_cases()))
+def test_query_name(swisslipids_api, lipid_class, lipid_level, lipid_name, expects):
+    # Keep a reference to the unpatched function
+    real_execute_http_query = LipidAPI.execute_http_query
 
-    with patch.object(LipidAPI, "execute_http_query") as mock_exec:
-        mock_exec.side_effect = lambda url: load_or_record_response(
-            url, real_method, test_development
+    def side_effect(self, url: str):
+        # Call the real method through a closure so load_or_record_response
+        # can execute it when needed.
+        return load_or_record_response(
+            url=url,
+            real_execute_http_query=lambda u: real_execute_http_query(self, u),
+            test_development=test_development
         )
-        result = api.query_name(sample_names[0], level=sample_names[1])
+
+    with patch.object(LipidAPI, "execute_http_query", autospec=True) as mock_exec:
+        mock_exec.side_effect = side_effect
+
+        result = swisslipids_api.query_name(lipid_name, level=lipid_level)
         assert result

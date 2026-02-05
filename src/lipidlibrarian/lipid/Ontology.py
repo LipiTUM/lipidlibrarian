@@ -13,8 +13,8 @@ class Ontology():
     def ontology_subgraph(self) -> list[tuple[str, str]]:
         try:
             # circular dependency: lazy import
-            from ..api import lion_API
-            return lion_API.get_lion_subgraph_edgelist(self.ontology_terms)
+            from ..api import _API_CACHE
+            return _API_CACHE['lion'].get_lion_subgraph_edgelist(self.ontology_terms)
         except AttributeError:
             return []
 
@@ -22,8 +22,8 @@ class Ontology():
     def ontology_subgraph_node_data(self) -> dict[str, any]:
         try:
             # circular dependency: lazy import
-            from ..api import lion_API
-            return lion_API.get_lion_node_data(self.ontology_terms)
+            from ..api import _API_CACHE
+            return _API_CACHE['lion'].get_lion_node_data(self.ontology_terms)
         except AttributeError:
             return {}
 

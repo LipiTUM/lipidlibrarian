@@ -34,17 +34,19 @@ def main(parser=ap.ArgumentParser()):
     parser.add_argument(
         "--sql-user",
         type=str,
+        default='alex123',
         help=""
     )
     parser.add_argument(
         "--sql-password",
         type=str,
+        default='alex123',
         help=""
     )
     parser.add_argument(
         "--sql-database",
         type=str,
-        default="ALEX123",
+        default="alex123",
         help=""
     )
     parser.add_argument(
