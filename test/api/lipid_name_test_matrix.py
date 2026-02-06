@@ -116,4 +116,30 @@ LIPID_NAME_TEST_MATRIX = {
             },
         },
     },
+    "TG": {
+        Level.sum_lipid_species: {
+            "name": "TG 54:2",
+            "expects": {
+                "has_fragments": False,
+            },
+        },
+        Level.molecular_lipid_species: {
+            "name": "TG 16:1_18:1_20:0",
+            "expects": {
+                "has_fragments": True,
+            },
+        },
+        Level.structural_lipid_species: {
+            "name": "TG 16:1/18:1/20:0",
+            "expects": {
+                "has_fragments": True,
+            },
+        },
+        Level.isomeric_lipid_species: {
+            "name": "TG 16:1(9Z)/18:1(9Z)/20:0",
+            "expects": {
+                "has_fragments": True,
+            },
+        },
+    },
 }
