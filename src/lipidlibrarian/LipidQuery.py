@@ -278,7 +278,7 @@ class LipidQuery:
         for l in kept:
             merged = False
             for k in new_list:
-                if k.merge(l):
+                if k.hierarchical_merge(l):
                     merged = True
                     break
             if not merged:
@@ -287,7 +287,7 @@ class LipidQuery:
         # Merge dropped into kept when possible
         for l in dropped:
             for k in new_list:
-                if k.merge(l):
+                if k.hierarchical_merge(l):
                     break
 
         self.lipids = new_list
