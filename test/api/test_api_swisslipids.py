@@ -67,5 +67,45 @@ def test_query_name(swisslipids_api, lipid_class, lipid_level, lipid_name, expec
     with patch.object(LipidAPI, "execute_http_query", autospec=True) as mock_exec:
         mock_exec.side_effect = side_effect
 
-        result = swisslipids_api.query_name(lipid_name, level=lipid_level)
-        assert result
+        results = swisslipids_api.query_name(lipid_name, level=lipid_level)
+
+        found_swisslipids_results = False
+        found_swisslipids_mass = False
+        found_swisslipids_adducts = False
+        found_swisslipids_reactions = False
+
+        for result in results:
+            if result.nomenclature.level <= lipid_level:
+                found_swisslipids_results = True
+                for mass in result.masses:
+                    for source in mass.sources:
+                        if source.source == 'swisslipids':
+                            found_swisslipids_mass = True
+                for adduct in result.adducts:
+                    for source in adduct.sources:
+                        if source.source == 'swisslipids':
+                            found_swisslipids_adducts = True
+                for reaction in result.reactions:
+                    for source in reaction.sources:
+                        if source.source == 'swisslipids':
+                            found_swisslipids_smiles = True
+
+        if expects['has_swisslipids_results']:
+            assert found_swisslipids_results
+        else:
+            assert not found_swisslipids_results
+
+        if expects['has_swisslipids_mass']:
+            assert found_swisslipids_mass
+        else:
+            assert not found_swisslipids_mass
+
+        if expects['has_swisslipids_adducts']:
+            assert found_swisslipids_adducts
+        else:
+            assert not found_swisslipids_adducts
+
+        if expects['has_swisslipids_reactions']:
+            assert found_swisslipids_reactions
+        else:
+            assert not found_swisslipids_reactions

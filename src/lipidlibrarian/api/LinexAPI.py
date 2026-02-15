@@ -174,3 +174,6 @@ class LinexAPI(LipidAPI):
 
         reaction.linex_nl_participants = linex_nl_participants
         return reaction
+
+    def __repr__(self) -> str:
+        return f'LinexAPI with {len(self.combined_reactions)} reactions for {len(self.reference_lipids)} reference lipids.'

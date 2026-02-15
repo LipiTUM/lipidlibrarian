@@ -14,6 +14,12 @@
 
     buildah build -t lipidlibrarian -f Containerfile .
 
+## Test Lipid Librarian
+
+Run pytest in the git root directory with a venv activated with LipidLibrarian installed. It is highly recommended to run a local ALEX123 SQL Database for performance reasons (see below)
+
+    pytest
+
 ## Run Lipid Librarian
 
 ### CLI

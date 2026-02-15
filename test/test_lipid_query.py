@@ -3,6 +3,7 @@ from unittest.mock import patch
 from lipidlibrarian.LipidQuery import LipidQuery
 from lipidlibrarian.api.LipidAPI import LipidAPI
 from lipidlibrarian.lipid import get_adducts
+from lipidlibrarian.lipid.Lipid import Lipid
 from lipidlibrarian.lipid.Nomenclature import Level
 from .mock_http_helper import load_or_record_response
 
@@ -33,6 +34,12 @@ def test_lipidquery_id(sample_ids):
 
         q = LipidQuery(
             input_string=sample_ids,
+            requeries=1,
         )
         result = q.query()
         assert result
+
+def test_lipid_merge_raises_on_wrong_type():
+    a = Lipid()
+    with pytest.raises(ValueError):
+        a.merge(object())

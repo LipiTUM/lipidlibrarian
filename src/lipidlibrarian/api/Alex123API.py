@@ -861,3 +861,6 @@ class Alex123API(LipidAPI):
                 lipids.append(lipid)
 
         return lipids
+    
+    def __repr__(self) -> str:
+        return f'Alex123API with {type(self.database_connector)}'

@@ -181,3 +181,6 @@ class LionAPI(LipidAPI):
             return []
 
         return {name: data['name'] for name, data in self.lion_graph.subgraph(self.get_lion_ancestor_nodes(ontology_terms)).nodes.data()}
+
+    def __repr__(self) -> str:
+        return f'LionAPI with {len(self.lion_association)} associations.'

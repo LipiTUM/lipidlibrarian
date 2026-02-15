@@ -80,5 +80,54 @@ def test_query_name(lipidmaps_api, lipid_class, lipid_level, lipid_name, expects
     with patch.object(LipidAPI, "execute_http_query", autospec=True) as mock_exec:
         mock_exec.side_effect = side_effect
 
-        result = lipidmaps_api.query_name(lipid_name, level=lipid_level)
-        assert result
+        results = lipidmaps_api.query_name(lipid_name, level=lipid_level)
+
+        found_lipidmaps_results = False
+        found_lipidmaps_mass = False
+        found_lipidmaps_adducts = False
+        found_lipidmaps_smiles = False
+        found_lipidmaps_inchi = False
+
+        for result in results:
+            if result.nomenclature.level <= lipid_level:
+                found_lipidmaps_results = True
+                for mass in result.masses:
+                    for source in mass.sources:
+                        if source.source == 'lipidmaps':
+                            found_lipidmaps_mass = True
+                for adduct in result.adducts:
+                    for source in adduct.sources:
+                        if source.source == 'lipidmaps':
+                            found_lipidmaps_adducts = True
+                for database_identifier in result.database_identifiers:
+                    for source in database_identifier.sources:
+                        if source.source == 'lipidmaps':
+                            if database_identifier.identifier == 'smiles':
+                                found_lipidmaps_smiles = True
+                            if database_identifier.identifier == 'inchi':
+                                found_lipidmaps_inchi = True
+
+        if expects['has_lipidmaps_results']:
+            assert found_lipidmaps_results
+        else:
+            assert not found_lipidmaps_results
+
+        if expects['has_lipidmaps_mass']:
+            assert found_lipidmaps_mass
+        else:
+            assert not found_lipidmaps_mass
+
+        if expects['has_lipidmaps_adducts']:
+            assert found_lipidmaps_adducts
+        else:
+            assert not found_lipidmaps_adducts
+
+        if expects['has_lipidmaps_smiles']:
+            assert found_lipidmaps_smiles
+        else:
+            assert not found_lipidmaps_smiles
+
+        if expects['has_lipidmaps_inchi']:
+            assert found_lipidmaps_inchi
+        else:
+            assert not found_lipidmaps_inchi
