@@ -112,7 +112,6 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
             logging.info("Alex123API: Connection to MySQL DB successful.")
         except SQLAlchemyError as e:
             logging.error(f"Alex123API: Could not connect to ALEX123 SQL Database. The error '{e}' occurred.")
-            logging.info("Alex123API: ALEX123 API disabled.")
 
     def get_sum_lipid_species_by_name(self, names: set[str]) -> pd.DataFrame:
         # get all sum species where name in names
@@ -506,7 +505,7 @@ class Alex123DBConnectorHDF(Alex123DBConnector):
     def __init__(self, hdf_path: str):
         super().__init__()
         self.hdf_path = str(hdf_path)
-        logging.info("Alex123API: Using lazy HDF5 backend")
+        logging.info("Alex123API: Using lazy HDF5 backend.")
 
     def get_table_names(self) -> list[str]:
         return self.TABLES
@@ -666,15 +665,18 @@ class Alex123API(LipidAPI):
     def __init__(self, sql_args: dict = None):
         logging.info(f"Alex123API: Initializing ALEX123 API...")
         super().__init__()
-        self.database_connector: Alex123DBConnector = Alex123DBConnector()
+        self.database_connector: Alex123DBConnector = None
 
         if sql_args:
             self.database_connector = Alex123DBConnectorSQL(sql_args)
-        else:
+        
+        try:
+            self.database_connector.db_connector.connect()
+            logging.info(f"Alex123API: Initializing ALEX123 API done.")
+        except (SQLAlchemyError, AttributeError) as e:
             hdf_path = str(files('lipidlibrarian')) + '/data/alex123/alex123_db.h5'
             self.database_connector = Alex123DBConnectorHDF(hdf_path)
-
-        logging.info(f"Alex123API: Initializing ALEX123 API done.")
+            logging.info(f"Alex123API: Initializing ALEX123 API done.")
 
     def query_lipid(self, lipid: Lipid) -> list[Lipid]:
         results = []
@@ -810,7 +812,7 @@ class Alex123API(LipidAPI):
 
             for _, result in results.iterrows():
                 lipid = Lipid()
-                lipid.nomenclature.name = result.molecular_lipid_species_name.replace('-', '_')
+                lipid.nomenclature.name = name
                 source = Source(
                     lipid.nomenclature.get_name(nomenclature_flavor='alex123'),
                     lipid.nomenclature.level,
