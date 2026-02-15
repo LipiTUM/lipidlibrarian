@@ -93,11 +93,18 @@ class LipidMapsAPI(LipidAPI):
         logging.debug(f"LipidMapsAPI: query_name: Querying lipid name '{name}'.")
         if name is None or name == '' or not isinstance(name, str):
             return []
-
+        
         results: list[Lipid] = []
+
         if level == Level.level_unknown or level == Level.structural_lipid_species:
             results.extend(self._query_compound_rest_api(name, 'abbrev_chains'))
         if level == Level.level_unknown or level == Level.isomeric_lipid_species:
+            if self.goslin_converted_names is not None:
+                lipidmaps_identifiers = self.goslin_converted_names[self.goslin_converted_names['goslin_name'] == name]['id'].values
+                for lipidmaps_identifier in lipidmaps_identifiers:
+                    logging.debug(f"LipidMapsAPI: query_lipid: Found ID {lipidmaps_identifier} for lipid {name} in the Goslin parsed LIPID MAPS lipid name database...")
+                    results.extend(self.query_id(lipidmaps_identifier))
+
             results.extend(self._query_lmsd_search_api([('Name', name)]))
 
         logging.debug(f"LipidMapsAPI: query_name: Found {len(results)} lipid(s).")
@@ -455,3 +462,6 @@ class LipidMapsAPI(LipidAPI):
 
             results.append(lipid)
         return results
+
+    def __repr__(self) -> str:
+        return f'LipidMapsAPI with { 0 if self.goslin_converted_names is None else len(self.goslin_converted_names) } conversions pre-loaded.'

@@ -5,7 +5,7 @@ from importlib.resources import files
 
 import pandas as pd
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 
 from .LipidAPI import LipidAPI
 from ..lipid import get_adduct
@@ -17,6 +17,34 @@ from ..lipid.Lipid import Mass
 from ..lipid.Nomenclature import Level
 from ..lipid.Nomenclature import Synonym
 from ..lipid.Source import Source
+
+
+def is_sql_reachable(sql_args: dict) -> bool:
+    """
+    Returns True if SQL database is reachable, False otherwise.
+    Never raises.
+    """
+    if not sql_args:
+        return False
+
+    required = ("user", "password", "host", "port", "database")
+    if not all(sql_args.get(k) for k in required):
+        return False
+
+    try:
+        url = (
+            f"mysql+pymysql://"
+            f"{sql_args['user']}:{sql_args['password']}@"
+            f"{sql_args['host']}:{sql_args['port']}/"
+            f"{sql_args['database']}"
+        )
+        engine = create_engine(url, echo=False)
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        return True
+    except SQLAlchemyError as e:
+        logging.info(f"SQL reachability check failed: {e}")
+        return False
 
 
 class Alex123DBConnector():
@@ -466,29 +494,46 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
 
 
 class Alex123DBConnectorHDF(Alex123DBConnector):
+    TABLES = [
+        "adduct",
+        "lipid_category",
+        "lipid_class",
+        "sum_lipid_species",
+        "molecular_lipid_species",
+        "fragment",
+    ]
+
     def __init__(self, hdf_path: str):
         super().__init__()
-        logging.info(f"Alex123API: Loading ALEX123 database from a HDF file...")
-        try:
-            with pd.HDFStore(str(hdf_path), 'r') as hdf5_store:
-                self.alex123db = {
-                    'adduct': hdf5_store['adduct'],
-                    'lipid_category': hdf5_store['lipid_category'],
-                    'lipid_class': hdf5_store['lipid_class'],
-                    'sum_lipid_species': hdf5_store['sum_lipid_species'],
-                    'molecular_lipid_species': hdf5_store['molecular_lipid_species'],
-                    'fragment': hdf5_store['fragment']
-                }
-            logging.info(f"Alex123API: Loading ALEX123 database from a HDF file done.")
-        except FileNotFoundError as e:
-            logging.error(f"Alex123API: Could not find the ALEX123 HDF5 Database. The error '{e}' occurred.")
-            logging.info("Alex123API: ALEX123 API disabled.")
+        self.hdf_path = str(hdf_path)
+        logging.info("Alex123API: Using lazy HDF5 backend")
+
+    def get_table_names(self) -> list[str]:
+        return self.TABLES
+    
+    def iterate_over_table(self, table_name: str, chunksize: int = 1000):
+        with pd.HDFStore(self.hdf_path, "r") as store:
+            storer = store.get_storer(table_name)
+
+            if storer.is_table:
+                yield from store.select(table_name, chunksize=chunksize)
+            else:
+                logging.warning(f"Alex123API: Table '{table_name}' is fixed-format HDF5; loading fully into memory.")
+                yield store[table_name]
 
     def get_all_tables(self) -> dict[str, pd.DataFrame]:
-        return self.alex123db
+        """
+        WARNING: Loads ALL tables fully into RAM.
+        """
+        with pd.HDFStore(self.hdf_path, "r") as store:
+            return {k: store[k] for k in self.get_table_names()}
 
     def get_database_table(self, table_name: str) -> pd.DataFrame:
-        return self.alex123db[table_name]
+        """
+        WARNING: Loads ONE table fully into RAM.
+        """
+        with pd.HDFStore(self.hdf_path, "r") as store:
+            return store[table_name]
 
     def get_sum_lipid_species_by_name(self, names: set[str]) -> pd.DataFrame:
         results = self.get_database_table('sum_lipid_species')[
@@ -721,8 +766,15 @@ class Alex123API(LipidAPI):
     def query_name(self, name: str, level: Level = Level.level_unknown, cutoff: int = 0) -> list[Lipid]:
         lipids = []
 
-        if level == Level.structural_lipid_species:
-            results = self.database_connector.get_sum_lipid_species_by_name({name})
+        alex123_name_conversion_lipid = Lipid()
+        alex123_name_conversion_lipid.nomenclature.name = name
+
+        if level > alex123_name_conversion_lipid.nomenclature.level:
+            return lipids
+
+        if level == Level.sum_lipid_species:
+            alex123_name = alex123_name_conversion_lipid.nomenclature.get_name(level=Level.sum_lipid_species, nomenclature_flavor='alex123')
+            results = self.database_connector.get_sum_lipid_species_by_name({alex123_name})
 
             for _, result in results.iterrows():
                 lipid = Lipid()
@@ -752,8 +804,9 @@ class Alex123API(LipidAPI):
                 ))
                 lipids.append(lipid)
 
-        elif level == Level.molecular_lipid_species:
-            results = self.database_connector.get_molecular_lipid_species_by_name({name})
+        elif level >= Level.molecular_lipid_species:
+            alex123_name = alex123_name_conversion_lipid.nomenclature.get_name(level=Level.molecular_lipid_species, nomenclature_flavor='alex123')
+            results = self.database_connector.get_molecular_lipid_species_by_name({alex123_name})
 
             for _, result in results.iterrows():
                 lipid = Lipid()
@@ -808,3 +861,6 @@ class Alex123API(LipidAPI):
                 lipids.append(lipid)
 
         return lipids
+    
+    def __repr__(self) -> str:
+        return f'Alex123API with {type(self.database_connector)}'

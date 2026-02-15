@@ -1,0 +1,383 @@
+<h1>adduct</h1>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>adduct_id</th>
+      <th>adduct_name</th>
+      <th>adduct_mass</th>
+      <th>adduct_charge</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>+H+</td>
+      <td>1.007276</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>+2H+</td>
+      <td>2.014553</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>+Na+</td>
+      <td>22.989219</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>+NH4+</td>
+      <td>18.033826</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>+[39]K+</td>
+      <td>38.963158</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h1>lipid_category</h1>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lipid_category_id</th>
+      <th>lipid_category_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Fatty acyl</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Glycerophospholipid</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Sterol lipid</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Glycerolipid</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>Sphingolipid</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h1>lipid_class</h1>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>lipid_class_id</th>
+      <th>lipid_class_name</th>
+      <th>lipid_category_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>ACar</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>LPA</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>LPE O-</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>LPE</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>LMMPE</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h1>sum_lipid_species</h1>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sum_lipid_species_id</th>
+      <th>sum_lipid_species_name</th>
+      <th>sum_lipid_species_mass</th>
+      <th>lipid_class_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>ACar 3:1</td>
+      <td>215.115758</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>ACar 4:2</td>
+      <td>227.115758</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>ACar 4:1</td>
+      <td>229.131408</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>ACar 5:3</td>
+      <td>239.115758</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>ACar 5:2</td>
+      <td>241.131408</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h1>molecular_lipid_species</h1>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>molecular_lipid_species_id</th>
+      <th>molecular_lipid_species_name</th>
+      <th>sum_lipid_species_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>ACar 3:1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>ACar 4:2</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>ACar 4:1</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>ACar 5:3</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>ACar 5:2</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h1>fragment</h1>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fragment_id</th>
+      <th>fragment_name</th>
+      <th>fragment_mass</th>
+      <th>fragment_sum_formula</th>
+      <th>fragment_polarity</th>
+      <th>adduct_id</th>
+      <th>molecular_lipid_species_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>FA 3:1</td>
+      <td>55.017841</td>
+      <td>C3H3O</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>FA 3:1(+C4H6O3)</td>
+      <td>157.049535</td>
+      <td>C7H9O4</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>-FA 3:1(+HO)</td>
+      <td>144.101905</td>
+      <td>C7H14NO2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>FA 4:2</td>
+      <td>67.017841</td>
+      <td>C4H3O</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>FA 4:2(+C4H6O3)</td>
+      <td>169.049535</td>
+      <td>C8H9O4</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div>

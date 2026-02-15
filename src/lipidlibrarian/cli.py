@@ -34,17 +34,19 @@ def main(parser=ap.ArgumentParser()):
     parser.add_argument(
         "--sql-user",
         type=str,
+        default='alex123',
         help=""
     )
     parser.add_argument(
         "--sql-password",
         type=str,
+        default='alex123',
         help=""
     )
     parser.add_argument(
         "--sql-database",
         type=str,
-        default="ALEX123",
+        default="alex123",
         help=""
     )
     parser.add_argument(
@@ -74,7 +76,7 @@ def main(parser=ap.ArgumentParser()):
         "--cutoff",
         type=int,
         default=0,
-        help="Cutoff the idividual mz query results from the apis, so the output doesn't get too large."
+        help="Cutoff the individual mz query results from the apis, so the output doesn't get too large."
     )
     parser.add_argument(
         "--requery",
@@ -89,7 +91,7 @@ def main(parser=ap.ArgumentParser()):
         nargs='*',
         default=(None if sys.stdin.isatty() else sys.stdin),
         help=(
-            'Lipids to search for. A lipid can either be a name, like "PLPE", a scientific name like "PC(18:1_20:0)",'
+            'Lipids to search for. A lipid can either be a name, like "PLPE" (most trivial names require LipidLynxX), a scientific name like "PC(18:1_20:0)",'
             ' or the mass to charge value with tolerance and either adduct or polarity like "410.243;0.001;+H+,+Na+" '
             'or "816.6477;0.001;pos". You can pass in multiple lipids in quotation marks seperated by spaces, or plain'
             ' text files with one lipid per line.'

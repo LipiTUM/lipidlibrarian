@@ -136,6 +136,12 @@ class SwissLipidsAPI(LipidAPI):
         # If name or level is not valid, do not query but return an empty list
         if name is None or name == "" or not isinstance(name, str) or level not in self.lipid_to_swisslipids_level_map:
             return []
+        
+        if self.goslin_converted_names is not None:
+            swisslipids_identifiers = self.goslin_converted_names[self.goslin_converted_names['goslin_name'] == name]['id'].values
+            for swisslipids_identifier in swisslipids_identifiers:
+                logging.debug(f"SwissLipidsAPI: query_lipid: Found ID {swisslipids_identifier} for lipid {name} in the Goslin parsed SwissLipids lipid name database...")
+                results.extend(self.query_id(swisslipids_identifier))
 
         # convert level to swisslipids level for the query
         swiss_lipids_level = self.lipid_to_swisslipids_level_map[level]
@@ -483,3 +489,6 @@ class SwissLipidsAPI(LipidAPI):
                 lipid.add_reaction(reaction)
 
         return lipid
+
+    def __repr__(self) -> str:
+        return f'SwissLipidsAPI with { 0 if self.goslin_converted_names is None else len(self.goslin_converted_names) } conversions pre-loaded.'

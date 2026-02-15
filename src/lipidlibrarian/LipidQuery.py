@@ -17,7 +17,7 @@ from .lipid import get_all_adducts
 
 class LipidQuery:
 
-    def __init__(self, input_string: str, requeries: int = 0, selected_APIs: set[str] = supported_APIs,
+    def __init__(self, input_string: str, requeries: int = 0, selected_APIs: set[str] = None,
                  method: str = "all", cutoff: int = 0, sql_args: dict = None):
         self.input_string: str = input_string
         self.lipids: list[Lipid] = []
@@ -28,11 +28,17 @@ class LipidQuery:
         self.requeries: int | None = None
         self.cutoff: int | None = None
 
-        for selected_API in selected_APIs:
-            if selected_API not in supported_APIs:
-                logging.warning((f"LipidQuery: API {str(selected_API)} was not found in list "
-                                 f"of all available apis: {supported_APIs}."))
-        self.selected_APIs = selected_APIs
+        if selected_APIs is None:
+            self.selected_APIs = set()
+            self.selected_APIs.update(supported_APIs)
+            self.selected_APIs.add('lipidlibrarian')
+        else:
+            self.selected_APIs = selected_APIs
+            for selected_API in selected_APIs:
+                if selected_API not in supported_APIs:
+                    logging.warning((f"LipidQuery: API {str(selected_API)} was not found in list "
+                                     f"of all available apis: {supported_APIs}. Removing it..."))
+                    self.selected_APIs.remove(selected_API)
 
         self.requeries = int(requeries)
         if cutoff < 0:
@@ -93,34 +99,50 @@ class LipidQuery:
 
         logging.info(f"Querying {self.input_string}...")
 
-        logging.info("Querying SwissLipids...")
-        self.add_lipids(self.APIs['swisslipids'].query(self.query_parameters, cutoff=self.cutoff))
-        logging.info("Querying LipidMaps...")
-        self.add_lipids(self.APIs['lipidmaps'].query(self.query_parameters, cutoff=self.cutoff))
-        logging.info("Querying ALEX123...")
-        self.add_lipids(self.APIs['alex123'].query(self.query_parameters, cutoff=self.cutoff))
+        if 'swisslipids' in self.selected_APIs:
+            logging.info("Querying SwissLipids...")
+            self.add_lipids(self.APIs['swisslipids'].query(self.query_parameters, cutoff=self.cutoff))
+        if 'lipidmaps' in self.selected_APIs:
+            logging.info("Querying LipidMaps...")
+            self.add_lipids(self.APIs['lipidmaps'].query(self.query_parameters, cutoff=self.cutoff))
+        if 'alex123' in self.selected_APIs:
+            logging.info("Querying ALEX123...")
+            self.add_lipids(self.APIs['alex123'].query(self.query_parameters, cutoff=self.cutoff))
 
         for i in range(self.requeries):
             logging.info(f'Executing requery {i}.')
             current_lipids = copy.deepcopy(self.lipids)
             for lipid in current_lipids:
-                logging.info("Requerying SwissLipids...")
-                self.add_lipids(self.APIs['swisslipids'].query(lipid, cutoff=self.cutoff))
-                logging.info("Requerying LipidMaps...")
-                self.add_lipids(self.APIs['lipidmaps'].query(lipid, cutoff=self.cutoff))
-                logging.info("Requerying ALEX123...")
-                self.add_lipids(self.APIs['alex123'].query(lipid, cutoff=self.cutoff))
+                if 'swisslipids' in self.selected_APIs:
+                    logging.info("Requerying SwissLipids...")
+                    self.add_lipids(self.APIs['swisslipids'].query(lipid, cutoff=self.cutoff))
+                if 'lipidmaps' in self.selected_APIs:
+                    logging.info("Requerying LipidMaps...")
+                    self.add_lipids(self.APIs['lipidmaps'].query(lipid, cutoff=self.cutoff))
+                if 'alex123' in self.selected_APIs:
+                    logging.info("Requerying ALEX123...")
+                    self.add_lipids(self.APIs['alex123'].query(lipid, cutoff=self.cutoff))
 
         # final lipid merge
+        logging.info("Pre-merge lipid summary: " +
+                     ", ".join([f"'{l.nomenclature.get_name()}' lvl={l.nomenclature.level} ids={len(l.database_identifiers)}"
+                                for l in self.lipids[:10]]))
         self.merge_lipids()
+        logging.info("Post-merge lipid summary: " +
+                     ", ".join([f"'{l.nomenclature.get_name()}' lvl={l.nomenclature.level} ids={len(l.database_identifiers)}"
+                                for l in self.lipids[:10]]))
 
         for lipid in self.lipids:
-            #logging.info("Querying LipidLibrarian...")
-            #self.add_lipids(self.APIs['lipidlibrarian'].query(lipid, cutoff=self.cutoff))
-            logging.info("Querying LINEX...")
-            self.add_lipids(self.APIs['linex'].query(lipid, cutoff=self.cutoff))
-            logging.info("Querying LION...")
-            self.add_lipids(self.APIs['lion'].query(lipid, cutoff=self.cutoff))
+            if 'lipidlibrarian' in self.selected_APIs:
+                pass
+                #logging.info("Querying LipidLibrarian...")
+                #self.add_lipids(self.APIs['lipidlibrarian'].query(lipid, cutoff=self.cutoff))
+            if 'linex' in self.selected_APIs:
+                logging.info("Querying LINEX...")
+                self.add_lipids(self.APIs['linex'].query(lipid, cutoff=self.cutoff))
+            if 'lion' in self.selected_APIs:
+                logging.info("Querying LION...")
+                self.add_lipids(self.APIs['lion'].query(lipid, cutoff=self.cutoff))
             lipid._query = self.input_string
 
         logging.info(f"Querying {self.input_string} done.")
@@ -132,7 +154,7 @@ class LipidQuery:
             return None
 
         query_parameter = Lipid()
-        source = Source('', Level.level_unknown, 'query_parameter')
+        source = Source('', Level.level_unknown, 'lipidlibrarian')
         if query_input[0:2] == "LM" and 11 < len(query_input) < 15:
             query_parameter.add_database_identifier(DatabaseIdentifier.from_data(
                 'lipidmaps',
@@ -190,7 +212,7 @@ class LipidQuery:
                 Source(
                     query_input,
                     query_parameter.nomenclature.level,
-                    'query_input'
+                    'lipidlibrarian'
                 )
             )
         )
@@ -211,10 +233,65 @@ class LipidQuery:
             self.add_lipid(lipid)
 
     def merge_lipids(self) -> None:
-        temp_lipids = self.lipids
-        self.lipids = []
-        for lipid in temp_lipids:
-            self.add_lipid(lipid)
+        if not self.lipids:
+            return
+
+        # Determine the "query level" if this is a name/id query Lipid
+        target_level: Level | None = None
+        if isinstance(self.query_parameters, Lipid):
+            target_level = self.query_parameters.nomenclature.level
+
+        # If we can't infer a target level (e.g., mz query), do a safe dedupe merge only
+        if target_level is None or target_level == Level.level_unknown:
+            temp = self.lipids
+            self.lipids = []
+            for l in temp:
+                self.add_lipid(l)
+            return
+
+        levels_present = sorted({l.nomenclature.level for l in self.lipids})
+
+        # Choose what to keep based on wether we have lipids with the target level or not
+        exact = [l for l in self.lipids if l.nomenclature.level == target_level]
+        higher = [l for l in self.lipids if l.nomenclature.level > target_level]
+
+        if exact:
+            kept = exact
+            dropped = [l for l in self.lipids if l.nomenclature.level != target_level]
+            keep_desc = f"exact level {target_level}"
+        elif higher:
+            kept = higher
+            dropped = [l for l in self.lipids if l.nomenclature.level <= target_level]
+            keep_desc = f"all higher than {target_level}"
+        else:
+            kept = list(self.lipids)
+            dropped = []
+            keep_desc = "all (no exact/higher)"
+
+        logging.info(
+            f"merge_lipids: target_level={target_level}, levels_present={levels_present}, "
+            f"keep={keep_desc}, kept={len(kept)}, dropped={len(dropped)}"
+        )
+
+        # Deduplicate/merge within kept
+        new_list: list[Lipid] = []
+        for l in kept:
+            merged = False
+            for k in new_list:
+                if k.merge(l):
+                    merged = True
+                    break
+            if not merged:
+                new_list.append(l)
+
+        # Merge dropped into kept when possible
+        for l in dropped:
+            for k in new_list:
+                if k.merge(l):
+                    break
+
+        self.lipids = new_list
+
 
     def __repr__(self):
         return f"Lipid Query for '{self.input_string}' with {len(self.lipids)} results."
