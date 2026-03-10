@@ -40,7 +40,7 @@ class LionAPI(LipidAPI):
         except FileNotFoundError as _:
             self.lion_graph = None
             self.lion_association = None
-            logging.error((
+            logging.warning((
                 f"LionAPI: LION association and/or graph data not found. "
                 f"LION annotation deactivated."
             ))

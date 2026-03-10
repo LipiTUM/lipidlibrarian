@@ -112,7 +112,7 @@ def lynx_init() -> Any | None:
         except ModuleNotFoundError as _:
             converter = None
             lipid_name_conversion_methods.remove('lipidlynxx')
-            logging.error("LipidLynxX: Initializing LipidLynxX failed. Disabling LipidLynxX support.")
+            logging.warning("LipidLynxX: Initializing LipidLynxX failed. Disabling LipidLynxX support.")
     else:
         return None
     os.chdir(current_working_directory)
