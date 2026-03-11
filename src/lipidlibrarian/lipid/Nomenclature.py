@@ -57,6 +57,8 @@ class Nomenclature():
 
     def __init__(self):
         self._query_name: str | None = None
+        self._lipid_category_name: str | None = None
+        self._lipid_class_name: str | None = None
         self._sum_lipid_species_name: str | None = None
         self._structural_lipid_species_name: str | None = None
         self._molecular_lipid_species_name: str | None = None
@@ -171,6 +173,8 @@ class Nomenclature():
     def name(self, s: str) -> None:
         self._query_name = s
         if (sum_lipid_species_name := _convert_level(s, level=Level.sum_lipid_species)) is not None:
+            self._lipid_category_name = _goslin_convert_level(s, level=Level.lipid_category)
+            self._lipid_class_name = _goslin_convert_level(s, level=Level.lipid_class)
             self._sum_lipid_species_name = sum_lipid_species_name
             self._molecular_lipid_species_name = _convert_level(s, level=Level.molecular_lipid_species)
             self._structural_lipid_species_name = _convert_level(s, level=Level.structural_lipid_species)
@@ -178,6 +182,8 @@ class Nomenclature():
         else:
             if (s_alternative := goslin_convert(s)) is not None:
                 s = s_alternative
+                self._lipid_category_name = _goslin_convert_level(s, level=Level.lipid_category)
+                self._lipid_class_name = _goslin_convert_level(s, level=Level.lipid_class)
                 self._sum_lipid_species_name = _convert_level(s, level=Level.sum_lipid_species)
                 self._molecular_lipid_species_name = _convert_level(s, level=Level.molecular_lipid_species)
                 self._structural_lipid_species_name = _convert_level(s, level=Level.structural_lipid_species)
