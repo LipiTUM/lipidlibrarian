@@ -2,6 +2,8 @@
 
 ## Build and Installation Instructions
 
+Make sure you've installed python 3.11 and are using this version to create the virtual environment as well. If you experience slow performance, consider running a local SQL server to serve the ALEX¹²³ database instead of reading it from a file, or disable ALEX¹²³ for your queries.
+
 ### Python Virtual Environment
 
     make install install_optional
@@ -65,7 +67,9 @@ for lipid in query5:
     print(repr(lipid))
 ```
 
-## Run a local ALEX123 SQL Database
+## Run a local ALEX¹²³ SQL Database
+
+The performance of querying the ALEX¹²³ database is quite low, as the whole file has to be parsed into memory first. To alleviate this issue, run a local SQL database to serve the information from ALEX¹²³ to lipidlibrarian:
 
 ```
 podman run --detach --name alex123-sql --env MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=1 --env MARIADB_USER=alex123 --env MARIADB_PASSWORD=alex123 --env MARIADB_DATABASE=alex123 -p 3306:3306  docker.io/library/mariadb:latest
