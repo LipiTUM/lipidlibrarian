@@ -190,7 +190,7 @@ class LipidMapsAPI(LipidAPI):
         try:
             if (monoisotopic_mass := data.get('MASS')) is not None:
                 lipid.add_mass(Mass.from_data(
-                    'monoisotopic',
+                    'monoisotopic mass',
                     float(monoisotopic_mass),
                     source
                 ))
@@ -319,7 +319,7 @@ class LipidMapsAPI(LipidAPI):
 
             if (mass := lipid_data.get('exactmass')) is not None:
                 lipid.add_mass(Mass.from_data(
-                    'monoisotopic',
+                    'monoisotopic mass',
                     float(mass),
                     source
                 ))
@@ -445,7 +445,7 @@ class LipidMapsAPI(LipidAPI):
             adduct_name = entry[1].get('Ion')
             if adduct_name.lower() == 'neutral':
                 lipid.add_mass(Mass.from_data(
-                    'monoisotopic',
+                    'monoisotopic mass',
                     float(entry[1].get('Matched m/z')),
                     source
                 ))
