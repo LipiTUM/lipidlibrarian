@@ -109,6 +109,14 @@ class LipidQuery:
             logging.info("Querying ALEX123...")
             self.add_lipids(self.APIs['alex123'].query(self.query_parameters, cutoff=self.cutoff))
 
+        logging.info("Pre-merge lipid summary: " +
+                ", ".join([f"'{l.nomenclature.get_name()}' lvl={l.nomenclature.level} ids={len(l.database_identifiers)}"
+                        for l in self.lipids[:10]]))
+        self.merge_lipids()
+        logging.info("Post-merge lipid summary: " +
+                     ", ".join([f"'{l.nomenclature.get_name()}' lvl={l.nomenclature.level} ids={len(l.database_identifiers)}"
+                                for l in self.lipids[:10]]))
+
         for i in range(self.requeries):
             logging.info(f'Executing requery {i}.')
             current_lipids = copy.deepcopy(self.lipids)
@@ -123,14 +131,13 @@ class LipidQuery:
                     logging.info("Requerying ALEX123...")
                     self.add_lipids(self.APIs['alex123'].query(lipid, cutoff=self.cutoff))
 
-        # final lipid merge
-        logging.info("Pre-merge lipid summary: " +
-                     ", ".join([f"'{l.nomenclature.get_name()}' lvl={l.nomenclature.level} ids={len(l.database_identifiers)}"
-                                for l in self.lipids[:10]]))
-        self.merge_lipids()
-        logging.info("Post-merge lipid summary: " +
-                     ", ".join([f"'{l.nomenclature.get_name()}' lvl={l.nomenclature.level} ids={len(l.database_identifiers)}"
-                                for l in self.lipids[:10]]))
+            logging.info("Pre-merge lipid summary: " +
+                        ", ".join([f"'{l.nomenclature.get_name()}' lvl={l.nomenclature.level} ids={len(l.database_identifiers)}"
+                                    for l in self.lipids[:10]]))
+            self.merge_lipids()
+            logging.info("Post-merge lipid summary: " +
+                        ", ".join([f"'{l.nomenclature.get_name()}' lvl={l.nomenclature.level} ids={len(l.database_identifiers)}"
+                                    for l in self.lipids[:10]]))
 
         for lipid in self.lipids:
             if 'lipidlibrarian' in self.selected_APIs:
