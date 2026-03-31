@@ -92,7 +92,6 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
     def __init__(self, sql_args: dict = None):
         super().__init__()
         logging.info(f"Alex123API: Connecting to ALEX123 SQL database...")
-        self.db_connector = None
         # self.paramstyle can either be 'pyformat' for pymysql and psycopg2, or qmark for sqlite;
         # see PEP 249: paramstyle
         self.paramstyle = None
@@ -105,9 +104,14 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
             f"{sql_args['user']}:{sql_args['password']}@{sql_args['host']}:{sql_args['port']}/"
             f"{sql_args['database']}"
         )
-        engine = create_engine(url, echo=False)
-        self.db_connector = engine.connect()
-        self.db_type = 'pyformat'
+        self.engine = create_engine(
+            url,
+            echo=False,
+            pool_pre_ping=True,
+            pool_recycle=1800,
+        )
+        with self.engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
         logging.info("Alex123API: Connection to MySQL DB successful.")
 
     def get_sum_lipid_species_by_name(self, names: set[str]) -> pd.DataFrame:
@@ -144,7 +148,9 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
             query = query.format('IN %(sum_lipid_species_names)s')
             params = {'sum_lipid_species_names': tuple(names)}
 
-        result = pd.read_sql(query, self.db_connector,  params=params)
+        with self.engine.connect() as connection:
+            result = pd.read_sql(query, connection,  params=params)
+
         return result
 
     def get_molecular_lipid_species_by_name(self, names: set[str]) -> pd.DataFrame:
@@ -186,7 +192,9 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
             query = query.format('IN %(molecular_lipid_species_names)s')
             params = {'molecular_lipid_species_names': tuple(names)}
 
-        result = pd.read_sql(query, self.db_connector,  params=params)
+        with self.engine.connect() as connection:
+            result = pd.read_sql(query, connection,  params=params)
+
         return result
 
     def get_fragment_by_molecular_lipid_species(self, ids: set[str]) -> pd.DataFrame:
@@ -225,7 +233,9 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
             query = query.format('IN %(molecular_lipid_species_ids)s')
             params = {'molecular_lipid_species_ids': tuple(ids)}
 
-        result = pd.read_sql(query, self.db_connector,  params=params)
+        with self.engine.connect() as connection:
+            result = pd.read_sql(query, connection,  params=params)
+
         return result
 
     def get_molecular_lipid_species_by_mz(self, mz: float, tolerance: float, adducts: list[Adduct]) -> pd.DataFrame:
@@ -265,7 +275,7 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
             "    lca.lipid_category_name "
             "FROM molecular_lipid_species as mls "
             "INNER JOIN ( "
-            "    SELECT unique molecular_lipid_species_id "
+            "    SELECT DISTINCT molecular_lipid_species_id "
             "    FROM molecular_lipid_species AS mls_inner "
             "    JOIN ( "
             "        SELECT sum_lipid_species_id "
@@ -276,7 +286,7 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
             ") AS mls_condition1 "
             "    ON mls_condition1.molecular_lipid_species_id = mls.molecular_lipid_species_id "
             "INNER JOIN ( "
-            "    SELECT unique "
+            "    SELECT DISTINCT "
             "        molecular_lipid_species_id "
             "    FROM "
             "        fragment as frg_inner "
@@ -324,7 +334,9 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
                       'adducts': tuple(adducts)
             }
 
-        result = pd.read_sql(query, self.db_connector,  params=params)
+        with self.engine.connect() as connection:
+            result = pd.read_sql(query, connection,  params=params)
+
         return result
 
     def get_sum_lipid_species_by_mz(self, mz: float, tolerance: float, adducts: list[Adduct]) -> pd.DataFrame:
@@ -362,7 +374,7 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
             "    lca.lipid_category_name "
             "FROM molecular_lipid_species as mls "
             "INNER JOIN ( "
-            "    SELECT unique molecular_lipid_species_id "
+            "    SELECT DISTINCT molecular_lipid_species_id "
             "    FROM molecular_lipid_species AS mls_inner "
             "    JOIN ( "
             "        SELECT sum_lipid_species_id "
@@ -373,7 +385,7 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
             ") AS mls_condition1 "
             "    ON mls_condition1.molecular_lipid_species_id = mls.molecular_lipid_species_id "
             "INNER JOIN ( "
-            "    SELECT unique "
+            "    SELECT DISTINCT "
             "        molecular_lipid_species_id "
             "    FROM "
             "        fragment as frg_inner "
@@ -421,7 +433,9 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
                       'adducts': tuple(adducts)
             }
 
-        result = pd.read_sql(query, self.db_connector,  params=params)
+        with self.engine.connect() as connection:
+            result = pd.read_sql(query, connection,  params=params)
+
         return result
 
     def get_fragment_by_mz(self, mz: float, tolerance: float, adducts: list[Adduct]) -> pd.DataFrame:
@@ -485,7 +499,9 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
                       'adducts': tuple(adducts)
             }
 
-        result = pd.read_sql(query, self.db_connector,  params=params)
+        with self.engine.connect() as connection:
+            result = pd.read_sql(query, connection,  params=params)
+
         return result
 
 
@@ -502,6 +518,7 @@ class Alex123DBConnectorHDF(Alex123DBConnector):
     def __init__(self, hdf_path: str):
         super().__init__()
         self.hdf_path = str(hdf_path)
+        self._table_cache: dict[str, pd.DataFrame] = {}
         logging.info("Alex123API: Using lazy HDF5 backend.")
 
     def get_table_names(self) -> list[str]:
@@ -528,8 +545,11 @@ class Alex123DBConnectorHDF(Alex123DBConnector):
         """
         WARNING: Loads ONE table fully into RAM.
         """
-        with pd.HDFStore(self.hdf_path, "r") as store:
-            return store[table_name]
+        if table_name not in self._table_cache:
+            with pd.HDFStore(self.hdf_path, "r") as store:
+                df = store[table_name]
+            self._table_cache[table_name] = df
+        return self._table_cache[table_name]
 
     def get_sum_lipid_species_by_name(self, names: set[str]) -> pd.DataFrame:
         results = self.get_database_table('sum_lipid_species')[
@@ -771,6 +791,11 @@ class Alex123API(LipidAPI):
 
         results = self.database_connector.get_molecular_lipid_species_by_name({molecular_lipid_species_name, sum_lipid_species_name})
 
+        all_fragment_ids = set(results.molecular_lipid_species_id)
+        all_results_fragments = self.database_connector.get_fragment_by_molecular_lipid_species(
+            all_fragment_ids
+        )
+
         for _, result in results.iterrows():
             lipid = Lipid()
             lipid.nomenclature.name = molecular_lipid_species_name
@@ -798,12 +823,10 @@ class Alex123API(LipidAPI):
                 source
             ))
 
-            results_fragments = self.database_connector.get_fragment_by_molecular_lipid_species(
-                set(result.molecular_lipid_species_id)
-                if isinstance(result.molecular_lipid_species_id, Iterable)
-                else {result.molecular_lipid_species_id}
-            )
-            for _, result_fragment in results_fragments.iterrows():
+            result_fragments = all_results_fragments[
+                all_results_fragments.molecular_lipid_species_id == result.molecular_lipid_species_id
+            ]
+            for _, result_fragment in result_fragments.iterrows():
                 adduct = copy.deepcopy(get_adduct(result_fragment.adduct_name))
                 adduct.add_mass(Mass.from_data(
                     'monoisotopic mass',
