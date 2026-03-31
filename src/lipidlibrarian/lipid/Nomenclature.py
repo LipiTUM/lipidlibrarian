@@ -1,3 +1,6 @@
+import re
+import logging
+
 from typing import Iterable
 
 from pygoslin.domain.LipidLevel import LipidLevel
@@ -123,8 +126,19 @@ class Nomenclature():
 
         if result is None:
             return ''
+        
+        if nomenclature_flavor == 'swisslipids':
+            if result.startswith('ST 27:1/'):
+                result = result.replace('ST 27:1/', 'CE(') + ')'
+            
+            result = re.sub(r'(?<!\d)(\d{1,2}):(\d{1,2});O3', r't\1:\2', result)
+            result = re.sub(r'(?<!\d)(\d{1,2}):(\d{1,2});O2', r'd\1:\2', result)
+            result = re.sub(r'(?<!\d)(\d{1,2}):(\d{1,2});O1', r'm\1:\2', result)
+            result = re.sub(r'(?<!\d)(\d{1,2}):(\d{1,2});O', r'm\1:\2', result)
+            
+            logging.debug(f'Nomenclature: Converted {self._query_name} on level {level} to {result} for swisslipids')
 
-        if nomenclature_flavor == 'lipidmaps':
+        elif nomenclature_flavor == 'lipidmaps':
             if (lynx_result := lynx_convert(result)) is not None:
                 result = lynx_result
 
@@ -134,8 +148,12 @@ class Nomenclature():
                     result = result[1:]
                 elif level == Level.molecular_lipid_species:
                     result = self.lipid_class_abbreviation[1:] + '(' + self.fatty_acids[0] + '/0:0)'
+            elif result.startswith('ST 27:1/'):
+                result = result.replace('ST 27:1/', 'CE ')
 
-        if nomenclature_flavor == 'alex123':
+            logging.debug(f'Nomenclature: Converted {self._query_name} on level {level} to {result} for lipidmaps')
+
+        elif nomenclature_flavor == 'alex123':
             if ' O-' in result:
                 result = result.split(' O-')
                 result[1] = result[1].replace('_', '-')
@@ -146,13 +164,6 @@ class Nomenclature():
                 result = str.join(' P-', result)
             else:
                 result = result.replace('_', '-')
-
-            result = result.replace(';O5', ';5')
-            result = result.replace(';O4', ';4')
-            result = result.replace(';O3', ';3')
-            result = result.replace(';O2', ';2')
-            result = result.replace(';O1', ';1')
-            result = result.replace(';O', ';1')
 
             if result == 'ST 27:1;O':
                 result = 'Cholesterol'
@@ -166,6 +177,18 @@ class Nomenclature():
                 result = result.replace('TG ', 'TAG ')
             elif result.startswith('FA '):
                 result = result.replace('FA ', 'NEFA ')
+            
+            result = result.replace(';O5', ';5')
+            result = result.replace(';O4', ';4')
+            result = result.replace(';O3', ';3')
+            result = result.replace(';O2', ';2')
+            result = result.replace(';O1', ';1')
+            result = result.replace(';O', ';1')
+
+            logging.debug(f'Nomenclature: Converted {self._query_name} on level {level} to {result} for alex123')
+
+        else:
+            logging.debug(f'Nomenclature: Converted {self._query_name} on level {level} to {result}')
 
         return result
 

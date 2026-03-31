@@ -3,6 +3,7 @@ from lipidlibrarian.api.Alex123API import Alex123API
 from lipidlibrarian.api.Alex123API import is_sql_reachable
 from lipidlibrarian.api.LipidAPI import LipidAPI
 from lipidlibrarian.lipid import get_adducts
+from lipidlibrarian.lipid.Lipid import Lipid
 from lipidlibrarian.lipid.Nomenclature import Level
 
 
@@ -52,7 +53,10 @@ def lipid_name_test_cases():
 
 @pytest.mark.parametrize("lipid_class,lipid_level,lipid_name,expects", list(lipid_name_test_cases()))
 def test_query_name(alex123_api, lipid_class, lipid_level, lipid_name, expects):
-    results = alex123_api.query_name(lipid_name, level=lipid_level)
+    alex123_query_name_lipid = Lipid()
+    alex123_query_name_lipid.nomenclature.name = lipid_name
+
+    results = alex123_api.query_lipid(alex123_query_name_lipid)
 
     found_alex123_results = False
     found_alex123_fragments = False

@@ -64,6 +64,7 @@ class SwissLipidsAPI(LipidAPI):
             results.extend(self.query_id(lipidmaps_identifier.identifier))
 
         if self.goslin_converted_names is not None:
+            logging.debug(f"SwissLipidsAPI: query_lipid: Searching for lipid {lipid.nomenclature.get_name()} in the Goslin parsed SwissLipids lipid name database...")
             swisslipids_identifiers = self.goslin_converted_names[self.goslin_converted_names['goslin_name'] == lipid.nomenclature.get_name()]['id'].values
             for swisslipids_identifier in swisslipids_identifiers:
                 logging.debug(f"SwissLipidsAPI: query_lipid: Found ID {swisslipids_identifier} for lipid {lipid.nomenclature.get_name()} in the Goslin parsed SwissLipids lipid name database...")
@@ -132,16 +133,11 @@ class SwissLipidsAPI(LipidAPI):
 
     def query_name(self, name: str, level: Level = None) -> list[Lipid]:
         logging.debug(f"SwissLipidsAPI: query_name: Querying lipid name '{name}'.")
+
         results = []
         # If name or level is not valid, do not query but return an empty list
         if name is None or name == "" or not isinstance(name, str) or level not in self.lipid_to_swisslipids_level_map:
             return []
-        
-        if self.goslin_converted_names is not None:
-            swisslipids_identifiers = self.goslin_converted_names[self.goslin_converted_names['goslin_name'] == name]['id'].values
-            for swisslipids_identifier in swisslipids_identifiers:
-                logging.debug(f"SwissLipidsAPI: query_lipid: Found ID {swisslipids_identifier} for lipid {name} in the Goslin parsed SwissLipids lipid name database...")
-                results.extend(self.query_id(swisslipids_identifier))
 
         # convert level to swisslipids level for the query
         swiss_lipids_level = self.lipid_to_swisslipids_level_map[level]

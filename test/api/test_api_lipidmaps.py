@@ -3,6 +3,7 @@ from unittest.mock import patch
 from lipidlibrarian.api.LipidMapsAPI import LipidMapsAPI
 from lipidlibrarian.api.LipidAPI import LipidAPI
 from lipidlibrarian.lipid import get_adducts
+from lipidlibrarian.lipid.Lipid import Lipid
 from lipidlibrarian.lipid.Nomenclature import Level
 from test.mock_http_helper import load_or_record_response
 
@@ -80,35 +81,37 @@ def test_query_name(lipidmaps_api, lipid_class, lipid_level, lipid_name, expects
     with patch.object(LipidAPI, "execute_http_query", autospec=True) as mock_exec:
         mock_exec.side_effect = side_effect
 
-        results = lipidmaps_api.query_name(lipid_name, level=lipid_level)
+        lipidmaps_query_name_lipid = Lipid()
+        lipidmaps_query_name_lipid.nomenclature.name = lipid_name
+
+        results = lipidmaps_api.query_lipid(lipidmaps_query_name_lipid)
 
         found_lipidmaps_results = False
+        found_lipidmaps_result_correct_level = False
         found_lipidmaps_mass = False
-        found_lipidmaps_adducts = False
         found_lipidmaps_smiles = False
         found_lipidmaps_inchi = False
 
         for result in results:
             if result.nomenclature.level <= lipid_level:
                 found_lipidmaps_results = True
+                if result.nomenclature.level == lipid_level:
+                    found_lipidmaps_result_correct_level = True
                 for mass in result.masses:
                     for source in mass.sources:
                         if source.source == 'lipidmaps':
                             found_lipidmaps_mass = True
-                for adduct in result.adducts:
-                    for source in adduct.sources:
+                for structure_identifier in result.nomenclature.structure_identifiers:
+                    for source in structure_identifier.sources:
                         if source.source == 'lipidmaps':
-                            found_lipidmaps_adducts = True
-                for database_identifier in result.database_identifiers:
-                    for source in database_identifier.sources:
-                        if source.source == 'lipidmaps':
-                            if database_identifier.identifier == 'smiles':
+                            if structure_identifier.structure_type == 'smiles':
                                 found_lipidmaps_smiles = True
-                            if database_identifier.identifier == 'inchi':
+                            if structure_identifier.structure_type == 'inchi':
                                 found_lipidmaps_inchi = True
 
         if expects['has_lipidmaps_results']:
             assert found_lipidmaps_results
+            assert found_lipidmaps_result_correct_level
         else:
             assert not found_lipidmaps_results
 
@@ -116,11 +119,6 @@ def test_query_name(lipidmaps_api, lipid_class, lipid_level, lipid_name, expects
             assert found_lipidmaps_mass
         else:
             assert not found_lipidmaps_mass
-
-        if expects['has_lipidmaps_adducts']:
-            assert found_lipidmaps_adducts
-        else:
-            assert not found_lipidmaps_adducts
 
         if expects['has_lipidmaps_smiles']:
             assert found_lipidmaps_smiles
