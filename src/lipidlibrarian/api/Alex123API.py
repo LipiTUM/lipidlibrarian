@@ -746,7 +746,7 @@ class Alex123API(LipidAPI):
             for _, result_fragment in result_fragments.iterrows():
                 adduct = copy.deepcopy(get_adduct(result_fragment.adduct_name))
                 adduct.add_mass(Mass.from_data(
-                    'exact',
+                    'monoisotopic mass',
                     round(float(result.sum_lipid_species_mass) + float(adduct.adduct_mass), 6),
                     source
                 ))
@@ -754,7 +754,7 @@ class Alex123API(LipidAPI):
                 fragment.name = result_fragment.fragment_name
                 fragment.sum_formula = result_fragment.fragment_sum_formula
                 fragment.add_mass(Mass.from_data(
-                    'exact',
+                    'monoisotopic mass',
                     round(float(result_fragment.fragment_mass), 6),
                     source
                 ))
@@ -846,7 +846,7 @@ class Alex123API(LipidAPI):
                 for _, result_fragment in results_fragments.iterrows():
                     adduct = copy.deepcopy(get_adduct(result_fragment.adduct_name))
                     adduct.add_mass(Mass.from_data(
-                        'mass',
+                        'monoisotopic mass',
                         round(float(result.sum_lipid_species_mass) + float(adduct.adduct_mass), 6),
                         source
                     ))
@@ -854,7 +854,62 @@ class Alex123API(LipidAPI):
                     fragment.name = result_fragment.fragment_name
                     fragment.sum_formula = result_fragment.fragment_sum_formula
                     fragment.add_mass(Mass.from_data(
-                        'mass',
+                        'monoisotopic mass',
+                        round(float(result_fragment.fragment_mass), 6),
+                        source
+                    ))
+                    adduct.add_fragment(fragment)
+                    lipid.add_adduct(adduct)
+
+                lipids.append(lipid)
+
+            alex123_name = alex123_name_conversion_lipid.nomenclature.get_name(level=Level.sum_lipid_species, nomenclature_flavor='alex123')
+            results = self.database_connector.get_molecular_lipid_species_by_name({alex123_name})
+
+            for _, result in results.iterrows():
+                lipid = Lipid()
+                lipid.nomenclature.name = name
+                source = Source(
+                    lipid.nomenclature.get_name(nomenclature_flavor='alex123'),
+                    lipid.nomenclature.level,
+                    'alex123'
+                )
+
+                lipid.nomenclature.add_synonym(Synonym.from_data(
+                    result.molecular_lipid_species_name,
+                    'result',
+                    source
+                ))
+                lipid.nomenclature.lipid_category = result.lipid_category_name
+                lipid.nomenclature.lipid_class = result.lipid_class_name
+                lipid.add_database_identifier(DatabaseIdentifier.from_data(
+                    'alex123',
+                    result.molecular_lipid_species_name,
+                    source
+                ))
+                lipid.add_mass(Mass.from_data(
+                    'monoisotopic mass',
+                    float(result.sum_lipid_species_mass),
+                    source
+                ))
+
+                results_fragments = self.database_connector.get_fragment_by_molecular_lipid_species(
+                    set(result.molecular_lipid_species_id)
+                    if isinstance(result.molecular_lipid_species_id, Iterable)
+                    else {result.molecular_lipid_species_id}
+                )
+                for _, result_fragment in results_fragments.iterrows():
+                    adduct = copy.deepcopy(get_adduct(result_fragment.adduct_name))
+                    adduct.add_mass(Mass.from_data(
+                        'monoisotopic mass',
+                        round(float(result.sum_lipid_species_mass) + float(adduct.adduct_mass), 6),
+                        source
+                    ))
+                    fragment = Fragment()
+                    fragment.name = result_fragment.fragment_name
+                    fragment.sum_formula = result_fragment.fragment_sum_formula
+                    fragment.add_mass(Mass.from_data(
+                        'monoisotopic mass',
                         round(float(result_fragment.fragment_mass), 6),
                         source
                     ))
