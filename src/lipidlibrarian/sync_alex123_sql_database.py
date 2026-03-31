@@ -1,14 +1,60 @@
 import argparse
-import pandas as pd
 import sqlalchemy
+from sqlalchemy import text
 from importlib.resources import files
 from lipidlibrarian.api.Alex123API import Alex123DBConnectorHDF
+
+
+PRIMARY_KEYS = {
+    "adduct":                   "adduct_id",
+    "lipid_category":           "lipid_category_id",
+    "lipid_class":              "lipid_class_id",
+    "sum_lipid_species":        "sum_lipid_species_id",
+    "molecular_lipid_species":  "molecular_lipid_species_id",
+    "fragment":                 "fragment_id",
+}
+
+# Secondary indexes: (table, index_name, column(s))
+SECONDARY_INDEXES = [
+    ("fragment", "idx_frg_mls",  "molecular_lipid_species_id"),
+    ("fragment", "idx_frg_adt",  "adduct_id"),
+    ("fragment", "idx_frg_mass", "fragment_mass"),
+
+    ("molecular_lipid_species", "idx_mls_sls",  "sum_lipid_species_id"),
+    ("molecular_lipid_species", "idx_mls_name", "molecular_lipid_species_name"),
+
+    ("sum_lipid_species", "idx_sls_mass", "sum_lipid_species_mass"),
+    ("sum_lipid_species", "idx_sls_name", "sum_lipid_species_name"),
+    ("sum_lipid_species", "idx_sls_cls",  "lipid_class_id"),
+
+    ("lipid_class", "idx_cls_cat", "lipid_category_id"),
+
+    ("adduct", "idx_adt_name", "adduct_name"),
+]
 
 
 def is_sql_db_empty(engine) -> bool:
     inspector = sqlalchemy.inspect(engine)
     tables = inspector.get_table_names()
     return len(tables) == 0
+
+
+def add_primary_keys(engine) -> None:
+    with engine.begin() as conn:
+        for table, pk_col in PRIMARY_KEYS.items():
+            print(f"  Adding primary key on {table}({pk_col})...")
+            conn.execute(text(
+                f"ALTER TABLE `{table}` ADD PRIMARY KEY (`{pk_col}`)"
+            ))
+
+
+def add_secondary_indexes(engine) -> None:
+    with engine.begin() as conn:
+        for table, index_name, column in SECONDARY_INDEXES:
+            print(f"  Creating index {index_name} on {table}({column})...")
+            conn.execute(text(
+                f"CREATE INDEX `{index_name}` ON `{table}` (`{column}`)"
+            ))
 
 
 def sync_hdf5_to_sql(sql_url: str):
@@ -37,6 +83,12 @@ def sync_hdf5_to_sql(sql_url: str):
                 chunksize=chunksize,
             )
             first = False
+    
+    print("Adding primary keys...")
+    add_primary_keys(engine)
+
+    print("Creating secondary indexes...")
+    add_secondary_indexes(engine)
 
     print("Successfully populated SQL database.")
 
