@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import patch
 from lipidlibrarian.api.SwissLipidsAPI import SwissLipidsAPI
 from lipidlibrarian.api.LipidAPI import LipidAPI
+from lipidlibrarian.lipid.Lipid import Lipid
 from lipidlibrarian.lipid.Nomenclature import Level
 from test.mock_http_helper import load_or_record_response
 
@@ -67,9 +68,13 @@ def test_query_name(swisslipids_api, lipid_class, lipid_level, lipid_name, expec
     with patch.object(LipidAPI, "execute_http_query", autospec=True) as mock_exec:
         mock_exec.side_effect = side_effect
 
-        results = swisslipids_api.query_name(lipid_name, level=lipid_level)
+        swisslipids_query_name_lipid = Lipid()
+        swisslipids_query_name_lipid.nomenclature.name = lipid_name
+
+        results = swisslipids_api.query_lipid(swisslipids_query_name_lipid)
 
         found_swisslipids_results = False
+        found_swisslipids_result_correct_level = False
         found_swisslipids_mass = False
         found_swisslipids_adducts = False
         found_swisslipids_reactions = False
@@ -77,6 +82,8 @@ def test_query_name(swisslipids_api, lipid_class, lipid_level, lipid_name, expec
         for result in results:
             if result.nomenclature.level <= lipid_level:
                 found_swisslipids_results = True
+                if result.nomenclature.level == lipid_level:
+                    found_swisslipids_result_correct_level = True
                 for mass in result.masses:
                     for source in mass.sources:
                         if source.source == 'swisslipids':
@@ -92,6 +99,7 @@ def test_query_name(swisslipids_api, lipid_class, lipid_level, lipid_name, expec
 
         if expects['has_swisslipids_results']:
             assert found_swisslipids_results
+            assert found_swisslipids_result_correct_level
         else:
             assert not found_swisslipids_results
 

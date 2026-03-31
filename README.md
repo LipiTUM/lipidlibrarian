@@ -78,3 +78,12 @@ sync_alex123_sql_database --sql mysql+pymysql://alex123:alex123@127.0.0.1:3306/a
 
 lipidlibrarian --sql --sql-host 127.0.0.1 --sql-port 3306 --sql-user alex123 --sql-password alex123 --sql-database alex123 "PC(18:1_20:0)"
 ```
+
+or alternatively:
+
+```
+mkdir -p data/alex123/sql
+gdown 1K5-PnK9HEA5L0Y79CaLgFMKOQGddDSgi -O data/alex123/sql/alex123_db.sql
+
+podman  run --detach --name alex123-sql --env MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=1 --env MARIADB_USER=alex123 --env MARIADB_PASSWORD=alex123 --env MARIADB_DATABASE=alex123 -p 3306:3306 -v ./data/alex123/sql:/docker-entrypoint-initdb.d:O  mariadb:latest
+```

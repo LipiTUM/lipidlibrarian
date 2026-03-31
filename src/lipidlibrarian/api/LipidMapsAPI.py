@@ -52,7 +52,8 @@ class LipidMapsAPI(LipidAPI):
             logging.debug(f"LipidMapsAPI: query_lipid: Found ID {lipidmaps_identifier} for lipid {lipid.nomenclature.get_name()} in previous queries...")
             results.extend(self.query_id(lipidmaps_identifier.identifier))
 
-        if self.goslin_converted_names is not None and lipid.nomenclature.level == Level.isomeric_lipid_species:
+        if self.goslin_converted_names is not None:
+            logging.debug(f"LipidMapsAPI: query_lipid: Searching for lipid {lipid.nomenclature.get_name()} in the Goslin parsed LIPID MAPS lipid name database...")
             lipidmaps_identifiers = self.goslin_converted_names[self.goslin_converted_names['goslin_name'] == lipid.nomenclature.get_name(level=Level.isomeric_lipid_species)]['id'].values
             for lipidmaps_identifier in lipidmaps_identifiers:
                 logging.debug(f"LipidMapsAPI: query_lipid: Found ID {lipidmaps_identifier} for lipid {lipid.nomenclature.get_name()} in the Goslin parsed LIPID MAPS lipid name database...")
@@ -99,12 +100,6 @@ class LipidMapsAPI(LipidAPI):
         if level == Level.level_unknown or level == Level.structural_lipid_species:
             results.extend(self._query_compound_rest_api(name, 'abbrev_chains'))
         if level == Level.level_unknown or level == Level.isomeric_lipid_species:
-            if self.goslin_converted_names is not None:
-                lipidmaps_identifiers = self.goslin_converted_names[self.goslin_converted_names['goslin_name'] == name]['id'].values
-                for lipidmaps_identifier in lipidmaps_identifiers:
-                    logging.debug(f"LipidMapsAPI: query_lipid: Found ID {lipidmaps_identifier} for lipid {name} in the Goslin parsed LIPID MAPS lipid name database...")
-                    results.extend(self.query_id(lipidmaps_identifier))
-
             results.extend(self._query_lmsd_search_api([('Name', name)]))
 
         logging.debug(f"LipidMapsAPI: query_name: Found {len(results)} lipid(s).")
@@ -264,6 +259,8 @@ class LipidMapsAPI(LipidAPI):
             lipid = Lipid()
 
             if (lipid_name := lipid_data.get('name')) is not None:
+                lipid_name = lipid_name.replace(' [iso2]', '')
+                lipid_name = lipid_name.replace(' [iso6]', '')
                 lipid.nomenclature.name = lipid_name
                 source = Source(lipid_name, lipid.nomenclature.level, 'lipidmaps')
                 lipid.nomenclature.add_synonym(Synonym.from_data(
@@ -454,7 +451,7 @@ class LipidMapsAPI(LipidAPI):
                 adduct = copy.deepcopy(get_adduct(adduct_name))
                 if adduct is not None:
                     adduct.add_mass(Mass.from_data(
-                        'mass',
+                        'monoisotopic mass',
                         float(entry[1].get('Matched m/z')),
                         source
                     ))
