@@ -746,7 +746,7 @@ class Alex123API(LipidAPI):
             for _, result_fragment in result_fragments.iterrows():
                 adduct = copy.deepcopy(get_adduct(result_fragment.adduct_name))
                 adduct.add_mass(Mass.from_data(
-                    'monoisotopic',
+                    'monoisotopic mass',
                     round(float(result.sum_lipid_species_mass) + float(adduct.adduct_mass), 6),
                     source
                 ))
@@ -754,7 +754,7 @@ class Alex123API(LipidAPI):
                 fragment.name = result_fragment.fragment_name
                 fragment.sum_formula = result_fragment.fragment_sum_formula
                 fragment.add_mass(Mass.from_data(
-                    'monoisotopic',
+                    'monoisotopic mass',
                     round(float(result_fragment.fragment_mass), 6),
                     source
                 ))
@@ -846,7 +846,7 @@ class Alex123API(LipidAPI):
                 for _, result_fragment in results_fragments.iterrows():
                     adduct = copy.deepcopy(get_adduct(result_fragment.adduct_name))
                     adduct.add_mass(Mass.from_data(
-                        'mass',
+                        'monoisotopic mass',
                         round(float(result.sum_lipid_species_mass) + float(adduct.adduct_mass), 6),
                         source
                     ))
@@ -854,7 +854,7 @@ class Alex123API(LipidAPI):
                     fragment.name = result_fragment.fragment_name
                     fragment.sum_formula = result_fragment.fragment_sum_formula
                     fragment.add_mass(Mass.from_data(
-                        'mass',
+                        'monoisotopic mass',
                         round(float(result_fragment.fragment_mass), 6),
                         source
                     ))
@@ -888,7 +888,7 @@ class Alex123API(LipidAPI):
                     source
                 ))
                 lipid.add_mass(Mass.from_data(
-                    'neutral',
+                    'monoisotopic mass',
                     float(result.sum_lipid_species_mass),
                     source
                 ))
@@ -901,7 +901,7 @@ class Alex123API(LipidAPI):
                 for _, result_fragment in results_fragments.iterrows():
                     adduct = copy.deepcopy(get_adduct(result_fragment.adduct_name))
                     adduct.add_mass(Mass.from_data(
-                        'mass',
+                        'monoisotopic mass',
                         round(float(result.sum_lipid_species_mass) + float(adduct.adduct_mass), 6),
                         source
                     ))
@@ -909,7 +909,7 @@ class Alex123API(LipidAPI):
                     fragment.name = result_fragment.fragment_name
                     fragment.sum_formula = result_fragment.fragment_sum_formula
                     fragment.add_mass(Mass.from_data(
-                        'mass',
+                        'monoisotopic mass',
                         round(float(result_fragment.fragment_mass), 6),
                         source
                     ))
