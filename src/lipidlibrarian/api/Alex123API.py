@@ -159,6 +159,9 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
         # merge with class
         # merge with category
 
+        if not names:
+            return None
+
         query = (
             "SELECT "
             "    mls.molecular_lipid_species_id, "
@@ -200,6 +203,9 @@ class Alex123DBConnectorSQL(Alex123DBConnector):
     def get_fragment_by_molecular_lipid_species(self, ids: set[str]) -> pd.DataFrame:
         # get all fragments where molecular species id in ids
         # merge with adducts
+
+        if not ids:
+            return None
 
         query = (
             "SELECT "
@@ -722,6 +728,9 @@ class Alex123API(LipidAPI):
 
         results = self.database_connector.get_molecular_lipid_species_by_mz(mz, tolerance, adducts)
 
+        if results is None or results.empty:
+            return lipids
+
         if cutoff > 0:
             results = results.sample(min(cutoff, len(results.index)), replace=False)
 
@@ -790,6 +799,9 @@ class Alex123API(LipidAPI):
             molecular_lipid_species_name = sum_lipid_species_name
 
         results = self.database_connector.get_molecular_lipid_species_by_name({molecular_lipid_species_name, sum_lipid_species_name})
+
+        if results is None or results.empty:
+            return lipids
 
         all_fragment_ids = set(results.molecular_lipid_species_id)
         all_results_fragments = self.database_connector.get_fragment_by_molecular_lipid_species(
