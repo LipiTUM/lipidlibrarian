@@ -257,14 +257,14 @@ LIPID_NAME_TEST_MATRIX = {
             },
         },
     },
-    "ST 27:1": {
+    "SE 27:1": {
         Level.structural_lipid_species: {
-            "name": "ST 27:1/18:1",
+            "name": "SE 27:1/18:1",
             "expects": {
                 "parse_lipidlynxx": True,
                 "parse_goslin": True,
-                "has_alex123_results": False,
-                "has_alex123_fragments": False,
+                "has_alex123_results": True,
+                "has_alex123_fragments": True,
                 "has_swisslipids_results": True,
                 "has_swisslipids_mass": True,
                 "has_swisslipids_adducts": True,
@@ -278,12 +278,12 @@ LIPID_NAME_TEST_MATRIX = {
             },
         },
         Level.isomeric_lipid_species: {
-            "name": "ST 27:1/18:1(9Z)",
+            "name": "SE 27:1/18:1(9Z)",
             "expects": {
                 "parse_lipidlynxx": True,
                 "parse_goslin": True,
-                "has_alex123_results": False,
-                "has_alex123_fragments": False,
+                "has_alex123_results": True,
+                "has_alex123_fragments": True,
                 "has_swisslipids_results": True,  # SLM:000000508 # swisslipids issue
                 "has_swisslipids_mass": True,
                 "has_swisslipids_adducts": True,

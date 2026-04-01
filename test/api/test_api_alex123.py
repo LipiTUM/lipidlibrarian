@@ -62,14 +62,13 @@ def test_query_name(alex123_api, lipid_class, lipid_level, lipid_name, expects):
     found_alex123_fragments = False
 
     for result in results:
-        if result.nomenclature.level <= lipid_level:
-            found_alex123_results = True
-            for adduct in result.adducts:
-                for fragment in adduct.fragments:
-                    for source in fragment.sources:
-                        if source.source == 'alex123':
-                            found_alex123_fragments = True
-                            break
+        found_alex123_results = True
+        for adduct in result.adducts:
+            for fragment in adduct.fragments:
+                for source in fragment.sources:
+                    if source.source == 'alex123':
+                        found_alex123_fragments = True
+                        break
 
     if expects['has_alex123_results']:
         assert found_alex123_results

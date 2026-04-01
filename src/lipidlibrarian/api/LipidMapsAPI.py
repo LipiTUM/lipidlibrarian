@@ -54,7 +54,7 @@ class LipidMapsAPI(LipidAPI):
 
         if self.goslin_converted_names is not None:
             logging.debug(f"LipidMapsAPI: query_lipid: Searching for lipid {lipid.nomenclature.get_name()} in the Goslin parsed LIPID MAPS lipid name database...")
-            lipidmaps_identifiers = self.goslin_converted_names[self.goslin_converted_names['goslin_name'] == lipid.nomenclature.get_name(level=Level.isomeric_lipid_species)]['id'].values
+            lipidmaps_identifiers = self.goslin_converted_names[self.goslin_converted_names['goslin_name'] == lipid.nomenclature.get_name()]['id'].values
             for lipidmaps_identifier in lipidmaps_identifiers:
                 logging.debug(f"LipidMapsAPI: query_lipid: Found ID {lipidmaps_identifier} for lipid {lipid.nomenclature.get_name()} in the Goslin parsed LIPID MAPS lipid name database...")
                 results.extend(self.query_id(lipidmaps_identifier))
