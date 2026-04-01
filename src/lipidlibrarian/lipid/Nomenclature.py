@@ -18,6 +18,9 @@ from .Synonym import Synonym
 def _convert_level(s: str, level: Level) -> str | None:
     converted_lipid = _goslin_convert_level(s, level)
     if converted_lipid is None:
+        # skip LipidLynxX for Sterol Lipids
+        if s.startswith('ST') or s.startswith('ST'):
+            return converted_lipid
         converted_lipid = _lynx_convert_level(s, level)
     return converted_lipid
 
@@ -139,7 +142,7 @@ class Nomenclature():
             logging.debug(f'Nomenclature: Converted {self._query_name} on level {level} to {result} for swisslipids')
 
         elif nomenclature_flavor == 'lipidmaps':
-            if (lynx_result := lynx_convert(result)) is not None:
+            if not result.startswith('ST') and (lynx_result := lynx_convert(result)) is not None:
                 result = lynx_result
 
             # LPA, LPC, LPE, LPI, LPG, LPS are represented as PA, PC, PE, PI, PG, PS in LIPID MAPS
@@ -195,15 +198,15 @@ class Nomenclature():
     @name.setter
     def name(self, s: str) -> None:
         self._query_name = s
-        if (sum_lipid_species_name := _convert_level(s, level=Level.sum_lipid_species)) is not None:
+        if (sum_lipid_species_name := _goslin_convert_level(s, level=Level.sum_lipid_species)) is not None:
             self._lipid_category_name = _goslin_convert_level(s, level=Level.lipid_category)
             self._lipid_class_name = _goslin_convert_level(s, level=Level.lipid_class)
             self._sum_lipid_species_name = sum_lipid_species_name
-            self._molecular_lipid_species_name = _convert_level(s, level=Level.molecular_lipid_species)
-            self._structural_lipid_species_name = _convert_level(s, level=Level.structural_lipid_species)
-            self._isomeric_lipid_species_name = _convert_level(s, level=Level.isomeric_lipid_species)
+            self._molecular_lipid_species_name = _goslin_convert_level(s, level=Level.molecular_lipid_species)
+            self._structural_lipid_species_name = _goslin_convert_level(s, level=Level.structural_lipid_species)
+            self._isomeric_lipid_species_name = _goslin_convert_level(s, level=Level.isomeric_lipid_species)
         else:
-            if (s_alternative := goslin_convert(s)) is not None:
+            if (s_alternative := _lynx_convert_level(s, level=Level.sum_lipid_species)) is not None:
                 s = s_alternative
                 self._lipid_category_name = _goslin_convert_level(s, level=Level.lipid_category)
                 self._lipid_class_name = _goslin_convert_level(s, level=Level.lipid_class)
