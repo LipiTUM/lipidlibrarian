@@ -761,7 +761,7 @@ class Alex123API(LipidAPI):
                 source
             ))
             lipid.add_mass(Mass.from_data(
-                'monoisotopic mass',
+                'neutral mass',
                 float(result.sum_lipid_species_mass),
                 source
             ))
@@ -830,7 +830,7 @@ class Alex123API(LipidAPI):
                 source
             ))
             lipid.add_mass(Mass.from_data(
-                'monoisotopic mass',
+                'neutral mass',
                 float(result.sum_lipid_species_mass),
                 source
             ))

@@ -10,6 +10,7 @@ from pygoslin.parser.Parser import LipidParser
 from pygoslin.domain.LipidExceptions import LipidException
 from pygoslin.domain.LipidExceptions import LipidParsingException
 from pygoslin.domain.LipidLevel import LipidLevel
+from pygoslin.domain.LipidAdduct import LipidAdduct
 
 
 from .Adduct import Adduct
@@ -197,3 +198,18 @@ def goslin_convert(lipid_name: str, level: Any = None) -> str | None:
 def goslin_get_fatty_acids(lipid_name: str) -> list[str]:
     global goslin_converter
     pass
+
+
+def goslin_get_lipid(lipid_name: str) -> LipidAdduct:
+    global goslin_converter
+
+    if lipid_name is None:
+        return None
+
+    if goslin_converter is None:
+        goslin_converter = goslin_init()
+
+    try:
+        return func_timeout(TIMEOUT_SECONDS, goslin_converter.parse, args=(lipid_name,))
+    except LipidException or LipidParsingException as _:
+        return None

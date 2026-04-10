@@ -3,9 +3,14 @@ import re
 
 from rdkit import Chem
 
+from pygoslin.domain.Element import Element
+from pygoslin.domain.LipidAdduct import LipidAdduct
+
 from .LipidAPI import LipidAPI
+from ..lipid import goslin_get_lipid
 from ..lipid.Lipid import Lipid
 from ..lipid.Nomenclature import Level
+from ..lipid.Mass import Mass
 from ..lipid.Source import Source
 from ..lipid.StructureIdentifier import StructureIdentifier
 
@@ -106,48 +111,24 @@ def create_glycerophospholipid(lipid_class: str, fatty_acid_sn1_length: int, fat
 class LipidLibrarianAPI(LipidAPI):
 
     def query_lipid(self, lipid: Lipid) -> list[Lipid]:
-        if lipid.nomenclature.lipid_class_abbreviation in glycerophospholipid_headgroups.keys() and lipid.nomenclature.level == Level.isomeric_lipid_species:
-            try:
-                fatty_acid_sn1_length = int(lipid.nomenclature.fatty_acids[0].split(':')[0])
-                fatty_acid_sn2_length = int(lipid.nomenclature.fatty_acids[1].split(':')[0])
 
-                double_bonds = [x for x in re.split('\(|\)|:|,|/', lipid.nomenclature.name) if 'E' in x or 'Z' in x]
+        goslin_lipid = goslin_get_lipid(lipid.nomenclature.get_name())
 
-                fatty_acid_sn1_double_bond_amount = int(lipid.nomenclature.fatty_acids[0].split(':')[1])
+        if goslin_lipid is None:
+            return []
 
-                fatty_acid_sn1_double_bonds = double_bonds[:fatty_acid_sn1_double_bond_amount] if fatty_acid_sn1_length > 0 else []
-                fatty_acid_sn2_double_bonds = double_bonds[fatty_acid_sn1_double_bond_amount:] if fatty_acid_sn2_length > 0 else []
+        source = Source(
+            lipid_name=lipid.nomenclature.get_name(),
+            lipid_level=lipid.nomenclature.level,
+            source="goslin",
+        )
 
-                logging.info(f"LipidLibrarianAPI: Creating glycerophospholipid of input {lipid.nomenclature.name} with:\n\tclass: {lipid.nomenclature.lipid_class_abbreviation}\n\fatty_acids: {lipid.nomenclature.fatty_acids}\n\tsn1 length: {fatty_acid_sn1_length}\n\tsn1 dbs: {fatty_acid_sn1_double_bonds}\n\tsn2 length: {fatty_acid_sn2_length}\n\tsn2 dbs: {fatty_acid_sn2_double_bonds}")
+        lipid.nomenclature.sum_formula = goslin_lipid.get_sum_formula()
 
-                lipid_mol = create_glycerophospholipid(
-                    lipid.nomenclature.lipid_class_abbreviation,
-                    fatty_acid_sn1_length,
-                    fatty_acid_sn1_double_bonds,
-                    fatty_acid_sn2_length,
-                    fatty_acid_sn2_double_bonds
-                )
-
-                source = Source(lipid.nomenclature.name, Level.isomeric_lipid_species, 'lipidlibrarian')
-
-                lipid.nomenclature.add_structure_identifier(StructureIdentifier.from_data(
-                    Chem.MolToSmiles(lipid_mol),
-                    'smiles',
-                    source
-                ))
-
-                lipid.nomenclature.add_structure_identifier(StructureIdentifier.from_data(
-                    Chem.inchi.MolToInchi(lipid_mol),
-                    'inchi',
-                    source
-                ))
-
-                lipid.nomenclature.add_structure_identifier(StructureIdentifier.from_data(
-                    Chem.inchi.MolToInchiKey(lipid_mol),
-                    'inchikey',
-                    source
-                ))
-            except ValueError as _:
-                logging.warning(f"LipidLibrarianAPI: Failed to create a glycerophospholipid of input {lipid.nomenclature.name}")
+        lipid.add_mass(mass=Mass.from_data(
+            mass_type='exact mass',
+            value=goslin_lipid.get_mass(),
+            source=source,
+        ))
 
         return [lipid]
