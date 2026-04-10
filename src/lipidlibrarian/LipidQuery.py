@@ -34,6 +34,7 @@ class LipidQuery:
             self.selected_APIs.add('lipidlibrarian')
         else:
             self.selected_APIs = selected_APIs
+            self.selected_APIs.add('lipidlibrarian')
             for selected_API in selected_APIs:
                 if selected_API not in supported_APIs:
                     logging.warning((f"LipidQuery: API {str(selected_API)} was not found in list "
