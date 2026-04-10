@@ -142,8 +142,7 @@ class LipidQuery:
         for lipid in self.lipids:
             if 'lipidlibrarian' in self.selected_APIs:
                 pass
-                #logging.info("Querying LipidLibrarian...")
-                #self.add_lipids(self.APIs['lipidlibrarian'].query(lipid, cutoff=self.cutoff))
+                self.add_lipids(self.APIs['lipidlibrarian'].query(lipid, cutoff=self.cutoff))
             if 'linex' in self.selected_APIs:
                 logging.info("Querying LINEX...")
                 self.add_lipids(self.APIs['linex'].query(lipid, cutoff=self.cutoff))

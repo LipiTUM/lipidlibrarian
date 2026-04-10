@@ -419,16 +419,9 @@ class SwissLipidsAPI(LipidAPI):
             if (mz_data := chemical_data.get('mz')) is not None and mz_data:
                 mz_data: dict
 
-                if (mass := mz_data.get('[M.]+')) is not None:
-                    lipid.add_mass(Mass.from_data(
-                        'neutral mass',
-                        mass,
-                        source
-                    ))
-
                 if (mass := mz_data.get('exact mass')) is not None:
                     lipid.add_mass(Mass.from_data(
-                        'monoisotopic mass',
+                        'exact mass',
                         mass,
                         source
                     ))
@@ -439,7 +432,7 @@ class SwissLipidsAPI(LipidAPI):
                         adduct = copy.deepcopy(get_adduct(adduct_name))
                         if adduct is not None:
                             adduct.add_mass(Mass.from_data(
-                                'mass',
+                                'monoisotopic mass',
                                 float(mass),
                                 source
                             ))
