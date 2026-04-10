@@ -337,10 +337,11 @@ class SwissLipidsAPI(LipidAPI):
                     source
                 ))
 
-        if (chemical_data := entry.get('chemical_data')) is not None:
-            chemical_data: dict
-            if (sum_formula := chemical_data.get('formula')) is not None:
-                lipid.nomenclature.sum_formula = sum_formula
+        # SwissLipids always reports one hydrogen atom too little
+        #if (chemical_data := entry.get('chemical_data')) is not None:
+        #    chemical_data: dict
+        #    if (sum_formula := chemical_data.get('formula')) is not None:
+        #        lipid.nomenclature.sum_formula = sum_formula
 
         if (structures := entry.get('structures')) is not None:
             structures: dict
