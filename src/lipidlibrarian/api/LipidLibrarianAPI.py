@@ -5,6 +5,7 @@ from rdkit import Chem
 
 from pygoslin.domain.Element import Element
 from pygoslin.domain.LipidAdduct import LipidAdduct
+from pygoslin.domain.LipidExceptions import LipidException
 
 from .LipidAPI import LipidAPI
 from ..lipid import goslin_get_lipid
@@ -123,12 +124,15 @@ class LipidLibrarianAPI(LipidAPI):
             source="goslin",
         )
 
-        lipid.nomenclature.sum_formula = goslin_lipid.get_sum_formula()
+        try:
+            lipid.add_mass(mass=Mass.from_data(
+                mass_type='exact mass',
+                value=goslin_lipid.get_mass(),
+                source=source,
+            ))
 
-        lipid.add_mass(mass=Mass.from_data(
-            mass_type='exact mass',
-            value=goslin_lipid.get_mass(),
-            source=source,
-        ))
+            lipid.nomenclature.sum_formula = goslin_lipid.get_sum_formula()
+        except LipidException as e:
+            return []
 
         return [lipid]
