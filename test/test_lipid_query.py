@@ -40,6 +40,35 @@ def test_lipidquery_id(sample_ids):
         assert result
 
 
+@pytest.fixture(params=["PLPE", "HETE-12"])
+def sample_names(request):
+    return request.param
+
+
+def test_lipidquery_name(sample_names):
+    # Keep a reference to the unpatched function
+    real_execute_http_query = LipidAPI.execute_http_query
+
+    def side_effect(self, url: str):
+        # Call the real method through a closure so load_or_record_response
+        # can execute it when needed.
+        return load_or_record_response(
+            url=url,
+            real_execute_http_query=lambda u: real_execute_http_query(self, u),
+            test_development=test_development
+        )
+
+    with patch.object(LipidAPI, "execute_http_query", autospec=True) as mock_exec:
+        mock_exec.side_effect = side_effect
+
+        q = LipidQuery(
+            input_string=sample_names,
+            requeries=1,
+        )
+        result = q.query()
+        assert result
+
+
 def test_lipid_merge_raises_on_wrong_type():
     a = Lipid()
     with pytest.raises(ValueError):
